@@ -41,6 +41,17 @@ def test_extract_match_ignores_case_and_whitespace():
     assert score("extract_match", "paris, obviously", "Paris", _extracted("  paris ")).score == 1.0
 
 
+def test_extract_match_compares_plain_numbers_as_numbers():
+    """Without a tolerance, equal numbers written differently still match."""
+    assert score("extract_match", "...", "1284500.20", _extracted("1284500.2")).score == 1.0
+    assert score("extract_match", "...", "1,284,500", _extracted("1284500")).score == 1.0
+    assert score("extract_match", "...", "2297", _extracted("2297.0")).score == 1.0
+    assert score("extract_match", "...", "1284500.20", _extracted("1284500.21")).score == 0.0
+    # Codes with leading zeros or letters stay text: "007" is not "7".
+    assert score("extract_match", "...", "7", _extracted("007")).score == 0.0
+    assert score("extract_match", "...", "ORD-1", _extracted("ORD-001")).score == 0.0
+
+
 def test_extract_match_reads_json_inside_a_code_block():
     reply = '```json\n{"extracted_answer": "2297"}\n```'
     assert score("extract_match", "2297", "2297", reply).extracted_answer == "2297"

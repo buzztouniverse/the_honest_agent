@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+from decimal import Decimal
 from typing import NamedTuple
 
 
@@ -25,15 +26,30 @@ def _try_parse_float(value: str) -> float | None:
         return None
 
 
+# A plain number: optional minus, digits (no leading zeros, optionally grouped with
+# commas), optional decimals. "007" or "ORD-001" are not plain numbers, so IDs and codes
+# keep the text comparison.
+_PLAIN_NUMBER = re.compile(r"-?(0|[1-9]\d{0,2}(,\d{3})+|[1-9]\d*)(\.\d+)?")
+
+
+def _plain_number(value: str) -> Decimal | None:
+    value = value.strip()
+    if not _PLAIN_NUMBER.fullmatch(value):
+        return None
+    return Decimal(value.replace(",", ""))
+
+
 def _values_match(
     extracted: str,
     expected: str,
     tolerance: float | None,
     tolerance_percent: float | None = None,
 ) -> bool:
-    """Exact string match by default; if `tolerance`/`tolerance_percent` are
-    given and both sides parse as numbers, allow them to differ instead of
-    requiring an exact match -- for cases like an unrounded raw query result
+    """Exact match by default: two plain numbers are compared as numbers, so
+    "1284500.2" equals "1284500.20"; anything else as text, ignoring case. If
+    `tolerance`/`tolerance_percent` are given and both sides parse as numbers,
+    allow them to differ instead of requiring an exact match -- for cases like an
+    unrounded raw query result
     (311928357.7805) against a rounded expected_answer (311928357.78), where
     the agent reported the data faithfully and the mismatch is purely a
     eval-authoring precision issue, not an error worth failing over.
@@ -59,6 +75,9 @@ def _values_match(
             if tolerance_percent is not None and diff <= abs(expected_num) * tolerance_percent:
                 return True
             return False
+    extracted_num, expected_num = _plain_number(extracted), _plain_number(expected)
+    if extracted_num is not None and expected_num is not None:
+        return extracted_num == expected_num
     return extracted.strip().lower() == expected.strip().lower()
 
 
