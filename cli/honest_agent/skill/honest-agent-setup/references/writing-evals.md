@@ -29,8 +29,8 @@ evals:
         provenance:
           expected_sources: [analytics.fct_revenue]
 
-      # "Top customers" is deliberately vague: that's how people ask. The business
-      # means the 5 customers with the most revenue this year.
+      # By "top customers" the business means the 5 customers with the most
+      # revenue this year.
       - id: top_customers
         title: Top customers
         prompt: who are our top customers?
@@ -60,10 +60,9 @@ The eval exists to see how the agent copes with real questions.
 When the question can be read more than one way ("last year": calendar or last full
 year? "revenue": gross or net?), don't rewrite it. Ask the user what the business
 means, write that into `expected_answer` (saying the reading, as in `top_customers`
-above), use `llm_judge` so an answer that states its assumption can be weighed, and
-add a comment that the ambiguity is on purpose. When the business's reading is settled
-and the answer is one number, `extract_match` is fine instead; say the reading in the
-comment, as `revenue_last_month` above does.
+above), and use `llm_judge` so an answer that states its assumption can be weighed.
+When the business's reading is settled and the answer is one number, `extract_match`
+is fine instead; say the reading in a comment, as `revenue_last_month` above does.
 
 ## The expected answer
 
@@ -79,12 +78,22 @@ comment, as `revenue_last_month` above does.
 
 ## The grading method
 
-`contains` is the default when no method is set.
+`contains` is the default when no method is set. It is a character-by-character text
+match: it lowercases both sides and checks that the expected text appears somewhere in
+the answer. Nothing is parsed or interpreted, so:
+
+- "Acme" passes for "Our top customer is ACME Corp."
+- "1284500" fails for "revenue was 1,284,500" and for "$1.28M".
+- "4" passes for "we have 400 stores", which is wrong.
+
+When the value is a number the agent might format or round its own way, use
+`extract_match`: a model pulls the value out of the answer and code compares it as a
+number, so formatting doesn't matter and a tolerance can absorb rounding.
 
 | The right answer is... | Method | Notes |
 |---|---|---|
-| An exact name or label | `contains` | Free and deterministic. Not for numbers: "4" is inside "400" |
-| One number or value | `extract_match` | A model extracts the value; code compares it. Add a tolerance for rounded numbers |
+| A value the agent will write exactly one way: a name, a label, an ID, a year | `contains` | Free and deterministic. Character-by-character match, so the formatting must be exactly the same (see above) |
+| A number or value that may be formatted or rounded differently | `extract_match` | A model extracts the value; code compares it. Add a tolerance for rounded numbers |
 | A list, an explanation, an ambiguous question, or needs judgment | `llm_judge` | A model scores 0 to 1 with a reason; the only one with partial credit |
 
 ## Provenance
@@ -112,8 +121,10 @@ share of `expected_sources` it read; below `provenance.min_score`, the eval fail
 - **Only SQL is seen.** A tool with structured arguments instead of SQL (a
   semantic-layer tool like `query_metrics(metric, grain)`) leaves nothing to read, so a
   correct answer through it scores 0. For such evals leave `expected_sources` out and
-  tell the user their provenance can't be checked. A tool that keeps SQL in an unusual
-  argument needs `provenance.sql_fields: {tool_name: argument}`.
+  tell the user their provenance can't be checked. Encourage them to open an issue at
+  https://github.com/jlcoto/the_honest_agent/issues naming the tool and its arguments,
+  so support for it can be added. A tool that keeps SQL in an unusual argument needs
+  `provenance.sql_fields: {tool_name: argument}`.
 
 ## After writing
 

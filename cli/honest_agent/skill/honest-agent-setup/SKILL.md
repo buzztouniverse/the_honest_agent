@@ -86,16 +86,19 @@ the essentials:
   clearer. If it's ambiguous, ask the user what the business means, write that reading
   into `expected_answer`, use `llm_judge` (it can weigh an answer that states its
   assumption; `extract_match` is fine when the reading is settled and the answer is
-  one number), and add a comment that the ambiguity is deliberate.
+  one number).
 - **The expected answer comes from the user:** they know it, or they run a query you
   propose (or the trusted metric or report) and check the result. Never invent it,
   and never take it from the agent's own answer, even if the user suggests it: the
   eval would only check that the agent agrees with itself. If it changes over time
   ("last week", "active customers"), note in a comment the date it was computed and
   how, and tell the user it will need refreshing.
-- **The grading method fits the answer:** `contains` (the default) for an exact name
-  or label, `extract_match` for one number or value (with `tolerance` or
-  `tolerance_percent` if it's rounded), `llm_judge` for lists, explanations,
+- **The grading method fits the answer:** `contains` (the default) is a
+  character-by-character text match, ignoring case: use it for a value the agent
+  will write exactly one way (a name, a label, an ID, a year). "1284500" fails
+  against "1,284,500", and "4" passes inside "400". Use `extract_match` for a number
+  or value that may be formatted or rounded differently (with `tolerance` or
+  `tolerance_percent` if it's rounded), and `llm_judge` for lists, explanations,
   ambiguous questions or answers that need judgment.
 - **Provenance is half the check.** Ask which source the team trusts for this
   question (the curated table or view, the semantic view) and put it in
@@ -108,6 +111,8 @@ the essentials:
   user which tools their agent uses, or look at the tool calls in `honest-agent logs`
   after the first run), a correct answer would still score 0. Leave `expected_sources`
   out for that eval and tell the user plainly that its provenance can't be checked.
+  Encourage them to open an issue at https://github.com/jlcoto/the_honest_agent/issues
+  naming the tool and its arguments, so support for it can be added.
 - **Suggest an explicit `id:`** so rewording the title later keeps the eval's
   history. The id is also how one eval is run alone (`--select <id>`).
 
