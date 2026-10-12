@@ -100,7 +100,9 @@ async def run_evals(
     mcp_cwd: str | None,
     mcp_env: list[str],
     judge_model: str,
-) -> None:
+) -> int:
+    """Runs the selected evals and stores the results; returns how many fell below
+    their thresholds (`run` exits 1 when any did)."""
     try:
         definitions = load_evals(evals_dir)
     except ValueError as exc:
@@ -196,3 +198,4 @@ async def run_evals(
         click.echo("All evals met their thresholds.")
 
     click.echo(f"Run {run_id} complete. Next: `honest-agent report` / `honest-agent notify`.")
+    return len(failures)

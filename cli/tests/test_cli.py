@@ -8,9 +8,11 @@ import asyncio
 import json
 from pathlib import Path
 
+import pytest
 from click.testing import CliRunner
 from recorded import claude_reply, definition, model_call, record, text, tool_call, tool_use
 
+import honest_agent.cli as cli_mod
 from honest_agent.cli import main
 from honest_agent.grading import UNREADABLE_REPLY
 from honest_agent.raw import RunRecorder, read_records
@@ -197,6 +199,21 @@ def test_judge_model_can_differ_from_the_agent_model(fake_run, in_tmp_dir):
     models = _run_capturing_models(fake_run, ["--model", "claude-sonnet-5", "--judge-model", "claude-haiku-4-5"])
 
     assert models == {"model": "claude-sonnet-5", "judge_model": "claude-haiku-4-5"}
+
+
+@pytest.mark.parametrize(("failures", "exit_code"), [(0, 0), (2, 1)])
+def test_run_exits_1_when_an_eval_falls_below_its_threshold(monkeypatch, in_tmp_dir, failures, exit_code):
+    async def fake_run_evals(**settings):
+        return failures
+
+    monkeypatch.setattr(cli_mod, "run_evals", fake_run_evals)
+    Path("evals").mkdir()
+
+    result = CliRunner().invoke(
+        main, ["run", "--evals-dir", "evals", "--mcp-url", "https://remote/mcp"], env={"ANTHROPIC_API_KEY": "test"}
+    )
+
+    assert result.exit_code == exit_code, result.output
 
 
 class _ScriptedAgent:

@@ -149,6 +149,9 @@ uv run honest-agent serve     # opens it in your browser (Ctrl+C to stop)
 
 - `run` uses `default_target`, so you only need `--target` for another one:
   `run --target motherduck`.
+- `run` exits 1 when any eval falls below its threshold, like a failing test,
+  so a CI job fails on a regression. See [`docs/hosting.md`](docs/hosting.md)
+  for a workflow that still publishes the report and sends the alert.
 - `uv run honest-agent debug` checks the setup first, like `dbt debug`: config,
   variables, evals, the MCP server and the results store, without calling a
   model or running a query.
