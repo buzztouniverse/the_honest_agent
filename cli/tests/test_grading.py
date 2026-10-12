@@ -2,11 +2,20 @@ from __future__ import annotations
 
 import asyncio
 import json
+from decimal import Decimal
 from types import SimpleNamespace as NS
 
 import pytest
 
-from honest_agent.grading import GRADING_SCHEMAS, UNREADABLE_REPLY, grade_contains, grading_prompt, score
+from honest_agent.grading import (
+    GRADING_SCHEMAS,
+    UNREADABLE_REPLY,
+    canonical_number,
+    grade_contains,
+    grading_prompt,
+    looks_like_formatted_number,
+    score,
+)
 from honest_agent.llm import AnthropicJudge
 
 
@@ -39,6 +48,58 @@ def test_extract_match_compares_the_extracted_value():
 
 def test_extract_match_ignores_case_and_whitespace():
     assert score("extract_match", "paris, obviously", "Paris", _extracted("  paris ")).score == 1.0
+
+
+def test_extract_match_compares_canonical_numbers_as_numbers():
+    """Without a tolerance, equal numbers written differently still match."""
+    assert score("extract_match", "...", "1284500.20", _extracted("1284500.2")).score == 1.0
+    assert score("extract_match", "...", "2297", _extracted("2297.0")).score == 1.0
+    assert score("extract_match", "...", "1284500.20", _extracted("1284500.21")).score == 0.0
+    # Codes with leading zeros or letters stay text: "007" is not "7".
+    assert score("extract_match", "...", "7", _extracted("007")).score == 0.0
+    assert score("extract_match", "...", "ORD-1", _extracted("ORD-001")).score == 0.0
+    # A separator makes it text: "1,500" could be 1500 or 1.5.
+    assert score("extract_match", "...", "1,500", _extracted("1500")).score == 0.0
+
+
+@pytest.mark.parametrize(
+    ("value", "number"),
+    [("1284500.20", "1284500.20"), ("-3.5", "-3.5"), ("0.12", "0.12"), (" 42 ", "42"), ("1e+20", "1e+20")],
+)
+def test_canonical_number_reads_the_one_number_format(value, number):
+    assert canonical_number(value) == Decimal(number)
+
+
+@pytest.mark.parametrize("value", ["1,500", "1.284.500,20", "$12", "12%", "007", "1 284", "Paris", "1.2.3", ""])
+def test_canonical_number_rejects_everything_else(value):
+    assert canonical_number(value) is None
+
+
+@pytest.mark.parametrize(
+    "value", ["1,284,500", "1.284.500,20", "1 284 500,20", "1'284'500", "$1284500", "1284500 €", "12%", "-1,5"]
+)
+def test_looks_like_formatted_number(value):
+    assert looks_like_formatted_number(value)
+
+
+@pytest.mark.parametrize(
+    "value", ["1284500.20", "12.5", "007", "Paris", "Paris, France", "v1.2", "ORD-001", "2024-01-15"]
+)
+def test_not_a_formatted_number(value):
+    assert not looks_like_formatted_number(value)
+
+
+def test_tolerance_compares_only_canonical_numbers():
+    """The tolerance path reads numbers the same strict way: "1,5" is not 15."""
+    assert score("extract_match", "...", "15", _extracted("1,5"), tolerance=0.5).score == 0.0
+    assert score("extract_match", "...", "15", _extracted("15.2"), tolerance=0.5).score == 1.0
+
+
+def test_extract_match_prompt_asks_for_canonical_numbers():
+    prompt = grading_prompt("extract_match", "Umsatz: 1.284.500,20 €", "1284500.20", "Umsatz?")
+    assert "'.' as the decimal point" in prompt
+    assert "'1.284.500,20 €' is 1284500.20" in prompt
+    assert "'12%' is 12" in prompt
 
 
 def test_extract_match_reads_json_inside_a_code_block():

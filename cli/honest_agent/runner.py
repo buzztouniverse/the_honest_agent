@@ -12,7 +12,14 @@ import click
 
 from .agent_runner import AgentClient
 from .derive import derive_result, recorded_answer
-from .eval_loader import EvalDefinition, SelectorError, load_evals, nothing_selected, select_evals
+from .eval_loader import (
+    EvalDefinition,
+    SelectorError,
+    load_evals,
+    nothing_selected,
+    number_format_warnings,
+    select_evals,
+)
 from .grading import GRADING_MAX_TOKENS, GRADING_SCHEMAS, UNREADABLE_REPLY, grading_prompt
 from .llm import OPENAI, Judge, make_judge, provider_for
 from .raw import RunRecorder
@@ -114,6 +121,8 @@ async def run_evals(
     judge = make_judge(provider_for(judge_model))
     run_id = str(uuid.uuid4())
     click.echo(f"Starting eval run {run_id} ({len(definitions)} eval{'' if len(definitions) == 1 else 's'})...")
+    for warning in number_format_warnings(definitions):
+        click.echo(f"    WARNING: {warning}")
 
     mcp_client = build_mcp_client(
         command=mcp_command, url=mcp_url, bearer_token=mcp_bearer_token, cwd=mcp_cwd, env_names=mcp_env

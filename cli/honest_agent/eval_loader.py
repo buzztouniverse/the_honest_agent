@@ -8,6 +8,8 @@ from pathlib import Path
 
 import yaml
 
+from .grading import looks_like_formatted_number
+
 # Defaults match what the (now-removed) dbt schema.yml used to hardcode as
 # the generic test's min_score for accuracy_score / provenance_score.
 DEFAULT_ACCURACY_MIN_SCORE = 0.8
@@ -110,6 +112,20 @@ def load_evals(evals_dir: Path) -> list[EvalDefinition]:
             )
 
     return definitions
+
+
+def number_format_warnings(definitions: list[EvalDefinition]) -> list[str]:
+    """One line per extract_match eval whose expected_answer is a number written some
+    other way than digits with "." for decimals: grading would compare it as text, so it
+    could never match the normalized value. A warning, not an error: text answers can
+    hold commas and dots too."""
+    return [
+        f"{d.eval_id}: expected_answer {d.expected_answer!r} looks like a formatted number, so it "
+        "is compared as text. Write numbers as digits with '.' for decimals and no separators, "
+        "currency or % (e.g. 1284500.20, 12.5)."
+        for d in definitions
+        if d.grading_method == "extract_match" and looks_like_formatted_number(d.expected_answer)
+    ]
 
 
 def slugify(title: str) -> str:

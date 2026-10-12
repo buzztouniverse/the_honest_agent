@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+from decimal import Decimal
 from typing import NamedTuple
 
 
@@ -17,12 +18,38 @@ def grade_contains(answer: str, expected_answer: str) -> float:
     return 1.0 if expected_answer.strip().lower() in answer.strip().lower() else 0.0
 
 
-def _try_parse_float(value: str) -> float | None:
-    cleaned = re.sub(r"[^0-9.\-]", "", value)
-    try:
-        return float(cleaned)
-    except ValueError:
-        return None
+# The one way a number is written for comparison: optional minus, digits without
+# leading zeros or separators, optional "." decimals, optional exponent (YAML writes a
+# large unquoted number that way). "007" or "ORD-001" are not numbers, so IDs and codes
+# keep the text comparison; "1,500" isn't either, since it could mean 1500 or 1.5.
+_CANONICAL_NUMBER = re.compile(r"-?(0|[1-9]\d*)(\.\d+)?([eE][+-]?\d+)?")
+
+
+def canonical_number(value: str) -> Decimal | None:
+    """`value` as a number if it is written the canonical way, else None."""
+    value = value.strip()
+    return Decimal(value) if _CANONICAL_NUMBER.fullmatch(value) else None
+
+
+# A currency sign before or after, or a % after: "$1284500", "1284500 €", "12%".
+_NUMBER_SYMBOL = re.compile(r"^[$€£¥]\s*|\s*[$€£¥%]$")
+# Digits with separators between them: ".", ",", "'" or spaces, as locales group them.
+_FORMATTED_DIGITS = re.compile(r"\d([\d.,' \u00a0\u202f]*\d)?")
+
+
+def looks_like_formatted_number(value: str) -> bool:
+    """True for a number written some other way than the canonical one ("1,284,500",
+    "1.284.500,20", "$1284500", "12%"), which grading would compare as text. A plain
+    digit string ("007") is a code, and text ("Paris, France", "v1.2") isn't a number."""
+    value = value.strip()
+    if canonical_number(value) is not None:
+        return False
+    core = _NUMBER_SYMBOL.sub("", value)
+    has_symbol = core != value
+    core = core.removeprefix("-")
+    if not _FORMATTED_DIGITS.fullmatch(core):
+        return False
+    return has_symbol or not core.isdigit()
 
 
 def _values_match(
@@ -31,12 +58,14 @@ def _values_match(
     tolerance: float | None,
     tolerance_percent: float | None = None,
 ) -> bool:
-    """Exact string match by default; if `tolerance`/`tolerance_percent` are
-    given and both sides parse as numbers, allow them to differ instead of
-    requiring an exact match -- for cases like an unrounded raw query result
-    (311928357.7805) against a rounded expected_answer (311928357.78), where
-    the agent reported the data faithfully and the mismatch is purely a
-    eval-authoring precision issue, not an error worth failing over.
+    """Exact match by default: two canonical numbers (see `canonical_number`) are
+    compared as numbers, so "1284500.2" equals "1284500.20"; anything else as text,
+    ignoring case. If `tolerance`/`tolerance_percent` are given and both sides are
+    numbers, allow them to differ instead of requiring an exact match -- for cases
+    like an unrounded raw query result (311928357.7805) against a rounded
+    expected_answer (311928357.78), where the agent reported the data faithfully and
+    the mismatch is purely an eval-authoring precision issue, not an error worth
+    failing over.
 
     Naming and the absolute/percent split both mirror dbt-expectations'
     `expect_table_aggregation_to_equal_other_table` (`tolerance` /
@@ -49,16 +78,16 @@ def _values_match(
     it scales sensibly across very different magnitudes the way a single
     fixed `tolerance` can't (see the module-level note on this pairing).
     """
-    if tolerance is not None or tolerance_percent is not None:
-        extracted_num = _try_parse_float(extracted)
-        expected_num = _try_parse_float(expected)
-        if extracted_num is not None and expected_num is not None:
-            diff = abs(extracted_num - expected_num)
-            if tolerance is not None and diff <= tolerance:
-                return True
-            if tolerance_percent is not None and diff <= abs(expected_num) * tolerance_percent:
-                return True
-            return False
+    extracted_num, expected_num = canonical_number(extracted), canonical_number(expected)
+    if extracted_num is not None and expected_num is not None:
+        if tolerance is None and tolerance_percent is None:
+            return extracted_num == expected_num
+        diff = abs(extracted_num - expected_num)
+        if tolerance is not None and diff <= Decimal(str(tolerance)):
+            return True
+        if tolerance_percent is not None and diff <= abs(expected_num) * Decimal(str(tolerance_percent)):
+            return True
+        return False
     return extracted.strip().lower() == expected.strip().lower()
 
 
@@ -102,10 +131,15 @@ def grading_prompt(method: str, answer: str, expected_answer: str, prompt: str) 
         # The model only extracts and normalizes the value; `score` compares it in code.
         return (
             "Extract the final answer value from the response below and normalize it "
-            "to its simplest literal form (strip punctuation, units, thousands "
-            "separators, leading articles like 'the') so it can be compared directly "
-            "against a canonical answer. Do not judge whether it's correct -- only "
-            "extract and normalize.\n\n"
+            "to its simplest literal form so it can be compared directly against a "
+            "canonical answer. Write a number as digits only, with '.' as the decimal "
+            "point and no thousands separators, currency symbols or units. Tell the "
+            "decimal point from the thousands separator by the response's context (its "
+            "language, its currency, how the digits are grouped): '1.284.500,20 €' is "
+            "1284500.20 and '12,5 %' is 12.5. If nothing settles it, read '.' as the "
+            "decimal point. Write a percentage as the number shown: '12%' is 12. For "
+            "any other value, strip punctuation and leading articles like 'the'. Do not "
+            "judge whether it's correct -- only extract and normalize.\n\n"
             f"{_DATA_NOTE}"
             f"Question: {prompt}\n"
             f"Response:\n{_as_data(answer)}\n\n"
