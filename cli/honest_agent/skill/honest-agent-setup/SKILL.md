@@ -99,7 +99,9 @@ the essentials:
   against "1,284,500", and "4" passes inside "400". Use `extract_match` for a number
   or value that may be formatted or rounded differently (with `tolerance` or
   `tolerance_percent` if it's rounded), and `llm_judge` for lists, explanations,
-  ambiguous questions or answers that need judgment.
+  ambiguous questions or answers that need judgment. Each has limits (see
+  `references/writing-evals.md`): tell the user which method you picked, why, and
+  its main limit for that eval, so they can choose differently.
 - **Provenance is half the check.** Ask which source the team trusts for this
   question (the curated table or view, the semantic view) and put it in
   `expected_sources`. List only what the answer truly needs: every entry must be

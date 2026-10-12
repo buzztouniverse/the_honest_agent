@@ -78,23 +78,51 @@ is fine instead; say the reading in a comment, as `revenue_last_month` above doe
 
 ## The grading method
 
-`contains` is the default when no method is set. It is a character-by-character text
-match: it lowercases both sides and checks that the expected text appears somewhere in
-the answer. Nothing is parsed or interpreted, so:
+`contains` is the default when no method is set. Pick the method from the shape of
+the right answer:
+
+| The right answer is... | Method | Cost |
+|---|---|---|
+| A value the agent will write exactly one way: a name, a label, an ID, a year | `contains` | Free, no model |
+| One number or value that may be formatted or rounded differently | `extract_match` | One model call per eval |
+| A list, an explanation, an ambiguous question, or needs judgment | `llm_judge` | One model call per eval |
+
+Each method has limits. Tell the user which one you picked for an eval, why, and its
+main limit for that eval, in a sentence, so they can choose differently.
+
+**`contains`** is a character-by-character text match: it lowercases both sides and
+checks that the expected text appears somewhere in the answer. Nothing is parsed or
+interpreted, so:
 
 - "Acme" passes for "Our top customer is ACME Corp."
 - "1284500" fails for "revenue was 1,284,500" and for "$1.28M".
 - "4" passes for "we have 400 stores", which is wrong.
+- It can't tell a final answer from a value mentioned in passing: "it isn't Acme,
+  it's Globex" passes for "Acme".
 
-When the value is a number the agent might format or round its own way, use
-`extract_match`: a model pulls the value out of the answer and code compares it as a
-number, so formatting doesn't matter and a tolerance can absorb rounding.
+**`extract_match`**: a model pulls the one value out of the answer and normalizes it
+(drops thousands separators, units, "the"); then code compares it. It doesn't judge
+correctness itself.
 
-| The right answer is... | Method | Notes |
-|---|---|---|
-| A value the agent will write exactly one way: a name, a label, an ID, a year | `contains` | Free and deterministic. Character-by-character match, so the formatting must be exactly the same (see above) |
-| A number or value that may be formatted or rounded differently | `extract_match` | A model extracts the value; code compares it. Add a tolerance for rounded numbers |
-| A list, an explanation, an ambiguous question, or needs judgment | `llm_judge` | A model scores 0 to 1 with a reason; the only one with partial credit |
+- Without a tolerance the value must be exactly right. Plain numbers are compared as
+  numbers ("1284500.2" equals "1284500.20"), anything else as text, ignoring case.
+  When the agent may round differently from your expected value, set `tolerance` or
+  `tolerance_percent`.
+- It expects one value. If the answer lists several numbers, the model may pick the
+  wrong one; use `llm_judge` for those.
+- Normalizing drops units: "12%" and "12" become the same value. Put the expected
+  value in the unit the agent is likely to use, and say the unit in a comment.
+
+**`llm_judge`**: a model compares the answer with `expected_answer` and scores it from
+0 to 1 with a one-sentence reason. It is the only method with partial credit.
+
+- It is only as strict as `expected_answer`. "Acme and Globex" may let an answer
+  with three extra customers pass; "Exactly these 2: Acme, Globex" won't. Write what a
+  right answer must contain and what would make it wrong.
+- An answer that hedges between several values, or doesn't commit to one, scores 0
+  even if one of them is right.
+- The score comes from a model, so it can vary a little between runs; a borderline
+  answer may pass one day and fail the next. The reason it gives shows why.
 
 ## Provenance
 
