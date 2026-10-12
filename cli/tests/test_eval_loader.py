@@ -8,6 +8,7 @@ from honest_agent.eval_loader import (
     EvalDefinition,
     SelectorError,
     load_evals,
+    number_format_warnings,
     select_evals,
 )
 
@@ -310,3 +311,27 @@ def test_a_numeric_expected_answer_is_read_as_text(tmp_path: Path):
     (definition,) = load_evals(tmp_path)
 
     assert definition.expected_answer == "2297"
+
+
+def test_number_format_warnings_flag_formatted_extract_match_numbers():
+    def definition(eval_id: str, expected: str, method: str = "extract_match") -> EvalDefinition:
+        return EvalDefinition(
+            eval_id=eval_id,
+            prompt="p",
+            category="",
+            expected_answer=expected,
+            grading_method=method,
+            expected_sources=[],
+            tags=[],
+        )
+
+    warnings = number_format_warnings(
+        [
+            definition("formatted", "1.284.500,20"),
+            definition("canonical", "1284500.20"),
+            definition("text", "Paris, France"),
+            definition("contains_is_not_checked", "1,284,500", method="contains"),
+        ]
+    )
+    assert len(warnings) == 1
+    assert warnings[0].startswith("formatted: expected_answer '1.284.500,20' looks like a formatted number")

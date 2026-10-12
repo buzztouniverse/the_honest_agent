@@ -211,7 +211,14 @@ blending or fallback between them (see `honest_agent/grading.py`):
   then compares it deterministically against `expected_answer`. Still
   binary, but tolerant of how the agent phrases things ("The answer is 4."
   / "4" / "It's four" all extract to the same value). Best for a single
-  literal answer — a number, a name, a short fact. If the expected value
+  literal answer — a number, a name, a short fact. Numbers are compared in
+  one form: write `expected_answer` as digits with `.` for decimals and no
+  thousands separators, currency or units (`1284500.20`; a percentage as
+  the number shown, `12` for 12%). The extraction call writes the agent's
+  number the same way whatever its locale (`1.284.500,20 €` becomes
+  `1284500.20`), and `1284500.2` then equals `1284500.20`. An expected
+  number written another way is compared as text; `ls`, `debug` and `run`
+  warn about it. If the expected value
   might legitimately differ slightly (an unrounded raw query result vs. a
   rounded `expected_answer`, e.g. `q_revenue_1996` in
   `evals/example_eval.yml`), add `tolerance` (an absolute delta) or

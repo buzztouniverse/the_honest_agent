@@ -70,8 +70,12 @@ is fine instead; say the reading in a comment, as `revenue_last_month` above doe
   trusted metric or report) and check the result. Never invent it, and never copy it
   from the agent's answer, even if the user suggests it: then the eval only checks
   the agent agrees with itself.
-- Write numbers as the query returns them; use `tolerance` (an absolute difference)
-  or `tolerance_percent` (0.01 = 1%) when rounding is fine.
+- Write a number in one form: digits, "." for decimals, no thousands separators,
+  currency or units (`1284500.20`, not "1,284,500.20" or "1.284.500,20 €"). A
+  percentage is the number shown: 12 for 12%. Written another way, it is compared as
+  text and never matches; `honest-agent ls`, `debug` and `run` warn about it. Use
+  `tolerance` (an absolute difference) or `tolerance_percent` (0.01 = 1%) when
+  rounding is fine.
 - If the answer changes over time ("last month", "active customers"), keep the
   wording, note in a comment the date it was computed and how (as in
   `revenue_last_month` above), and tell the user it will need refreshing.
@@ -100,18 +104,21 @@ interpreted, so:
 - It can't tell a final answer from a value mentioned in passing: "it isn't Acme,
   it's Globex" passes for "Acme".
 
-**`extract_match`**: a model pulls the one value out of the answer and normalizes it
-(drops thousands separators, units, "the"); then code compares it. It doesn't judge
-correctness itself.
+**`extract_match`**: a model pulls the one value out of the answer and writes a number
+in the same form as above, whatever the agent's locale ("1.284.500,20 €" becomes
+1284500.20, "12%" becomes 12); then code compares it. It doesn't judge correctness
+itself.
 
-- Without a tolerance the value must be exactly right. Plain numbers are compared as
+- Without a tolerance the value must be exactly right. Numbers are compared as
   numbers ("1284500.2" equals "1284500.20"), anything else as text, ignoring case.
   When the agent may round differently from your expected value, set `tolerance` or
   `tolerance_percent`.
+- When the agent's answer gives no clue to its number format ("1,284" alone), the
+  model reads "." as the decimal point.
 - It expects one value. If the answer lists several numbers, the model may pick the
   wrong one; use `llm_judge` for those.
-- Normalizing drops units: "12%" and "12" become the same value. Put the expected
-  value in the unit the agent is likely to use, and say the unit in a comment.
+- Normalizing drops units: "12%" and "12" become the same value. Say the unit in a
+  comment.
 
 **`llm_judge`**: a model compares the answer with `expected_answer` and scores it from
 0 to 1 with a one-sentence reason. It is the only method with partial credit.

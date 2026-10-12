@@ -25,7 +25,7 @@ from .config_file import (
     required_env_vars,
 )
 from .derive import derive_result
-from .eval_loader import load_evals, nothing_selected, select_evals
+from .eval_loader import load_evals, nothing_selected, number_format_warnings, select_evals
 from .llm import API_KEY_ENV, default_model, provider_for
 from .raw import read_records
 from .runner import RunError, run_evals
@@ -441,6 +441,8 @@ def ls(ctx: click.Context, target: str | None, evals_dir: str | None, select: st
     category_width = max(len(d.category) for d in definitions)
     for d in definitions:
         click.echo(f"{d.eval_id:<{id_width}}  {d.category:<{category_width}}  {', '.join(d.tags)}".rstrip())
+    for warning in number_format_warnings(definitions):
+        click.echo(f"WARNING: {warning}", err=True)
 
 
 @main.command()
@@ -533,7 +535,8 @@ def debug(
 
     try:
         evals_dir = _evals_dir(evals_dir, chosen)
-        count = len(load_evals(Path(evals_dir)))
+        definitions = load_evals(Path(evals_dir))
+        count = len(definitions)
     except click.ClickException as exc:
         report.failed("Evals", exc.message)
     except Exception as exc:  # a bad eval file: the loader's message, or the YAML parser's
@@ -541,6 +544,8 @@ def debug(
     else:
         if count:
             report.ok("Evals", f"{count} eval{'' if count == 1 else 's'} in {debug_mod.shown(evals_dir)}")
+            for warning in number_format_warnings(definitions):
+                click.echo(f"{'':<24}WARNING: {warning}")
         else:
             report.failed("Evals", f"No evals found in {debug_mod.shown(evals_dir)}")
 
