@@ -229,7 +229,6 @@ def derive_result(con, result_id: str) -> Derived:
         # No threshold for a check that didn't happen (see check_provenance).
         "provenance_min_score": definition.provenance_min_score if provenance.score is not None else None,
         "model_name": run["model"],
-        "agent_backend": "mcp",
         "agent_name": run["agent_name"],
         "latency_ms": latency_ms,
         # One step is one model call and the tool calls it asks for.
