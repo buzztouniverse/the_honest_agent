@@ -491,7 +491,9 @@ jobs:
           gunzip -t results.duckdb.gz
           gunzip -c results.duckdb.gz > honest_agent_results/results.duckdb
 
-      # Exits 0 even when evals fail: the alert comes from `notify`.
+      # Exits 1 when an eval falls below its threshold, which marks the job as
+      # failed; the steps after it still run (`!cancelled()`), so the report is
+      # published and `notify` sends the alert.
       - name: Run evals
         run: honest-agent run --target "$HONEST_AGENT_TARGET"
         env:
@@ -504,15 +506,19 @@ jobs:
         run: gzip -c honest_agent_results/results.duckdb | aws s3 cp - "$RESULTS_S3"
 
       - name: Build report
+        id: build
+        if: ${{ !cancelled() && steps.download.outcome == 'success' }}
         run: honest-agent report
 
       - name: Deploy report
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         run: npx --yes wrangler pages deploy honest_agent_report --project-name "$CLOUDFLARE_PAGES_PROJECT" --branch main
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
 
       - name: Notify Slack
+        if: ${{ !cancelled() && steps.download.outcome == 'success' }}
         run: honest-agent notify --target "$HONEST_AGENT_TARGET"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -520,7 +526,9 @@ jobs:
 ```
 
 This structure ran successfully (target `motherduck`, project
-`honest-agent-report`); replace the `<TARGET_TOKEN_ENV>` line with your
+`honest-agent-report`), before `run` exited 1 on failing evals: the `if:`
+lines that keep the later steps going were added on 2026-10-12 and haven't
+run in CI yet; replace the `<TARGET_TOKEN_ENV>` line with your
 target's real variable name. The tested runs deployed a copy of the report
 folder without honest-agent's hidden helper files; honest-agent no longer
 writes those, so the folder is now deployed as is. GitHub warns that these action versions run on
@@ -616,13 +624,17 @@ job's `env:`:
 
       # --delete removes old hashed assets.
       - name: Deploy report to S3
+        id: deploy
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         run: aws s3 sync honest_agent_report/ "s3://$REPORT_S3_BUCKET/" --delete --region "$REPORT_S3_REGION"
 
       # Drop CloudFront's cached copy so the new report is served right away.
       - name: Invalidate CloudFront
+        if: ${{ !cancelled() && steps.deploy.outcome == 'success' }}
         run: aws cloudfront create-invalidation --distribution-id "$CLOUDFRONT_DISTRIBUTION_ID" --paths '/*' --query 'Invalidation.{id:Id,status:Status}' --output text
 
       - name: Notify Slack
+        if: ${{ !cancelled() && steps.download.outcome == 'success' }}
         run: honest-agent notify --target "$HONEST_AGENT_TARGET"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

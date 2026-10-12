@@ -355,7 +355,8 @@ def run(
     select: str | None,
     exclude: str | None,
 ):
-    """Run every eval, grade the answers, and write results to storage."""
+    """Run every eval, grade the answers, and write results to storage.
+    Exits 1 if any eval falls below its threshold, like a failing test."""
     config, chosen = _chosen_target(ctx, target)
     if chosen:
         click.echo(f"Target: {chosen.name} ({config.path})")
@@ -390,7 +391,7 @@ def run(
     mcp_cwd, env_names = _mcp_launch(config, chosen, mcp_command, mcp_env)
 
     try:
-        asyncio.run(
+        failures = asyncio.run(
             run_evals(
                 evals_dir=Path(evals_dir).resolve(),
                 results_path=_results_path(ctx, results_path),
@@ -413,6 +414,8 @@ def run(
         )
     except RunError as exc:
         raise click.ClickException(str(exc)) from exc
+    if failures:
+        ctx.exit(1)
 
 
 @main.command("ls")
