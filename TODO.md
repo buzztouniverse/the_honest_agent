@@ -126,16 +126,12 @@ Lower severity:
 Done on 2026-10-03: `_run_async` takes named arguments and tests share one
 fake-run fixture (`tests/conftest.py`); tests use `tmp_path` instead of the
 deprecated `isolated_filesystem`; SQL is lowercase per CLAUDE.md; the root
-README no longer says "static HTML report" or Claude-only.
+README no longer says "static HTML report" or Claude-only. Done on 2026-10-12:
+the dead `agent_backend` column and the test-only `read_tool_calls(result_id=)`
+filter are gone (grader/agent model defaults were already removed).
 
 Left on purpose, low value for now (small, rarely-changing code):
 
-- **Dead code:** `agent_backend` (always `"mcp"`, read by nothing; drop from
-  `cli.py`, `storage.py`, `ui/src/data/types.ts`, tests, and the column in
-  existing results files by hand). Grader and agent functions still default
-  `model="claude-haiku-4-5"` and treat the judge as optional
-  although `cli.py` always passes both. `storage.read_tool_calls(result_id=)`
-  is used only by tests.
 - **Stale comments:** Claude-only wording in provider-neutral code
   (`agent_runner.py` docstrings, `--max-tool-turns` help, `storage.py` token
   comment, `mcp_agent_runner.py` "MCP backend selected"); references to

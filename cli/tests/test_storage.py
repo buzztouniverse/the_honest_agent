@@ -32,7 +32,6 @@ def _row(**overrides) -> dict:
         "expected_sources": [],
         "provenance_min_score": 0.7,
         "model_name": "claude-sonnet-5",
-        "agent_backend": "mcp",
         "latency_ms": 120,
         "agent_trace": json.dumps([{"role": "user", "content": "What is 2+2?"}]),
         "sql_calls": [],
@@ -49,7 +48,6 @@ ROW_2 = _row(
     agent_answer="wrong",
     accuracy_score=0.0,
     tools_used=["calculator"],
-    agent_backend="mcp",
     sql_calls=[
         {
             "tool_name": "query_warehouse",
@@ -82,7 +80,6 @@ def test_write_then_read_all_results_roundtrips(tmp_path: Path):
     assert by_id["r1"]["tags"] == ["smoke"]
     assert by_id["r2"]["tools_used"] == ["calculator"]
     assert by_id["r2"]["accuracy_rationale"] is None
-    assert by_id["r2"]["agent_backend"] == "mcp"
     assert "agent_trace" not in by_id["r1"]  # lives in traces, not results
     assert "sql_calls" not in by_id["r1"]
 
@@ -129,17 +126,6 @@ def test_write_then_read_tool_calls_roundtrips_and_expands_per_call(tmp_path: Pa
     assert json.loads(by_index[1]["payload"]) == {"sql": "select 2"}
     assert by_index[1]["is_error"] is True
     assert by_index[1]["generated"] is True
-
-
-def test_read_tool_calls_filters_by_result_id(tmp_path: Path):
-    db_path = str(tmp_path / "results.duckdb")
-    write_run_results(db_path, "run_1", [ROW_1, ROW_2])
-
-    calls = read_tool_calls(db_path, result_id="r2")
-
-    assert len(calls) == 2
-    assert all(c["result_id"] == "r2" for c in calls)
-    assert read_tool_calls(db_path, result_id="r1") == []
 
 
 def test_read_tool_calls_filters_by_run_and_eval_id(tmp_path: Path):

@@ -93,7 +93,6 @@ _RESULTS_COLUMNS: list[tuple[str, str]] = [
     # statement said) -- see provenance.queried_sources.
     ("queried_sources", "struct(database varchar, schema varchar, name varchar)[]"),
     ("model_name", "varchar"),
-    ("agent_backend", "varchar"),  # always "mcp" today; kept for a possible future backend
     # Which agent was evaluated: `run --agent-name`, else the name the MCP server
     # reports at connect time. NULL for rows written before this column existed.
     ("agent_name", "varchar"),
@@ -446,10 +445,9 @@ def read_tool_calls(
     results_path: str,
     run_id: str | None = None,
     eval_id: str | None = None,
-    result_id: str | None = None,
     since: str | None = None,
 ) -> list[dict[str, Any]]:
-    """Reads `tool_calls` rows, optionally filtered by run/eval/result or to
+    """Reads `tool_calls` rows, optionally filtered by run/eval or to
     results from runs at or after `since`, ordered so each eval's calls come
     back in the order they happened. Returns [] if nothing's been written yet.
     """
@@ -467,9 +465,6 @@ def read_tool_calls(
         if eval_id is not None:
             clauses.append("eval_id = ?")
             params.append(eval_id)
-        if result_id is not None:
-            clauses.append("result_id = ?")
-            params.append(result_id)
         if since is not None:
             clauses.append("result_id in (select result_id from results where run_timestamp >= ?)")
             params.append(since)

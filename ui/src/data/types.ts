@@ -29,7 +29,6 @@ export interface ResultRow {
   // Every table/view the agent's counted queries read, with the database/schema each resolved to.
   queried_sources: SourceRef[] | null
   model_name: string
-  agent_backend: string
   agent_name: string | null // null for results stored before agents were recorded
   latency_ms: number | null
   steps: number | null // model calls the agent made, each with the tool calls it asked for
