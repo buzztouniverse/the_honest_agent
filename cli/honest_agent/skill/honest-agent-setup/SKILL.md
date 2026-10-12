@@ -5,12 +5,12 @@ description: "Helps set up honest-agent in a project after `honest-agent init`: 
 
 # Setting up honest-agent
 
-honest-agent evaluates a data agent: it asks the agent known questions through the
-agent's MCP server and checks each answer for **accuracy** (is it right?) and
-**provenance** (did the agent's SQL read the sources it should?). `honest-agent init`
-has written the project's files; your job is to help the user fill them in and get
-to a first run. The user stays in charge: you explain, propose and write files they
-approve; they decide what is right for their data.
+honest-agent evaluates an AI analytics agent: it asks the agent known questions
+through the agent's MCP server and checks each answer for **accuracy** (is it
+right?) and **provenance** (did the agent's SQL read the sources it should?).
+`honest-agent init` has written the project's files; your job is to help the user
+fill them in and get to a first run. The user stays in charge: you explain, propose
+and write files they approve; they decide what is right for their data.
 
 ## Rules that always apply
 
