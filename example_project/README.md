@@ -507,8 +507,8 @@ isn't set up to do (and which real Claude clients like Claude Cowork have
 also hit friction with against Snowflake specifically — its OAuth
 implementation doesn't support Dynamic Client Registration, the mechanism
 those clients rely on to register automatically). PAT, by contrast, is just
-a bearer token — exactly what `--mcp-bearer-token`/`MCP_BEARER_TOKEN` already
-handles, no new code needed.
+a bearer token, which goes in the variable the target's `bearer_token_env` names
+(e.g. `SNOWFLAKE_MCP_TOKEN`), no new code needed.
 
 ### Getting a PAT
 
