@@ -30,11 +30,13 @@ The video is too big to keep in git, so it's served from Cloudflare R2: the buck
 `honest-agent-media`, at `https://media.thehonestagent.dev/hero.mp4`. It's silent, and
 autoplays muted and loops. The local copy is in `media/` (ignored by git).
 
-To replace it, upload the new cut under a new name, so browsers don't keep the old one,
+Browsers may keep it for a year (`immutable`), so never overwrite it under the same name.
+To replace it, upload the new cut under a new name,
 then change `src` in `src/components/sections/Hero.astro` and update the poster:
 
 ```sh
-npx wrangler r2 object put honest-agent-media/hero-v2.mp4 --file media/hero-v2.mp4 --content-type video/mp4 --remote
+npx wrangler r2 object put honest-agent-media/hero-v2.mp4 --file media/hero-v2.mp4 \
+  --content-type video/mp4 --cache-control "public, max-age=31536000, immutable" --remote
 ```
 
 
