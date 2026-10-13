@@ -110,6 +110,13 @@ def test_rebuild_leaves_results_without_a_raw_record_alone(tmp_path: Path):
     assert by_id["old"]["accuracy_score"] == 0.5
 
 
+def test_version_prints_the_installed_version():
+    result = CliRunner().invoke(main, ["--version"])
+
+    assert result.exit_code == 0, result.output
+    assert result.output.startswith("honest-agent, version ")
+
+
 def test_agent_name_defaults_to_the_mcp_server_name():
     from types import SimpleNamespace
 

@@ -1,5 +1,9 @@
 # The Honest Agent (`honest-agent`)
 
+> **Alpha (v0.1.0): expect breaking changes between versions.** Results files,
+> config keys and the report may change before 1.0; each release's notes in
+> [CHANGELOG.md](CHANGELOG.md) say what changed and what to do.
+
 Evaluate an analytics AI agent with known prompts/answers and check two things about
 each response:
 
@@ -54,12 +58,14 @@ To see it work before connecting your own agent, run
 ```bash
 mkdir my-agent-evals && cd my-agent-evals
 uv init --bare --python 3.11
-uv add "honest-agent @ git+https://github.com/jlcoto/the_honest_agent.git#subdirectory=cli"
+uv add "honest-agent @ git+https://github.com/jlcoto/the_honest_agent.git@v0.1.0#subdirectory=cli"
 ```
 
 `uv init --bare` creates only a `pyproject.toml`. `uv add` installs
 honest-agent into the project and records the exact version in `uv.lock`, so
-teammates who run `uv sync` get the same one.
+teammates who run `uv sync` get the same one. `@v0.1.0` is the release tag; to
+upgrade later, run the same `uv add` with the new tag from
+[Releases](https://github.com/jlcoto/the_honest_agent/releases).
 
 ### 2. Create the starter files
 
@@ -183,12 +189,12 @@ report. Keep both out of git (step 2).
 ### Alternative: one `honest-agent` command for every project
 
 ```bash
-uv tool install "honest-agent @ git+https://github.com/jlcoto/the_honest_agent.git#subdirectory=cli"
+uv tool install "honest-agent @ git+https://github.com/jlcoto/the_honest_agent.git@v0.1.0#subdirectory=cli"
 ```
 
 Then run `honest-agent run` (without `uv run`) in any folder with a
-`honest_agent_config.yml`; it reads that folder's `.env` and config. Update
-with `uv tool upgrade honest-agent`. The tradeoff: every project uses the
+`honest_agent_config.yml`; it reads that folder's `.env` and config. To
+upgrade, run the same command with the new tag and `--force`. The tradeoff: every project uses the
 same version, instead of the one pinned in its `uv.lock`.
 
 ### If something goes wrong
