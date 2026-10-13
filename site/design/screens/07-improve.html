@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Screen 6: Improve</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=Space+Grotesk:wght@500;600;700&amp;family=Lato:wght@400;700;900&amp;display=swap">
+<style>
+body{margin:0}
+.s6{box-sizing:border-box;background:#EEF0E8;color:#1C2A22;font-family:'Geist',ui-sans-serif,system-ui,sans-serif;font-size:15px;line-height:1.5;padding:72px 32px 96px}
+.s6 .wrap{max-width:1240px;margin:0 auto}
+.s6 input.r{position:absolute;opacity:0;pointer-events:none}
+.s6 .grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:48px;align-items:start}
+.s6 .eyebrow{display:flex;align-items:center;gap:14px;font-family:'Geist Mono',monospace;font-size:18px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#7C877F}
+.s6 .eyebrow .n{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:999px;background:#588157;border:1.5px solid #A3B18A;box-sizing:border-box;color:#1F2E26;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px;letter-spacing:0}
+.s6 h2{margin:14px 0 10px;font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:40px;line-height:1.08;letter-spacing:-.02em;text-wrap:balance}
+.s6 .intro{margin:0 0 28px;font-size:17px;line-height:1.55;color:#4E5C52}
+.s6 .ops{display:flex;flex-direction:column;gap:8px}
+.s6 .op{display:block;padding:14px 16px;border:1px solid #DAD7CD;border-radius:12px;cursor:pointer;transition:background .15s,border-color .15s}
+.s6 .op:hover{background:#F5F6F0}
+.s6 .ot{font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:17px;color:#4E5C52}
+.s6 .od{display:none;margin-top:4px;font-size:14px;line-height:1.45;color:#4E5C52}
+#i1:checked ~ .grid .op1,#i2:checked ~ .grid .op2,#i3:checked ~ .grid .op3{background:#FBFAF6;border-color:#A3B18A}
+#i1:checked ~ .grid .op1 .ot,#i2:checked ~ .grid .op2 .ot,#i3:checked ~ .grid .op3 .ot{color:#1C2A22}
+#i1:checked ~ .grid .op1 .od,#i2:checked ~ .grid .op2 .od,#i3:checked ~ .grid .op3 .od{display:block}
+.s6 .more{display:inline-block;margin-top:24px;font-weight:500;color:#588157;text-decoration:none}
+.s6 .more:hover{color:#3A5A40;text-decoration:underline;text-underline-offset:3px}
+/* windows */
+.s6 .win{height:470px;border-radius:14px;overflow:hidden;display:none;flex-direction:column;box-shadow:0 4px 8px rgba(22,33,27,.08),0 18px 36px rgba(22,33,27,.14),0 40px 80px -10px rgba(22,33,27,.24)}
+@media (min-width:901px){.s6 .win{margin-top:56px}}
+#i1:checked ~ .grid .wsl,#i2:checked ~ .grid .wsl,#i3:checked ~ .grid .wbr{display:flex}
+.s6 .bar{flex:none;display:flex;align-items:center;gap:8px;padding:0 14px;height:40px}
+.s6 .bar i{width:11px;height:11px;border-radius:99px;display:block}
+/* slack */
+.s6 .sbar{background:#350D36}.s6 .sbar i{background:#6B4A6C}
+.s6 .srch{margin:0 auto;transform:translateX(-24px);width:46%;display:flex;align-items:center;gap:8px;height:24px;padding:0 12px;border-radius:6px;background:#5A3A5B;color:#E5D9E5;font-size:12px}
+.s6 .sl2{flex:1;min-height:0;display:flex;background:#fff;font-family:Lato,'Geist',sans-serif}
+.s6 .sls{flex:none;width:180px;background:#3F0E40;color:#CFC3CF;padding:12px 0;font-size:14px}
+.s6 .ws{padding:4px 16px 12px;margin-bottom:6px;border-bottom:1px solid #5D2C5D;color:#fff;font-weight:900;font-size:16px}.s6 .ws span{font-size:11px;opacity:.8}
+.s6 .sh{padding:6px 16px;font-size:13px;color:#CFC3CF;opacity:.85}
+.s6 .ch{padding:3px 16px;display:flex;gap:8px;align-items:center}.s6 .ch b{opacity:.7;font-weight:400}
+.s6 .ch.on{background:#1164A3;color:#fff;font-weight:700}.s6 .ch.on b{opacity:1}
+.s6 .ap{width:14px;height:14px;border-radius:4px;background:#3A5A40;display:inline-block}
+.s6 .slm{flex:1;min-width:0;display:flex;flex-direction:column}
+.s6 .slhd{flex:none;padding:10px 20px;border-bottom:1px solid #E0E0E0;display:flex;align-items:baseline;gap:12px;font-size:13px;color:#616061;white-space:nowrap;overflow:hidden}.s6 .slhd b{font-size:16px;font-weight:900;color:#1D1C1D}
+.s6 .slbody{flex:1;min-height:0;overflow:hidden;padding:10px 0}
+.s6 .dv{position:relative;text-align:center;margin:0 20px 10px;border-top:1px solid #DDD;height:0}.s6 .dv span{position:relative;top:-11px;background:#fff;border:1px solid #DDD;border-radius:999px;padding:3px 12px;font-size:12px;font-weight:700;color:#1D1C1D}
+.s6 .msg{display:flex;gap:10px;padding:6px 20px}
+.s6 .av2{flex:none;width:36px;height:36px;border-radius:6px;background:#3A5A40;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700}.s6 .av2 img{width:28px;height:auto}
+.s6 .av2.mr{background:#E01E5A}
+.s6 .mc{min-width:0;font-size:14.5px;line-height:1.45;color:#1D1C1D}
+.s6 .who2 b{font-weight:900}.s6 .who2 i{font-style:normal;font-size:10px;font-weight:700;background:#E8E8E8;color:#616061;border-radius:3px;padding:1px 4px;margin-left:6px;vertical-align:1px}.s6 .who2 u{text-decoration:none;font-size:12px;color:#616061;margin-left:8px}
+.s6 .mc h4{margin:4px 0 2px;font-size:17px;font-weight:900;font-family:inherit}
+.s6 .mc .ctx{font-size:12px;color:#616061}
+.s6 .mc hr{border:0;border-top:1px solid #DDD;margin:8px 0}
+.s6 .mc code{font-family:'Geist Mono',monospace;font-size:12px;color:#E01E5A;background:#F8F8F8;border:1px solid #E8E8E8;border-radius:3px;padding:0 3px}
+.s6 .mc a{color:#1264A3;text-decoration:none}
+.s6 .mc .f{margin:6px 0}
+.s6 .rp{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:12px}.s6 .rp i{font-style:normal;width:20px;height:20px;border-radius:4px;background:#E01E5A;color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center}.s6 .rp u{text-decoration:none;color:#616061}
+.s6 .rp,.s6 .reply{display:none}
+#i2:checked ~ .grid .reply{display:flex}
+.s6 .reply{animation:repIn .4s ease-out .3s both}
+@keyframes repIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.s6 .cmp{flex:none;padding:0 20px 14px}
+.s6 .cmpb{border:1px solid #868686;border-radius:8px;padding:9px 12px;color:#868686;font-size:14px}
+/* browser */
+.s6 .wbr{background:#F3F2EC;border:1px solid #D5D8CF}
+.s6 .bbar{background:#E6E8E0;border-bottom:1px solid #D5D8CF}.s6 .bbar i{background:#C4C9BE}
+.s6 .url{margin-left:14px;flex:1;max-width:360px;height:24px;border-radius:7px;background:#F6F7F2;border:1px solid #DADDD3;font-family:'Geist Mono',monospace;font-size:12px;color:#5C6A60;display:flex;align-items:center;padding:0 10px;white-space:nowrap;overflow:hidden}
+.s6 .bview{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:20px}
+.s6 .pg{position:relative;width:100%;border-radius:10px;overflow:visible}
+.s6 .pg img.base{display:block;width:100%;height:auto;border-radius:10px;border:1px solid #E3E5DE;box-sizing:border-box;background:#FBFAF6}
+.s6 .ov{position:absolute;z-index:1;pointer-events:none;animation:ovOut .5s ease-in var(--d) both}
+@keyframes ovOut{0%{opacity:1;transform:scale(1)}40%{opacity:1;transform:scale(1.12)}100%{opacity:0;transform:scale(1)}}
+.s6 .hs{position:absolute;z-index:3;cursor:default}
+.s6 .hv{position:absolute;z-index:4;display:none;pointer-events:none;border-radius:7px}
+.s6 .hs:hover{box-shadow:inset 0 0 0 2px #1C2A22}
+.s6 .ring{position:absolute;z-index:2;pointer-events:none;box-shadow:inset 0 0 0 2px #1C2A22;animation:autoIn .35s ease-out var(--d) both}
+.s6 .pg:has(.hs:hover) .ring{visibility:hidden}
+.s6 .hs:hover + .hv{display:block}
+.s6 .auto{position:absolute;z-index:4;border-radius:7px;pointer-events:none;animation:autoIn .35s ease-out var(--d) both}
+@keyframes autoIn{from{opacity:0}to{opacity:1}}
+.s6 .pg:has(.hs:hover) .auto{visibility:hidden}
+@media (max-width:900px){
+ .s6{padding:48px 16px 64px}
+ .s6 .grid{grid-template-columns:minmax(0,1fr);gap:28px}
+ .s6 .side{order:-1}
+ .s6 h2{font-size:30px}.s6 .intro{font-size:16px}
+ .s6 .sls{display:none}.s6 .win{height:auto;min-height:420px}
+ .s6 .bview{padding:10px}
+}
+@media (prefers-reduced-motion:reduce){.s6 .ov{animation:none;opacity:0}.s6 .auto,.s6 .reply{animation:none}}
+</style>
+
+</head>
+<body>
+<div class="s6">
+ <div class="wrap">
+  <input class="r" type="radio" name="i" id="i1" checked aria-label="Get alerted"><input class="r" type="radio" name="i" id="i2" aria-label="Fix your agent"><input class="r" type="radio" name="i" id="i3" aria-label="Prove it">
+  <div class="grid">
+   <div class="wins">
+    <div class="win wsl"><div class="bar sbar"><i></i><i></i><i></i><div class="srch"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Search Acme Analytics</div></div>
+     <div class="sl2">
+      <aside class="sls"><div class="ws">Acme Analytics <span>▾</span></div><div class="sh">Channels</div><div class="ch"><b>#</b> general</div><div class="ch on"><b>#</b> analytics-alerts</div><div class="ch"><b>#</b> data-team</div><div class="ch"><b>#</b> finance</div><div class="sh" style="margin-top:14px">Apps</div><div class="ch"><i class="ap"></i> honest-agent</div></aside>
+      <div class="slm">
+       <div class="slhd"><b># analytics-alerts</b><span>Alerts when the analytics agent fails its checks</span></div>
+       <div class="slbody">
+        <div class="dv"><span>Today</span></div>
+        <div class="msg"><div class="av2"><img src="../assets/robot.png" alt=""></div>
+         <div class="mc"><div class="who2"><b>honest-agent</b><i>APP</i><u>8:04 AM</u></div>
+          <h4>🔴 2 of 4 evals below threshold</h4>
+          <div class="ctx"><b>sales-agent</b> · claude-sonnet-4-5 · run started 2026-10-10 08:02 UTC</div>
+          <hr>
+          <div class="f"><a href="#"><b>Revenue in 1997</b></a>&nbsp; <code>revenue_1997</code><br>Accuracy <b>0.00</b> (min 0.8) &nbsp;·&nbsp; Provenance <b>0.50</b> (min 0.7)</div>
+          <div class="f"><a href="#"><b>Order total in 1995</b></a>&nbsp; <code>order_total_1995</code><br>Accuracy <b>1.00</b> (min 0.8) &nbsp;·&nbsp; Provenance <b>0.50</b> (min 0.7)</div>
+          <hr>
+          <div class="ctx"><a href="#">Open the report</a> · honest-agent</div>
+                   </div></div>
+        <div class="msg reply"><div class="av2 mr">MR</div>
+         <div class="mc"><div class="who2"><b>Maya R.</b><u>8:21 AM</u></div>
+          The agent filtered by ship date and never read <code>orders</code>. Pointed it at <code>orders.o_orderdate</code> in our semantic layer. Rerunning.</div></div>
+       </div>
+       <div class="cmp"><div class="cmpb">Message #analytics-alerts</div></div>
+      </div>
+     </div>
+    </div>
+    <div class="win wbr"><div class="bar bbar"><i></i><i></i><i></i><div class="url">evals.yourcompany.com/#/</div></div>
+     <div class="bview"><div class="pg" style="aspect-ratio:873.3333333333334/343.333"><img class="base" src="../assets/improve-heat2.webp" alt=""><span class="ov" style="left:88.683%;top:23.272%;width:4.351%;height:9.903%;background:#f4a261;--d:0.90s"></span><span class="ov" style="left:88.683%;top:33.758%;width:4.351%;height:9.903%;background:#e76f51;--d:1.18s"></span><span class="ov" style="left:88.683%;top:44.243%;width:4.351%;height:9.903%;background:#e9c46a;--d:1.46s"></span><span class="ov" style="left:88.683%;top:54.728%;width:4.351%;height:9.903%;background:#2a9d8f;--d:1.74s"></span><span class="ov" style="left:88.683%;top:65.214%;width:4.351%;height:9.903%;background:#2a9d8f;--d:2.02s"></span><span class="ov" style="left:88.683%;top:75.699%;width:4.351%;height:9.903%;background:#2a9d8f;--d:2.30s"></span><span class="ov" style="left:88.683%;top:86.622%;width:4.351%;height:9.903%;background:#e9c46a;--d:2.58s"></span><span class="hs" style="left:88.683%;top:33.758%;width:4.351%;height:9.903%"></span><img class="hv" src="../assets/improve-hov_revenue_1997.webp" style="left:82.099%;top:-6.582%;width:17.634%;height:38.592%" alt=""><span class="hs" style="left:88.683%;top:44.243%;width:4.351%;height:9.903%"></span><img class="hv" src="../assets/improve-hov_order_total_1995.webp" style="left:82.099%;top:3.903%;width:17.634%;height:38.592%" alt=""><span class="hs" style="left:88.683%;top:65.214%;width:4.351%;height:9.903%"></span><img class="hv" src="../assets/improve-hov_top_segment.webp" style="left:76.133%;top:24.874%;width:29.567%;height:38.592%" alt=""><span class="hs" style="left:88.683%;top:75.699%;width:4.351%;height:9.903%"></span><img class="hv" src="../assets/improve-hov_top_nations_last_year.webp" style="left:79.137%;top:35.360%;width:23.557%;height:38.592%" alt=""><span class="ring" style="left:88.683%;top:33.758%;width:4.351%;height:9.903%;--d:3.16s"></span><img class="auto" src="../assets/improve-hov_revenue_1997.webp" style="left:82.099%;top:-6.582%;width:17.634%;height:38.592%;--d:3.16s" alt=""></div></div>
+    </div>
+   </div>
+   <div class="side">
+    <div class="eyebrow"><span class="n">4</span>Improve</div>
+    <h2>Catch it, fix it, prove it</h2>
+    <p class="intro">honest-agent tells you when an eval breaks. After you change your agent, one run proves the fix.</p>
+    <div class="ops">
+     <label class="op op1" for="i1"><span class="ot">Get alerted</span><span class="od">A Slack message when evals fall below their min score, with a link to each one.</span></label>
+     <label class="op op2" for="i2"><span class="ot">Fix your agent</span><span class="od">Change your agent's prompt, tools or semantic layer, wherever the problem is.</span></label>
+     <label class="op op3" for="i3"><span class="ot">Prove it</span><span class="od">Run your evals again and watch them turn green, next to every run that failed.</span></label>
+    </div>
+    <a class="more" href="#docs-alert">Read the docs on setting up alerts →</a>
+   </div>
+  </div>
+ </div>
+</div>
+</body>
+</html>

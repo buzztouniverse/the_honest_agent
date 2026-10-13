@@ -1,0 +1,68 @@
+---
+import '@ds/styles.css';
+
+interface Props {
+  title: string;
+  description: string;
+}
+const { title, description } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- Lato is only for the Slack windows; the brand fonts are bundled in the design system's tokens/fonts. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body>
+    <slot />
+    <script>
+      // Sections with typing or replay animations start when they scroll into view,
+      // not on page load. Without JS (no `js` class) they play immediately.
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) {
+              e.target.classList.add('inview');
+              io.unobserve(e.target);
+            }
+          }
+        },
+        { threshold: 0.3 },
+      );
+      document.querySelectorAll('[data-play]').forEach((el) => io.observe(el));
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  html { scroll-behavior: smooth; }
+  /* Anchor jumps ("Learn more", nav links) skip most of a section's top padding (72px, 48px on
+     phones), so the content starts ~20px from the top and Define fits the window. */
+  main > section { scroll-margin-top: -52px; }
+  @media (max-width: 900px) { main > section { scroll-margin-top: -32px; } }
+  body { margin: 0; background: #EEF0E8; overflow-x: hidden; }
+  /* The section CSS comes from the mockups, written for the browser default
+     content-box; the design system's tokens/base.css sets border-box on everything. */
+  .s-hero, .s-hero *, .s-hero *::before, .s-hero *::after,
+  main > section, main > section *, main > section *::before, main > section *::after,
+  .s-footer, .s-footer *, .s-footer *::before, .s-footer *::after { box-sizing: content-box; }
+  /* The hidden radios and checkboxes that drive the CSS-only tabs sit at the top of
+     their section. Clicking a label focuses its input, and the browser scrolled the
+     page to it. Fixed inputs are always in view, so the page stays where it is. */
+  main > section input[type='radio'], main > section input[type='checkbox'] {
+    position: fixed !important; top: 0; left: 0;
+  }
+  html.js [data-play]:not(.inview) * { animation-play-state: paused !important; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
+</style>

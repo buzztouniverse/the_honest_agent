@@ -1,0 +1,53 @@
+/* Starlight themed with the design system's tokens (ui/src/ds/tokens, through @ds).
+   The tokens switch themselves on [data-theme="dark"], which Starlight sets on <html>,
+   so most mappings serve both themes. In Starlight's scale, "white" is the strongest
+   text and "black" the page background, in light and dark mode alike. */
+
+:root {
+  --sl-font: var(--font-sans);
+  --sl-font-mono: var(--font-mono);
+  --sl-font-system-mono: var(--font-mono);
+
+  --sl-color-white: var(--fg-1);
+  --sl-color-gray-1: var(--fg-1);
+  --sl-color-gray-2: var(--fg-2);
+  --sl-color-gray-3: var(--fg-3);
+  --sl-color-gray-4: var(--border-2);
+  --sl-color-gray-5: var(--border-1);
+  --sl-color-gray-6: var(--bg-surface);
+  --sl-color-black: var(--bg-page);
+
+  --sl-color-accent-low: var(--accent-soft);
+  --sl-color-accent: var(--green-500);
+  --sl-color-accent-high: var(--accent);
+  --sl-color-text-accent: var(--accent);
+  --sl-color-bg-accent: var(--accent);
+  --sl-color-text-invert: var(--accent-fg);
+
+  /* Asides: note in the brand green, caution and danger in the accuracy palette. */
+  --sl-color-blue-low: var(--accent-soft);
+  --sl-color-blue: var(--green-500);
+  --sl-color-blue-high: var(--accent);
+  --sl-color-orange-low: var(--acc-partly-tint);
+  --sl-color-orange: var(--acc-partly);
+  --sl-color-orange-high: var(--acc-partly-ink);
+  --sl-color-red-low: var(--acc-wrong-tint);
+  --sl-color-red: var(--acc-wrong);
+  --sl-color-red-high: var(--acc-wrong-ink);
+}
+
+:root[data-theme='light'] {
+  --sl-color-gray-5: var(--border-1);
+  --sl-color-gray-6: var(--bg-sunken);
+  --sl-color-gray-7: var(--bg-page);
+  --sl-color-black: var(--bg-surface);
+}
+
+/* Headings in the display face, as on the landing page. */
+.site-title,
+h1#_top,
+.sl-markdown-content :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-display);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-display);
+}

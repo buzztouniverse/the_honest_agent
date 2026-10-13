@@ -27,6 +27,8 @@ never a hand-rolled `venv`/`pip install`.
   >=3.10.
 - **`ui/`** — the source of the web report (React + Vite). Its build is
   committed to `cli/honest_agent/report_ui/`, so users don't need Node.
+- **`site/`** — the public landing page and docs (Astro + Starlight); see
+  `site/README.md`. It uses the report's design system in `ui/src/ds/`.
 - **`example_project/`** — a real-world-shaped consumer of the CLI: its own
   example eval YAML and a README showing the actual install/run flow. This
   is the only place example data lives.

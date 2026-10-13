@@ -1,0 +1,68 @@
+---
+import { Logo } from '@ds';
+---
+<header class="s-hero">
+  <nav class="nav">
+    <a class="home" href="/" aria-label="The Honest Agent"><Logo markSrc="/assets/robot.png" size={40} /></a>
+    <div class="links">
+      <a href="/docs/">Docs</a>
+      <a href="#live-demo">Live demo</a>
+      <a href="https://github.com/jlcoto/the_honest_agent">GitHub</a>
+    </div>
+  </nav>
+
+  <div class="body">
+    <div class="copy">
+      <span class="eyebrow">Evals for agentic analytics</span>
+      <h1>Is your AI analytics agent telling you the truth?</h1>
+      <p class="sub">Catch your agent's mistakes before your team acts on them.</p>
+      <div class="btns">
+        <a class="btn b1" href="/docs/getting-started/">Get started</a>
+        <a class="btn b2" href="/docs/">Docs</a>
+      </div>
+    </div>
+
+    <!-- The video's content is not decided yet. -->
+    <div class="video">
+      <div class="ph" role="img" aria-label="Video placeholder">
+        <span class="play">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"></path></svg>
+        </span>
+        <span class="lbl">Video placeholder</span>
+        <span class="txt">The problem, explained visually. Scenes to be decided.</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+.s-hero{min-height:1140px;box-sizing:border-box;background:linear-gradient(180deg,#FFFFFF 0,#E6EDE1 700px,var(--green-50) 1400px);color:var(--fg-1);font-family:var(--font-sans);font-size:15px;line-height:1.5}
+.s-hero .nav{max-width:1240px;margin:0 auto;padding:20px 32px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px}
+.s-hero .home{display:inline-flex;text-decoration:none;color:var(--fg-1)}
+.s-hero .links{display:flex;flex-wrap:wrap;align-items:center;gap:8px 24px}
+.s-hero .links a{color:var(--fg-2);text-decoration:none;font-weight:500}
+.s-hero .links a:hover{color:var(--fg-1)}
+.s-hero .body{max-width:1240px;margin:0 auto;padding:40px 32px 80px;display:flex;flex-direction:column;align-items:center;gap:48px}
+.s-hero .copy{width:100%;max-width:760px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:20px}
+.s-hero .eyebrow{font-family:var(--font-mono);font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-3)}
+.s-hero h1{margin:0;font-family:var(--font-display);font-weight:500;font-size:56px;line-height:1.04;letter-spacing:-.02em;text-wrap:balance}
+.s-hero .sub{margin:0;font-family:var(--font-display);font-weight:500;font-size:28px;line-height:1.2;letter-spacing:-.01em;color:var(--green-700);text-wrap:balance}
+.s-hero .btns{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.s-hero .btn{display:inline-flex;align-items:center;min-height:44px;padding:0 20px;box-sizing:border-box;border-radius:8px;text-decoration:none;font-weight:500;transition:background .15s,border-color .15s}
+.s-hero .b1{background:var(--green-700);color:var(--green-50)}
+.s-hero .b1:hover{background:var(--green-800)}
+.s-hero .b2{background:var(--paper);border:1px solid var(--border-2);color:var(--fg-1)}
+.s-hero .b2:hover{background:var(--bg-sunken)}
+.s-hero .video{width:100%;max-width:960px}
+.s-hero .ph{width:100%;aspect-ratio:16/9;box-sizing:border-box;border-radius:16px;background:var(--paper);border:1.5px dashed var(--green-300);box-shadow:0 1px 2px rgba(28,42,34,.06);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:24px}
+.s-hero .play{display:inline-flex;align-items:center;justify-content:center;width:64px;height:64px;border-radius:999px;background:var(--accent-soft);color:var(--green-700)}
+.s-hero .lbl{font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-3)}
+.s-hero .txt{max-width:360px;font-size:14px;color:var(--fg-2)}
+@media (max-width:900px){
+ .s-hero{min-height:0}
+ .s-hero .nav{padding:16px}
+ .s-hero .body{padding:32px 16px 64px;gap:36px}
+ .s-hero h1{font-size:38px}
+ .s-hero .sub{font-size:21px}
+}
+</style>

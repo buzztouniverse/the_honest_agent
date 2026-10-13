@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Screen 4: Run</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+.s4{box-sizing:border-box;background:#EEF0E8;color:#1C2A22;font-family:'Geist',ui-sans-serif,system-ui,sans-serif;font-size:15px;line-height:1.5;padding:72px 32px 96px}
+.s4 .wrap{max-width:1240px;margin:0 auto}
+.s4 input.r{position:absolute;opacity:0;pointer-events:none}
+.s4 .grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:48px;align-items:start}
+@media (min-width:901px){.s4 .more{display:inline-block;margin-top:24px;font-weight:500;color:#588157;text-decoration:none}
+.s4 .more:hover{color:#3A5A40;text-decoration:underline;text-underline-offset:3px}
+.s4 .win{margin-top:56px}}
+.s4 .eyebrow{display:flex;align-items:center;gap:14px;font-family:'Geist Mono',monospace;font-size:18px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#7C877F}
+.s4 .eyebrow .n{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:999px;background:#588157;border:1.5px solid #A3B18A;box-sizing:border-box;color:#1F2E26;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px;letter-spacing:0}
+.s4 h2{margin:14px 0 10px;font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:40px;line-height:1.08;letter-spacing:-.02em;text-wrap:balance}
+.s4 .intro{margin:0 0 28px;font-size:17px;line-height:1.55;color:#4E5C52}
+.s4 .ops{display:flex;flex-direction:column;gap:8px}
+.s4 .op{position:relative;display:grid;grid-template-columns:120px minmax(0,1fr);gap:2px 14px;align-items:center;padding:14px 16px;border:1px solid #DAD7CD;border-radius:12px;background:transparent;cursor:pointer;transition:background .15s,border-color .15s;overflow:hidden}
+.s4 .op:hover{background:#F5F6F0}
+.s4 .ot{font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:17px;color:#4E5C52}
+.s4 .od{font-size:13.5px;color:#7C877F}
+.s4 .oc{grid-column:2;grid-row:1;font-family:'Geist Mono',monospace;font-size:12.5px;color:#3A5A40}
+.s4 .sl{font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#7C877F;margin-bottom:10px}
+.s4 .steps{display:flex;align-items:center;gap:22px;margin-bottom:16px}
+.s4 .stp{display:inline-block;font-family:'Geist Mono',monospace;font-size:14px;font-weight:500;color:#4E5C52;background:transparent;border:1px solid #DAD7CD;border-radius:999px;padding:6px 16px;white-space:nowrap;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+.s4 .stp:hover{background:#F5F6F0}
+.s4 .arr{color:#A3B18A;flex:none}
+.s4 .pane{display:none;min-height:288px}
+.s4 .pane p.px{margin:0 0 12px}
+.s4 .pane p{margin:0;font-size:15px;line-height:1.55;color:#4E5C52;max-width:440px}
+.s4 .pane p code{font-family:'Geist Mono',monospace;font-size:13px;color:#3A5A40}
+#f1:checked ~ .grid .pn1,#f2:checked ~ .grid .pn2,#f3:checked ~ .grid .pn3{display:block}
+#f1:checked ~ .grid .sp1,#f2:checked ~ .grid .sp2,#f3:checked ~ .grid .sp3{background:#FBFAF6;border-color:#A3B18A;color:#1C2A22}
+#f2:checked ~ .grid .tmr,#f3:checked ~ .grid .tms{display:block}
+.s4 .win{background:#16211B;border:1px solid #26352C;border-radius:14px;box-shadow:0 4px 8px rgba(22,33,27,.14),0 18px 36px rgba(22,33,27,.24),0 40px 80px -10px rgba(22,33,27,.40);overflow:hidden;height:470px;display:flex;flex-direction:column}
+.s4 .bar{flex:none;display:flex;align-items:center;gap:8px;padding:0 14px;height:40px;background:#0F1712;border-bottom:1px solid #26352C}
+.s4 .bar i{width:11px;height:11px;border-radius:99px;background:#3A4A40;display:block}
+.s4 .bar span{margin-left:10px;font-size:12.5px;color:#86927F;font-family:'Geist Mono',monospace}
+.s4 .term{display:none;flex:1;padding:18px 22px;font-family:'Geist Mono',monospace;font-size:12.5px;line-height:1.7;color:#E6EBE3;overflow:hidden}
+.s4 .term .p{color:#A3B18A}.s4 .term .ok{color:#6FCFC2}.s4 .term .no{color:#F09A82}
+.s4 .term .ln{white-space:pre-wrap;padding-left:2ch;text-indent:-2ch;min-height:1.7em;opacity:0;animation:lnIn .01s linear var(--d) forwards}
+.s4 .term .ty{text-indent:0;display:inline-block;vertical-align:bottom;overflow:hidden;white-space:nowrap;width:0;animation:tyIn calc(var(--n) * .045s) steps(var(--n)) var(--d) forwards}
+.s4 .term .cur{display:inline-block;width:.6em;height:1.15em;vertical-align:-.2em;margin-left:4px;background:#A3B18A;animation:curB 1s steps(1) infinite}
+@keyframes lnIn{to{opacity:1}}
+@keyframes tyIn{to{width:calc(var(--n) * 1ch + 4px)}}
+@keyframes curB{50%{opacity:0}}
+#f1:checked ~ #o1:checked ~ .grid .tm1{display:block}#o1:checked ~ .grid .op1{background:#FBFAF6;border-color:#A3B18A}#o1:checked ~ .grid .op1 .ot{color:#1C2A22}
+#f1:checked ~ #o2:checked ~ .grid .tm2{display:block}#o2:checked ~ .grid .op2{background:#FBFAF6;border-color:#A3B18A}#o2:checked ~ .grid .op2 .ot{color:#1C2A22}
+#f1:checked ~ #o3:checked ~ .grid .tm3{display:block}#o3:checked ~ .grid .op3{background:#FBFAF6;border-color:#A3B18A}#o3:checked ~ .grid .op3 .ot{color:#1C2A22}
+#f1:checked ~ #o4:checked ~ .grid .tm4{display:block}#o4:checked ~ .grid .op4{background:#FBFAF6;border-color:#A3B18A}#o4:checked ~ .grid .op4 .ot{color:#1C2A22}
+@media (max-width:900px){
+ .s4{padding:48px 16px 64px}
+ .s4 .grid{grid-template-columns:minmax(0,1fr);gap:28px}
+ .s4 .side{order:-1}
+ .s4 h2{font-size:30px}.s4 .intro{font-size:16px}
+ .s4 .op{grid-template-columns:minmax(0,1fr)}.s4 .oc{grid-column:1}.s4 .od{display:none}
+
+ .s4 .pane{min-height:0}
+ .s4 .win{height:auto;min-height:420px}.s4 .term{font-size:10.5px;padding:14px}
+}
+@media (prefers-reduced-motion:reduce){.s4 .term .ln{animation:none;opacity:1}.s4 .term .ty{animation:none;width:auto}.s4 .term .cur{animation:none}}
+
+</style>
+
+</head>
+<body>
+<div class="s4">
+ <div class="wrap">
+  <input class="r" type="radio" name="f" id="f1" checked aria-label="run"><input class="r" type="radio" name="f" id="f2" aria-label="report"><input class="r" type="radio" name="f" id="f3" aria-label="serve"><input class="r" type="radio" name="o" id="o1" checked aria-label="Everything"><input class="r" type="radio" name="o" id="o2" aria-label="A category"><input class="r" type="radio" name="o" id="o3" aria-label="A tag"><input class="r" type="radio" name="o" id="o4" aria-label="One eval">
+  <div class="grid">
+   <div class="win"><div class="bar"><i></i><i></i><i></i><span>Terminal</span></div><div class="term tm1"><div class="ln" style="--d:0s"><span class="p">~/my-analytics-project $</span> <span class="ty" style="--d:0.4s;--n:16">honest-agent run</span></div><div class="ln" style="--d:1.52s">Target: sales-agent (honest_agent_config.yml)</div><div class="ln" style="--d:1.82s">Starting eval run 7d2e41a0-3c55-4f0b-9a61-2b8e5d90c417 (4 evals)...</div><div class="ln" style="--d:2.12s">Evaluating agent: sales-agent</div><div class="ln" style="--d:2.42s">Model: claude-sonnet-4-5 · judge model: claude-sonnet-4-5</div><div class="ln" style="--d:3.02s">  - revenue_1997: &#x27;What was our revenue in 1997, net of discounts and before tax?&#x27;</div><div class="ln" style="--d:3.82s">  - order_total_1995: &#x27;What was the total price of all the orders placed in 1995?&#x27;</div><div class="ln" style="--d:4.62s">  - top_segment: &#x27;Which market segment has the most customers?&#x27;</div><div class="ln" style="--d:5.42s">  - top_nations_last_year: &#x27;Which 5 nations placed the most orders last year?&#x27;</div><div class="ln" style="--d:6.22s">Wrote 4 result(s) to ./honest_agent_results/results.duckdb</div><div class="ln" style="--d:6.62s"><span class="no">2/4 eval(s) below threshold this run:</span></div><div class="ln" style="--d:6.82s"><span class="no">  - revenue_1997: accuracy 0.00 &lt; 0.8, provenance 0.50 &lt; 0.7</span></div><div class="ln" style="--d:7.02s"><span class="no">  - order_total_1995: provenance 0.50 &lt; 0.7</span></div><div class="ln" style="--d:7.32s">Run 7d2e41a0-3c55-4f0b-9a61-2b8e5d90c417 complete. Next: `honest-agent report` / `honest-agent notify`.<span class="cur"></span></div></div><div class="term tm2"><div class="ln" style="--d:0s"><span class="p">~/my-analytics-project $</span> <span class="ty" style="--d:0.4s;--n:40">honest-agent run --select category:sales</span></div><div class="ln" style="--d:2.60s">Target: sales-agent (honest_agent_config.yml)</div><div class="ln" style="--d:2.90s">Starting eval run b81f06c2-94d7-4e3a-8f25-61c0a7e3d952 (2 evals)...</div><div class="ln" style="--d:3.20s">Evaluating agent: sales-agent</div><div class="ln" style="--d:3.50s">Model: claude-sonnet-4-5 · judge model: claude-sonnet-4-5</div><div class="ln" style="--d:4.10s">  - revenue_1997: &#x27;What was our revenue in 1997, net of discounts and before tax?&#x27;</div><div class="ln" style="--d:4.90s">  - order_total_1995: &#x27;What was the total price of all the orders placed in 1995?&#x27;</div><div class="ln" style="--d:5.70s">Wrote 2 result(s) to ./honest_agent_results/results.duckdb</div><div class="ln" style="--d:6.10s"><span class="no">2/2 eval(s) below threshold this run:</span></div><div class="ln" style="--d:6.30s"><span class="no">  - revenue_1997: accuracy 0.00 &lt; 0.8, provenance 0.50 &lt; 0.7</span></div><div class="ln" style="--d:6.50s"><span class="no">  - order_total_1995: provenance 0.50 &lt; 0.7</span></div><div class="ln" style="--d:6.80s">Run b81f06c2-94d7-4e3a-8f25-61c0a7e3d952 complete. Next: `honest-agent report` / `honest-agent notify`.<span class="cur"></span></div></div><div class="term tm3"><div class="ln" style="--d:0s"><span class="p">~/my-analytics-project $</span> <span class="ty" style="--d:0.4s;--n:38">honest-agent run --select tag:critical</span></div><div class="ln" style="--d:2.52s">Target: sales-agent (honest_agent_config.yml)</div><div class="ln" style="--d:2.81s">Starting eval run 2c9a7e15-6b04-4d8f-b3e1-9f50d2a6c8b7 (2 evals)...</div><div class="ln" style="--d:3.11s">Evaluating agent: sales-agent</div><div class="ln" style="--d:3.41s">Model: claude-sonnet-4-5 · judge model: claude-sonnet-4-5</div><div class="ln" style="--d:4.01s">  - revenue_1997: &#x27;What was our revenue in 1997, net of discounts and before tax?&#x27;</div><div class="ln" style="--d:4.81s">  - top_segment: &#x27;Which market segment has the most customers?&#x27;</div><div class="ln" style="--d:5.61s">Wrote 2 result(s) to ./honest_agent_results/results.duckdb</div><div class="ln" style="--d:6.01s"><span class="no">1/2 eval(s) below threshold this run:</span></div><div class="ln" style="--d:6.21s"><span class="no">  - revenue_1997: accuracy 0.00 &lt; 0.8, provenance 0.50 &lt; 0.7</span></div><div class="ln" style="--d:6.51s">Run 2c9a7e15-6b04-4d8f-b3e1-9f50d2a6c8b7 complete. Next: `honest-agent report` / `honest-agent notify`.<span class="cur"></span></div></div><div class="term tm4"><div class="ln" style="--d:0s"><span class="p">~/my-analytics-project $</span> <span class="ty" style="--d:0.4s;--n:38">honest-agent run --select revenue_1997</span></div><div class="ln" style="--d:2.51s">Target: sales-agent (honest_agent_config.yml)</div><div class="ln" style="--d:2.81s">Starting eval run e45b3d98-1a7c-4c26-8e0f-73d1b9a2f604 (1 eval)...</div><div class="ln" style="--d:3.11s">Evaluating agent: sales-agent</div><div class="ln" style="--d:3.41s">Model: claude-sonnet-4-5 · judge model: claude-sonnet-4-5</div><div class="ln" style="--d:4.01s">  - revenue_1997: &#x27;What was our revenue in 1997, net of discounts and before tax?&#x27;</div><div class="ln" style="--d:4.81s">Wrote 1 result(s) to ./honest_agent_results/results.duckdb</div><div class="ln" style="--d:5.21s"><span class="no">1/1 eval(s) below threshold this run:</span></div><div class="ln" style="--d:5.41s"><span class="no">  - revenue_1997: accuracy 0.00 &lt; 0.8, provenance 0.50 &lt; 0.7</span></div><div class="ln" style="--d:5.71s">Run e45b3d98-1a7c-4c26-8e0f-73d1b9a2f604 complete. Next: `honest-agent report` / `honest-agent notify`.<span class="cur"></span></div></div><div class="term tmr"><div class="ln" style="--d:0s"><span class="p">~/my-analytics-project $</span> <span class="ty" style="--d:0.4s;--n:19">honest-agent report</span></div><div class="ln" style="--d:1.65s">Wrote honest_agent_report/. View it with `honest-agent serve --out honest_agent_report`.</div><div class="ln" style="--d:1.95s"><span class="p">~/my-analytics-project $</span><span class="cur"></span></div></div><div class="term tms"><div class="ln" style="--d:0s"><span class="p">~/my-analytics-project $</span> <span class="ty" style="--d:0.4s;--n:18">honest-agent serve</span></div><div class="ln" style="--d:1.6s">Serving honest_agent_report/ at http://127.0.0.1:8000/ (Ctrl+C to stop)</div><div class="ln" style="--d:2.3s">127.0.0.1 - - [12/Oct/2026 12:40:02] &quot;GET / HTTP/1.1&quot; 200 -</div><div class="ln" style="--d:2.5s">127.0.0.1 - - [12/Oct/2026 12:40:02] &quot;GET /assets/index-9rCiGK-N.js HTTP/1.1&quot; 200 -</div><div class="ln" style="--d:2.65s">127.0.0.1 - - [12/Oct/2026 12:40:02] &quot;GET /assets/index-DEJ_0_VZ.css HTTP/1.1&quot; 200 -</div><div class="ln" style="--d:2.9s">127.0.0.1 - - [12/Oct/2026 12:40:03] &quot;GET /data/report.json HTTP/1.1&quot; 200 -</div><div class="ln" style="--d:3.05s">127.0.0.1 - - [12/Oct/2026 12:40:03] &quot;GET /logo-mark.svg HTTP/1.1&quot; 200 -</div><div class="ln" style="--d:3.3s"><span class="cur" style="margin-left:0"></span></div></div></div>
+   <div class="side">
+    <div class="eyebrow"><span class="n">2</span>Run</div>
+    <h2>Run your evals in three simple commands</h2>
+    <p class="intro">Run your evals, build the report, and open it in your browser.</p>
+    <div class="sl">The full flow</div>
+    <div class="steps"><label class="stp sp1" for="f1">run</label><span class="arr">→</span><label class="stp sp2" for="f2">report</label><span class="arr">→</span><label class="stp sp3" for="f3">serve</label></div>
+    <div class="pane pn1"><p class="px">Run all your evals, or pick a category, a tag or a single eval.</p><div class="ops"><label class="op op1" for="o1"><span class="ot">Everything</span><code class="oc">honest-agent run</code></label><label class="op op2" for="o2"><span class="ot">A category</span><code class="oc">honest-agent run --select category:sales</code></label><label class="op op3" for="o3"><span class="ot">A tag</span><code class="oc">honest-agent run --select tag:critical</code></label><label class="op op4" for="o4"><span class="ot">One eval</span><code class="oc">honest-agent run --select revenue_1997</code></label></div></div>
+    <div class="pane pn2"><p>Builds the report from your recent runs into a folder, <code>honest_agent_report</code> by default.</p></div>
+    <div class="pane pn3"><p>Opens the report in your browser, or host it for your team.</p></div>
+    <a class="more" href="#docs-run">Read the docs on running evals →</a>
+   </div>
+  </div>
+ </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,105 @@
+---
+---
+<section class="s-define" id="define">
+ <div class="wrap">
+  <div class="eyebrow"><span class="n">1</span>Define</div>
+  <h2>Define what a right answer looks like</h2>
+  <p class="intro">Every eval is a question you already know the answer to. honest-agent always checks that the answer is correct (accuracy), and can also check that it came from the right sources (provenance).</p>
+  <input class="r" type="radio" name="df-m" id="df-m1" checked aria-label="contains"><input class="r" type="radio" name="df-m" id="df-m2" aria-label="extract_match"><input class="r" type="radio" name="df-m" id="df-m3" aria-label="llm_judge"><input class="r" type="radio" name="df-m" id="df-m4" aria-label="Provenance">
+  <div class="tbl"><label class="ty ty1" for="df-m1"><span class="num">01</span><span><span class="tt">Accuracy</span><span class="ts">Is the answer correct?</span></span></label><div class="lst lst1"><label class="it it1" for="df-m1"><span class="in mono">contains</span></label><label class="it it2" for="df-m2"><span class="in mono">extract_match</span></label><label class="it it3" for="df-m3"><span class="in mono">llm_judge</span></label></div><label class="ty ty2" for="df-m4"><span class="num">02</span><span><span class="tt">Provenance</span><span class="ts">Did it come from the right sources?</span></span></label><div class="c3"><div class="pn pn1"><input type="checkbox" class="yt" id="df-y1" aria-label="Show in YAML"><div class="ph"><h4 class="mono">contains</h4><div class="chips"><span class="chip">Exact text or numbers</span></div><label class="lk" for="df-y1"><span class="a">&lt;/&gt; Show in YAML</span><span class="b">Show the result</span></label></div><p class="line">Passes when the expected answer appears in the reply. No model call.</p><div class="shot"><img src="/assets/define-contains.png" alt="The contains result in the report"></div><div class="yaml"><div class="ybar"><span>evals/example_evals.yml</span></div><pre class="ycode"><span class="yl" data-n="1"><span class="yk">evals</span>:<span class="yv"></span></span><span class="yl" data-n="2">  - <span class="yk">category</span>:<span class="yv"> customers</span></span><span class="yl" data-n="3">    <span class="yk">grading</span>:<span class="yv"></span></span><span class="yl yh" data-n="4">      <span class="yk">method</span>:<span class="yv"> contains</span></span><span class="yl" data-n="5">    <span class="yk">tests</span>:<span class="yv"></span></span><span class="yl" data-n="6">      - <span class="yk">id</span>:<span class="yv"> top_segment</span></span><span class="yl" data-n="7">        <span class="yk">title</span>:<span class="yv"> Market segment with the most customers</span></span><span class="yl" data-n="8">        <span class="yk">prompt</span>:<span class="yv"> Which market segment has the most customers?</span></span><span class="yl" data-n="9">        <span class="yk">expected_answer</span>:<span class="yv"> BUILDING</span></span></pre></div></div><div class="pn pn2"><input type="checkbox" class="yt" id="df-y2" aria-label="Show in YAML"><div class="ph"><h4 class="mono">extract_match</h4><div class="chips"><span class="chip">Numbers and single values</span></div><label class="lk" for="df-y2"><span class="a">&lt;/&gt; Show in YAML</span><span class="b">Show the result</span></label></div><p class="line">A model pulls the value out of the agent's answer, then code compares it with the expected one, within an optional tolerance.</p><div class="shot"><img src="/assets/define-extract-match.png" alt="The extract_match result in the report"></div><div class="yaml"><div class="ybar"><span>evals/example_evals.yml</span></div><pre class="ycode"><span class="yl" data-n="1"><span class="yk">evals</span>:<span class="yv"></span></span><span class="yl" data-n="2">  - <span class="yk">category</span>:<span class="yv"> sales</span></span><span class="yl" data-n="3">    <span class="yk">grading</span>:<span class="yv"></span></span><span class="yl yh" data-n="4">      <span class="yk">method</span>:<span class="yv"> extract_match</span></span><span class="yl yh" data-n="5">      <span class="yk">min_score</span>:<span class="yv"> 0.8</span></span><span class="yl" data-n="6">    <span class="yk">tests</span>:<span class="yv"></span></span><span class="yl" data-n="7">      - <span class="yk">id</span>:<span class="yv"> revenue_q4</span></span><span class="yl" data-n="8">        <span class="yk">title</span>:<span class="yv"> Revenue in Q4 2026</span></span><span class="yl" data-n="9">        <span class="yk">prompt</span>:<span class="yv"> What was our revenue in Q4 2026, net of discounts and before tax?</span></span><span class="yl" data-n="10">        <span class="yk">expected_answer</span>:<span class="yv"> &quot;307992639.49&quot;</span></span><span class="yl" data-n="11">        <span class="yk">grading</span>:<span class="yv"></span></span><span class="yl yh" data-n="12">          <span class="yk">tolerance</span>:<span class="yv"> 0.01   </span><span class="yc"># an absolute difference that still counts as equal</span></span></pre></div></div><div class="pn pn3"><input type="checkbox" class="yt" id="df-y3" aria-label="Show in YAML"><div class="ph"><h4 class="mono">llm_judge</h4><div class="chips"><span class="chip">Free-text answers</span></div><label class="lk" for="df-y3"><span class="a">&lt;/&gt; Show in YAML</span><span class="b">Show the result</span></label></div><p class="line">A judge model scores the agent's answer against the expected one, from 0 to 1, and explains why.</p><div class="shot"><img src="/assets/define-llm-judge.png" alt="The llm_judge result in the report"></div><div class="yaml"><div class="ybar"><span>evals/example_evals.yml</span></div><pre class="ycode"><span class="yl" data-n="1"><span class="yk">evals</span>:<span class="yv"></span></span><span class="yl" data-n="2">  - <span class="yk">category</span>:<span class="yv"> customers</span></span><span class="yl" data-n="3">    <span class="yk">grading</span>:<span class="yv"></span></span><span class="yl yh" data-n="4">      <span class="yk">method</span>:<span class="yv"> llm_judge</span></span><span class="yl yh" data-n="5">      <span class="yk">min_score</span>:<span class="yv"> 0.8</span></span><span class="yl" data-n="6">    <span class="yk">tests</span>:<span class="yv"></span></span><span class="yl" data-n="7">      - <span class="yk">id</span>:<span class="yv"> top_nations_last_year</span></span><span class="yl" data-n="8">        <span class="yk">title</span>:<span class="yv"> Top 5 nations by orders last year</span></span><span class="yl" data-n="9">        <span class="yk">prompt</span>:<span class="yv"> Which 5 nations placed the most orders last year?</span></span><span class="yl" data-n="10">        <span class="yk">expected_answer</span>:<span class="yv"> &quot;Germany, France, Brazil, Japan and Canada placed the most orders.&quot;</span></span><span class="yl" data-n="11">        <span class="yk">provenance</span>:<span class="yv"></span></span><span class="yl" data-n="12">          <span class="yk">expected_sources</span>:<span class="yv"> [orders, customer, nation]</span></span></pre></div></div><div class="pn pn4"><input type="checkbox" class="yt" id="df-y4" aria-label="Show in YAML"><div class="ph"><h4 class="">Provenance</h4><div class="chips"><span class="chip">expected_sources</span></div><label class="lk" for="df-y4"><span class="a">&lt;/&gt; Show in YAML</span><span class="b">Show the result</span></label></div><p class="line">Checks that your agent queried the sources you expect.</p><div class="shot"><img src="/assets/define-provenance.png" alt="The Provenance result in the report"></div><div class="yaml"><div class="ybar"><span>evals/example_evals.yml</span></div><pre class="ycode"><span class="yl" data-n="1"><span class="yk">evals</span>:<span class="yv"></span></span><span class="yl" data-n="2">  - <span class="yk">category</span>:<span class="yv"> sales</span></span><span class="yl" data-n="3">    <span class="yk">provenance</span>:<span class="yv"></span></span><span class="yl yh" data-n="4">      <span class="yk">min_score</span>:<span class="yv"> 0.7</span></span><span class="yl" data-n="5">    <span class="yk">tests</span>:<span class="yv"></span></span><span class="yl" data-n="6">      - <span class="yk">id</span>:<span class="yv"> revenue_q4</span></span><span class="yl" data-n="7">        <span class="yk">title</span>:<span class="yv"> Revenue in Q4 2026</span></span><span class="yl" data-n="8">        <span class="yk">prompt</span>:<span class="yv"> What was our revenue in Q4 2026, net of discounts and before tax?</span></span><span class="yl" data-n="9">        <span class="yk">expected_answer</span>:<span class="yv"> &quot;307992639.49&quot;</span></span><span class="yl" data-n="10">        <span class="yk">provenance</span>:<span class="yv"></span></span><span class="yl yh" data-n="11">          <span class="yk">expected_sources</span>:<span class="yv"> [lineitem, warehouse.main.orders]</span><span class="yc">  # database.schema.table</span></span></pre></div></div></div></div>
+  <a class="more" href="/docs/writing-evals/">Read the docs on writing evals →</a>
+ </div>
+</section>
+
+<style>
+.s-define{box-sizing:border-box;min-height:0;background:#EEF0E8;color:var(--fg-1);font-family:var(--font-sans);font-size:15px;line-height:1.5;padding:72px 32px 96px}
+.s-define .wrap{max-width:1240px;margin:0 auto}
+/* Fit the section to the window: the heading block above the table and the docs link below take
+   ~230px, plus ~20px top and bottom when a "Learn more" link jumps here. The table fills the rest (capped at 640px); the screenshot (1280x600)
+   takes what's left of the table after its ~150px of heading and padding. */
+.s-define{--tbl-h:min(640px,calc(100vh - 275px));--shot-w:max(460px,calc((var(--tbl-h) - 150px) * 1280 / 600))}
+@media (min-width:901px){.s-define .wrap .tbl{min-height:var(--tbl-h)}.s-define .tbl .c3{align-content:center}}
+.s-define .eyebrow{display:flex;align-items:center;gap:14px;font-family:var(--font-mono);font-size:18px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-3)}
+.s-define .eyebrow .n{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:999px;background:var(--green-500);border:1.5px solid var(--green-300);box-sizing:border-box;color:var(--green-900);font-family:var(--font-display);font-weight:700;font-size:19px;letter-spacing:0}
+.s-define h2{margin:10px 0 8px;font-family:var(--font-display);font-weight:500;font-size:44px;line-height:1.08;letter-spacing:-.02em;text-wrap:balance}
+.s-define .intro{margin:0 0 28px;max-width:880px;font-size:17px;line-height:1.55;color:var(--fg-2)}
+.s-define input.r{position:absolute;opacity:0;pointer-events:none}
+.s-define .mono{font-family:var(--font-mono)}
+.s-define .tbl{display:grid;grid-template-columns:210px 230px minmax(0,1fr);grid-template-rows:1fr 1fr;border:1px solid var(--border-1);border-radius:16px;overflow:hidden;background:var(--paper);min-height:0}
+.s-define .ty1{grid-column:1;grid-row:1;border-right:1px solid var(--border-1);border-bottom:1px solid var(--border-1)}
+.s-define .lst1{grid-column:2;grid-row:1;border-right:1px solid var(--border-1);border-bottom:1px solid var(--border-1);display:flex;flex-direction:column}
+.s-define .ty2{grid-column:1/3;grid-row:2;border-right:1px solid var(--border-1)}
+.s-define .c3{grid-column:3;grid-row:1/3}
+.s-define .ty{display:flex;gap:12px;align-items:center;padding:22px 20px;cursor:pointer;transition:background .15s}
+.s-define .ty:hover{background:#F3F4EE}
+.s-define .num{font-family:var(--font-mono);font-size:11px;color:#A3AB9F;align-self:center}
+.s-define .tt{display:block;font-family:var(--font-display);font-weight:500;font-size:20px;color:var(--fg-3);line-height:1.2}
+.s-define .ts{display:block;margin-top:4px;font-size:13.5px;color:var(--fg-3)}
+.s-define .it{position:relative;display:flex;align-items:center;flex:1;padding:16px 22px;border-bottom:1px solid var(--border-1);cursor:pointer;transition:background .15s}
+.s-define .it:last-child{border-bottom:0}
+.s-define .it:hover{background:#F3F4EE}
+.s-define .in{display:block;font-size:15.5px;font-weight:500;color:var(--fg-2)}
+.s-define .in.mono{font-size:14.5px}
+.s-define .lst1 .in{display:inline-block;padding:5px 14px;border:1px solid var(--border-1);border-radius:999px;background:var(--paper);transition:background .15s,border-color .15s}
+.s-define .is{display:block;margin-top:4px;font-size:13.5px;color:var(--fg-3)}
+.s-define .c3{display:grid;align-content:start;padding:22px 28px;background-image:radial-gradient(#DDE3D5 1px,transparent 1px);background-size:18px 18px}
+.s-define .pn{grid-area:1/1;min-width:0;visibility:hidden;animation:none}
+@keyframes df-pnIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.s-define .ph{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-bottom:8px}
+.s-define .line{margin:0 0 12px;font-size:16px;color:var(--fg-2);max-width:560px}
+.s-define h4{margin:0;font-family:var(--font-display);font-weight:500;font-size:22px;letter-spacing:-.01em}
+.s-define h4.mono{font-family:var(--font-mono);font-size:22px;font-weight:500}
+.s-define .chips{display:flex;flex-wrap:wrap;gap:6px}
+.s-define .chip{font-size:12px;font-weight:500;padding:2px 9px;border-radius:999px;background:var(--accent-soft);color:var(--green-700)}
+.s-define dl{margin:0;display:grid;grid-template-columns:132px minmax(0,1fr);gap:10px 18px;background:var(--paper);border:1px solid #E5E2D8;border-radius:12px;padding:16px 18px}
+.s-define dt{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-3);padding-top:3px}
+.s-define dd{margin:0;color:var(--fg-1);font-size:14.5px;line-height:1.5}
+.s-define code{font-family:var(--font-mono);font-size:12.5px;background:var(--bg-sunken);border-radius:4px;padding:0 4px}
+.s-define figure{margin:18px 0 0}
+.s-define .shot{max-width:var(--shot-w);border-radius:12px;overflow:hidden;border:1px solid var(--border-1);box-shadow:0 10px 30px rgba(28,42,34,.14);background:var(--green-50)}
+.s-define .shot img{display:block;width:100%;height:auto}
+.s-define figcaption{margin-top:8px;font-size:12.5px;color:var(--fg-3)}
+.s-define input.yt{position:absolute;opacity:0;pointer-events:none}
+.s-define .lk{margin-left:auto;font-size:13.5px;font-weight:500;color:var(--green-500);cursor:pointer;white-space:nowrap;font-family:var(--font-mono)}
+.s-define .lk:hover{color:var(--green-700);text-decoration:underline;text-underline-offset:3px}
+.s-define .lk .b{display:none}
+.s-define .yt:checked ~ .ph .lk .a{display:none}.s-define .yt:checked ~ .ph .lk .b{display:inline}
+.s-define .yaml{display:none;max-width:var(--shot-w);aspect-ratio:1280/600;border-radius:12px;overflow:hidden;border:1px solid var(--border-1);box-shadow:0 10px 30px rgba(28,42,34,.14);background:var(--paper);flex-direction:column}
+.s-define .yt:checked ~ .shot{display:none}.s-define .yt:checked ~ .yaml{display:flex}
+.s-define .ybar{flex:none;height:34px;display:flex;align-items:center;padding:0 14px;background:#F5F4EC;border-bottom:1px solid var(--border-1);font-family:var(--font-mono);font-size:12px;color:var(--fg-3)}
+.s-define pre.ycode{margin:0;padding:14px 0;border:0;border-radius:0;background:transparent;font-family:var(--font-mono);font-size:11.5px;line-height:1.6;overflow:auto;white-space:pre;flex:1}
+.s-define .yl{display:block;padding-left:52px;position:relative;min-height:1.6em}
+.s-define .yl:before{content:attr(data-n);position:absolute;left:0;width:36px;text-align:right;color:#A8AEA6}
+.s-define .yl.yh{background:#E9F0DF}
+.s-define .yk{color:#2F5D3A}.s-define .yv{color:#8A5A12}.s-define .yc{color:#8E978F;font-style:italic}
+@media (max-width:900px){.s-define .yaml{aspect-ratio:auto}.s-define pre.ycode{font-size:11.5px}.s-define .lk{margin-left:0}}
+.s-define .more{display:inline-block;margin-top:20px;font-weight:500;color:var(--green-500);text-decoration:none}
+.s-define .more:hover{color:var(--green-700);text-decoration:underline;text-underline-offset:3px}
+#df-m1:checked ~ .tbl .pn1{visibility:visible;animation:df-pnIn .25s ease-out}
+#df-m1:checked ~ .tbl .it1{background:#E9EDE3}#df-m1:checked ~ .tbl .it1 .in{color:var(--fg-1);background:var(--accent-soft);border-color:var(--green-300)}
+#df-m1:checked ~ .tbl .ty1{background:#E9EDE3}#df-m1:checked ~ .tbl .ty1 .tt{color:var(--fg-1)}#df-m1:checked ~ .tbl .ty1 .num{color:var(--green-500)}
+#df-m2:checked ~ .tbl .pn2{visibility:visible;animation:df-pnIn .25s ease-out}
+#df-m2:checked ~ .tbl .it2{background:#E9EDE3}#df-m2:checked ~ .tbl .it2 .in{color:var(--fg-1);background:var(--accent-soft);border-color:var(--green-300)}
+#df-m2:checked ~ .tbl .ty1{background:#E9EDE3}#df-m2:checked ~ .tbl .ty1 .tt{color:var(--fg-1)}#df-m2:checked ~ .tbl .ty1 .num{color:var(--green-500)}
+#df-m3:checked ~ .tbl .pn3{visibility:visible;animation:df-pnIn .25s ease-out}
+#df-m3:checked ~ .tbl .it3{background:#E9EDE3}#df-m3:checked ~ .tbl .it3 .in{color:var(--fg-1);background:var(--accent-soft);border-color:var(--green-300)}
+#df-m3:checked ~ .tbl .ty1{background:#E9EDE3}#df-m3:checked ~ .tbl .ty1 .tt{color:var(--fg-1)}#df-m3:checked ~ .tbl .ty1 .num{color:var(--green-500)}
+#df-m4:checked ~ .tbl .pn4{visibility:visible;animation:df-pnIn .25s ease-out}
+#df-m4:checked ~ .tbl .ty2{background:#E9EDE3}#df-m4:checked ~ .tbl .ty2 .tt{color:var(--fg-1)}#df-m4:checked ~ .tbl .ty2 .num{color:var(--green-500)}
+@media (max-width:900px){
+ .s-define{padding:48px 16px 64px}.s-define h2{font-size:32px}.s-define .intro{font-size:16px;margin-bottom:28px}
+ .s-define .tbl{grid-template-columns:1fr 1fr;grid-template-rows:auto;min-height:0}
+ .s-define .ty1{grid-column:1;grid-row:1;border-bottom:1px solid var(--border-1)}
+ .s-define .ty2{grid-column:2;grid-row:1;border-right:0;border-bottom:1px solid var(--border-1)}
+ .s-define .ty{padding:14px}.s-define .tt{font-size:17px}.s-define .ts{display:none}
+ .s-define .lst1{grid-column:1/3;grid-row:2;border-right:0;flex-direction:row;flex-wrap:wrap;padding:10px 12px}
+ .s-define .it{flex:none;display:inline-block;padding:6px 12px;margin:3px 2px;border:1px solid var(--border-1)!important;border-radius:999px}
+ .s-define .is{display:none}.s-define .in,.s-define .in.mono{font-size:13.5px}
+ #df-m4:checked ~ .tbl .lst1{display:none}
+ .s-define .lst1 .in{padding:0;border:0;background:transparent!important}
+ .s-define .c3{grid-column:1/3;grid-row:3;padding:18px 14px}
+ .s-define dl{grid-template-columns:minmax(0,1fr);gap:4px}.s-define dd{margin-bottom:8px}
+ .s-define h4{font-size:19px}.s-define h4.mono{font-size:19px}
+}
+@media (prefers-reduced-motion:reduce){.s-define .pn{animation:none}}
+</style>

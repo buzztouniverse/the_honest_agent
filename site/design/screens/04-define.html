@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Screen 3: Define</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+.s3{box-sizing:border-box;min-height:0;background:#EEF0E8;color:#1C2A22;font-family:'Geist',ui-sans-serif,system-ui,sans-serif;font-size:15px;line-height:1.5;padding:72px 32px 96px}
+.s3 .wrap{max-width:1240px;margin:0 auto}
+.s3 .eyebrow{display:flex;align-items:center;gap:14px;font-family:'Geist Mono',monospace;font-size:18px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#7C877F}
+.s3 .eyebrow .n{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:999px;background:#588157;border:1.5px solid #A3B18A;box-sizing:border-box;color:#1F2E26;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px;letter-spacing:0}
+.s3 h2{margin:14px 0 10px;font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:44px;line-height:1.08;letter-spacing:-.02em;text-wrap:balance}
+.s3 .intro{margin:0 0 40px;max-width:880px;font-size:17px;line-height:1.55;color:#4E5C52}
+.s3 input.r{position:absolute;opacity:0;pointer-events:none}
+.s3 .mono{font-family:'Geist Mono',monospace}
+.s3 .tbl{display:grid;grid-template-columns:210px 230px minmax(0,1fr);grid-template-rows:1fr 1fr;border:1px solid #DAD7CD;border-radius:16px;overflow:hidden;background:#FBFAF6;min-height:0}
+.s3 .ty1{grid-column:1;grid-row:1;border-right:1px solid #DAD7CD;border-bottom:1px solid #DAD7CD}
+.s3 .lst1{grid-column:2;grid-row:1;border-right:1px solid #DAD7CD;border-bottom:1px solid #DAD7CD;display:flex;flex-direction:column}
+.s3 .ty2{grid-column:1/3;grid-row:2;border-right:1px solid #DAD7CD}
+.s3 .c3{grid-column:3;grid-row:1/3}
+.s3 .ty{display:flex;gap:12px;align-items:center;padding:22px 20px;cursor:pointer;transition:background .15s}
+.s3 .ty:hover{background:#F3F4EE}
+.s3 .num{font-family:'Geist Mono',monospace;font-size:11px;color:#A3AB9F;align-self:center}
+.s3 .tt{display:block;font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:20px;color:#7C877F;line-height:1.2}
+.s3 .ts{display:block;margin-top:4px;font-size:13.5px;color:#7C877F}
+.s3 .it{position:relative;display:flex;align-items:center;flex:1;padding:16px 22px;border-bottom:1px solid #DAD7CD;cursor:pointer;transition:background .15s}
+.s3 .it:last-child{border-bottom:0}
+.s3 .it:hover{background:#F3F4EE}
+.s3 .in{display:block;font-size:15.5px;font-weight:500;color:#4E5C52}
+.s3 .in.mono{font-size:14.5px}
+.s3 .lst1 .in{display:inline-block;padding:5px 14px;border:1px solid #DAD7CD;border-radius:999px;background:#FBFAF6;transition:background .15s,border-color .15s}
+.s3 .is{display:block;margin-top:4px;font-size:13.5px;color:#7C877F}
+.s3 .c3{padding:28px 32px;background-image:radial-gradient(#DDE3D5 1px,transparent 1px);background-size:18px 18px}
+.s3 .pn{display:none;animation:pnIn .25s ease-out}
+@keyframes pnIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.s3 .ph{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-bottom:8px}
+.s3 .line{margin:0 0 18px;font-size:16px;color:#4E5C52;max-width:560px}
+.s3 h4{margin:0;font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:22px;letter-spacing:-.01em}
+.s3 h4.mono{font-family:'Geist Mono',monospace;font-size:22px;font-weight:500}
+.s3 .chips{display:flex;flex-wrap:wrap;gap:6px}
+.s3 .chip{font-size:12px;font-weight:500;padding:2px 9px;border-radius:999px;background:#E3E8DA;color:#3A5A40}
+.s3 dl{margin:0;display:grid;grid-template-columns:132px minmax(0,1fr);gap:10px 18px;background:#FBFAF6;border:1px solid #E5E2D8;border-radius:12px;padding:16px 18px}
+.s3 dt{font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#7C877F;padding-top:3px}
+.s3 dd{margin:0;color:#1C2A22;font-size:14.5px;line-height:1.5}
+.s3 code{font-family:'Geist Mono',monospace;font-size:12.5px;background:#ECEAE2;border-radius:4px;padding:0 4px}
+.s3 figure{margin:18px 0 0}
+.s3 .shot{border-radius:12px;overflow:hidden;border:1px solid #DAD7CD;box-shadow:0 10px 30px rgba(28,42,34,.14);background:#F3F2EC}
+.s3 .shot img{display:block;width:100%;height:auto}
+.s3 figcaption{margin-top:8px;font-size:12.5px;color:#7C877F}
+.s3 input.yt{position:absolute;opacity:0;pointer-events:none}
+.s3 .lk{margin-left:auto;font-size:13.5px;font-weight:500;color:#588157;cursor:pointer;white-space:nowrap;font-family:'Geist Mono',monospace}
+.s3 .lk:hover{color:#3A5A40;text-decoration:underline;text-underline-offset:3px}
+.s3 .lk .b{display:none}
+.s3 .yt:checked ~ .ph .lk .a{display:none}.s3 .yt:checked ~ .ph .lk .b{display:inline}
+.s3 .yaml{display:none;aspect-ratio:1280/760;border-radius:12px;overflow:hidden;border:1px solid #DAD7CD;box-shadow:0 10px 30px rgba(28,42,34,.14);background:#FBFAF6;flex-direction:column}
+.s3 .yt:checked ~ .shot{display:none}.s3 .yt:checked ~ .yaml{display:flex}
+.s3 .ybar{flex:none;height:34px;display:flex;align-items:center;padding:0 14px;background:#F5F4EC;border-bottom:1px solid #DAD7CD;font-family:'Geist Mono',monospace;font-size:12px;color:#7C877F}
+.s3 pre.ycode{margin:0;padding:14px 0;border:0;border-radius:0;background:transparent;font-family:'Geist Mono',monospace;font-size:13px;line-height:1.75;overflow:auto;white-space:pre;flex:1}
+.s3 .yl{display:block;padding-left:52px;position:relative;min-height:1.75em}
+.s3 .yl:before{content:attr(data-n);position:absolute;left:0;width:36px;text-align:right;color:#A8AEA6}
+.s3 .yl.yh{background:#E9F0DF}
+.s3 .yk{color:#2F5D3A}.s3 .yv{color:#8A5A12}.s3 .yc{color:#8E978F;font-style:italic}
+@media (max-width:900px){.s3 .yaml{aspect-ratio:auto}.s3 pre.ycode{font-size:11.5px}.s3 .lk{margin-left:0}}
+.s3 .more{display:inline-block;margin-top:28px;font-weight:500;color:#588157;text-decoration:none}
+.s3 .more:hover{color:#3A5A40;text-decoration:underline;text-underline-offset:3px}
+#m1:checked ~ .tbl .pn1{display:block}
+#m1:checked ~ .tbl .it1{background:#E9EDE3}#m1:checked ~ .tbl .it1 .in{color:#1C2A22;background:#E3E8DA;border-color:#A3B18A}
+#m1:checked ~ .tbl .ty1{background:#E9EDE3}#m1:checked ~ .tbl .ty1 .tt{color:#1C2A22}#m1:checked ~ .tbl .ty1 .num{color:#588157}
+#m2:checked ~ .tbl .pn2{display:block}
+#m2:checked ~ .tbl .it2{background:#E9EDE3}#m2:checked ~ .tbl .it2 .in{color:#1C2A22;background:#E3E8DA;border-color:#A3B18A}
+#m2:checked ~ .tbl .ty1{background:#E9EDE3}#m2:checked ~ .tbl .ty1 .tt{color:#1C2A22}#m2:checked ~ .tbl .ty1 .num{color:#588157}
+#m3:checked ~ .tbl .pn3{display:block}
+#m3:checked ~ .tbl .it3{background:#E9EDE3}#m3:checked ~ .tbl .it3 .in{color:#1C2A22;background:#E3E8DA;border-color:#A3B18A}
+#m3:checked ~ .tbl .ty1{background:#E9EDE3}#m3:checked ~ .tbl .ty1 .tt{color:#1C2A22}#m3:checked ~ .tbl .ty1 .num{color:#588157}
+#m4:checked ~ .tbl .pn4{display:block}
+#m4:checked ~ .tbl .ty2{background:#E9EDE3}#m4:checked ~ .tbl .ty2 .tt{color:#1C2A22}#m4:checked ~ .tbl .ty2 .num{color:#588157}
+@media (max-width:900px){
+ .s3{padding:48px 16px 64px}.s3 h2{font-size:32px}.s3 .intro{font-size:16px;margin-bottom:28px}
+ .s3 .tbl{grid-template-columns:1fr 1fr;grid-template-rows:auto;min-height:0}
+ .s3 .ty1{grid-column:1;grid-row:1;border-bottom:1px solid #DAD7CD}
+ .s3 .ty2{grid-column:2;grid-row:1;border-right:0;border-bottom:1px solid #DAD7CD}
+ .s3 .ty{padding:14px}.s3 .tt{font-size:17px}.s3 .ts{display:none}
+ .s3 .lst1{grid-column:1/3;grid-row:2;border-right:0;flex-direction:row;flex-wrap:wrap;padding:10px 12px}
+ .s3 .it{flex:none;display:inline-block;padding:6px 12px;margin:3px 2px;border:1px solid #DAD7CD!important;border-radius:999px}
+ .s3 .is{display:none}.s3 .in,.s3 .in.mono{font-size:13.5px}
+ #m4:checked ~ .tbl .lst1{display:none}
+ .s3 .lst1 .in{padding:0;border:0;background:transparent!important}
+ .s3 .c3{grid-column:1/3;grid-row:3;padding:18px 14px}
+ .s3 dl{grid-template-columns:minmax(0,1fr);gap:4px}.s3 dd{margin-bottom:8px}
+ .s3 h4{font-size:19px}.s3 h4.mono{font-size:19px}
+}
+@media (prefers-reduced-motion:reduce){.s3 .pn{animation:none}}
+
+</style>
+
+</head>
+<body>
+<div class="s3">
+ <div class="wrap">
+  <div class="eyebrow"><span class="n">1</span>Define</div>
+  <h2>Define what a right answer looks like</h2>
+  <p class="intro">Every eval is a question you already know the answer to. honest-agent always checks that the answer is correct (accuracy), and can also check that it came from the right sources (provenance).</p>
+  <input class="r" type="radio" name="m" id="m1" aria-label="contains"><input class="r" type="radio" name="m" id="m2" aria-label="extract_match"><input class="r" type="radio" name="m" id="m3" aria-label="llm_judge"><input class="r" type="radio" name="m" id="m4" checked aria-label="Provenance">
+  <div class="tbl"><label class="ty ty1" for="m1"><span class="num">01</span><span><span class="tt">Accuracy</span><span class="ts">Is the answer correct?</span></span></label><div class="lst lst1"><label class="it it1" for="m1"><span class="in mono">contains</span></label><label class="it it2" for="m2"><span class="in mono">extract_match</span></label><label class="it it3" for="m3"><span class="in mono">llm_judge</span></label></div><label class="ty ty2" for="m4"><span class="num">02</span><span><span class="tt">Provenance</span><span class="ts">Did it come from the right sources?</span></span></label><div class="c3"><div class="pn pn1"><input type="checkbox" class="yt" id="y1" aria-label="Show in YAML"><div class="ph"><h4 class="mono">contains</h4><div class="chips"><span class="chip">Exact text or numbers</span></div><label class="lk" for="y1"><span class="a">&lt;/&gt; Show in YAML</span><span class="b">Show the result</span></label></div><p class="line">Passes when the expected answer appears in the reply. No model call.</p><div class="shot"><img src="../assets/define-contains.png" alt="The contains result in the report"></div><div class="yaml"><div class="ybar"><span>evals/example_evals.yml</span></div><pre class="ycode"><span class="yl" data-n="1"><span class="yk">evals</span>:<span class="yv"></span></span><span class="yl" data-n="2">  - <span class="yk">category</span>:<span class="yv"> customers</span></span><span class="yl" data-n="3">    <span class="yk">grading</span>:<span class="yv"></span></span><span class="yl yh" data-n="4">      <span class="yk">method</span>:<span class="yv"> contains</span></span><span class="yl" data-n="5">    <span class="yk">tests</span>:<span class="yv"></span></span><span class="yl" data-n="6">      - <span class="yk">id</span>:<span class="yv"> top_segment</span></span><span class="yl" data-n="7">        <span class="yk">title</span>:<span class="yv"> Market segment with the most customers</span></span><span class="yl" data-n="8">        <span class="yk">prompt</span>:<span class="yv"> Which market segment has the most customers?</span></span><span class="yl" data-n="9">        <span class="yk">expected_answer</span>:<span class="yv"> BUILDING</span></span></pre></div></div><div class="pn pn2"><input type="checkbox" class="yt" id="y2" aria-label="Show in YAML"><div class="ph"><h4 class="mono">extract_match</h4><div class="chips"><span class="chip">Numbers and single values</span></div><label class="lk" for="y2"><span class="a">&lt;/&gt; Show in YAML</span><span class="b">Show the result</span></label></div><p class="line">A model pulls the value out of the agent's answer, then code compares it with the expected one, within an optional tolerance.</p><div class="shot"><img src="../assets/define-extract-match.png" alt="The extract_match result in the report"></div><div class="yaml"><div class="ybar"><span>evals/example_evals.yml</span></div><pre class="ycode"><span class="yl" data-n="1"><span class="yk">evals</span>:<span class="yv"></span></span><span class="yl" data-n="2">  - <span class="yk">category</span>:<span class="yv"> sales</span></span><span class="yl" data-n="3">    <span class="yk">grading</span>:<span class="yv"></span></span><span class="yl yh" data-n="4">      <span class="yk">method</span>:<span class="yv"> extract_match</span></span><span class="yl yh" data-n="5">      <span class="yk">min_score</span>:<span class="yv"> 0.8</span></span><span class="yl" data-n="6">    <span class="yk">tests</span>:<span class="yv"></span></span><span class="yl" data-n="7">      - <span class="yk">id</span>:<span class="yv"> revenue_1997</span></span><span class="yl" data-n="8">        <span class="yk">title</span>:<span class="yv"> Revenue in 1997</span></span><span class="yl" data-n="9">        <span class="yk">prompt</span>:<span class="yv"> What was our revenue in 1997, net of discounts and before tax?</span></span><span class="yl" data-n="10">        <span class="yk">expected_answer</span>:<span class="yv"> &quot;307992639.49&quot;</span></span><span class="yl" data-n="11">        <span class="yk">grading</span>:<span class="yv"></span></span><span class="yl yh" data-n="12">          <span class="yk">tolerance</span>:<span class="yv"> 0.01   </span><span class="yc"># an absolute difference that still counts as equal</span></span></pre></div></div><div class="pn pn3"><input type="checkbox" class="yt" id="y3" aria-label="Show in YAML"><div class="ph"><h4 class="mono">llm_judge</h4><div class="chips"><span class="chip">Free-text answers</span></div><label class="lk" for="y3"><span class="a">&lt;/&gt; Show in YAML</span><span class="b">Show the result</span></label></div><p class="line">A judge model scores the agent's answer against the expected one, from 0 to 1, and explains why.</p><div class="shot"><img src="../assets/define-llm-judge.png" alt="The llm_judge result in the report"></div><div class="yaml"><div class="ybar"><span>evals/example_evals.yml</span></div><pre class="ycode"><span class="yl" data-n="1"><span class="yk">evals</span>:<span class="yv"></span></span><span class="yl" data-n="2">  - <span class="yk">category</span>:<span class="yv"> operations</span></span><span class="yl" data-n="3">    <span class="yk">grading</span>:<span class="yv"></span></span><span class="yl yh" data-n="4">      <span class="yk">method</span>:<span class="yv"> llm_judge</span></span><span class="yl yh" data-n="5">      <span class="yk">min_score</span>:<span class="yv"> 0.8</span></span><span class="yl" data-n="6">    <span class="yk">tests</span>:<span class="yv"></span></span><span class="yl" data-n="7">      - <span class="yk">id</span>:<span class="yv"> top_ship_mode_1995</span></span><span class="yl" data-n="8">        <span class="yk">title</span>:<span class="yv"> Ship mode with the most line items in 1995</span></span><span class="yl" data-n="9">        <span class="yk">prompt</span>:<span class="yv"> Which ship mode had the most line items with a ship date in 1995?</span></span><span class="yl" data-n="10">        <span class="yk">expected_answer</span>:<span class="yv"> &quot;TRUCK and MAIL are tied, with 1307 line items each.&quot;</span></span><span class="yl" data-n="11">        <span class="yk">provenance</span>:<span class="yv"></span></span><span class="yl" data-n="12">          <span class="yk">expected_sources</span>:<span class="yv"> [lineitem]</span></span></pre></div></div><div class="pn pn4"><input type="checkbox" class="yt" id="y4" aria-label="Show in YAML"><div class="ph"><h4 class="">Provenance</h4><div class="chips"><span class="chip">expected_sources</span></div><label class="lk" for="y4"><span class="a">&lt;/&gt; Show in YAML</span><span class="b">Show the result</span></label></div><p class="line">Checks that your agent queried the sources you expect.</p><div class="shot"><img src="../assets/define-provenance.png" alt="The Provenance result in the report"></div><div class="yaml"><div class="ybar"><span>evals/example_evals.yml</span></div><pre class="ycode"><span class="yl" data-n="1"><span class="yk">evals</span>:<span class="yv"></span></span><span class="yl" data-n="2">  - <span class="yk">category</span>:<span class="yv"> sales</span></span><span class="yl" data-n="3">    <span class="yk">provenance</span>:<span class="yv"></span></span><span class="yl yh" data-n="4">      <span class="yk">min_score</span>:<span class="yv"> 0.7</span></span><span class="yl" data-n="5">    <span class="yk">tests</span>:<span class="yv"></span></span><span class="yl" data-n="6">      - <span class="yk">id</span>:<span class="yv"> revenue_1997</span></span><span class="yl" data-n="7">        <span class="yk">title</span>:<span class="yv"> Revenue in 1997</span></span><span class="yl" data-n="8">        <span class="yk">prompt</span>:<span class="yv"> What was our revenue in 1997, net of discounts and before tax?</span></span><span class="yl" data-n="9">        <span class="yk">expected_answer</span>:<span class="yv"> &quot;307992639.49&quot;</span></span><span class="yl" data-n="10">        <span class="yk">provenance</span>:<span class="yv"></span></span><span class="yl yh" data-n="11">          <span class="yk">expected_sources</span>:<span class="yv"> [lineitem, warehouse.main.orders]</span><span class="yc">  # database.schema.table</span></span></pre></div></div></div></div>
+  <a class="more" href="#">Read the docs on writing evals →</a>
+ </div>
+</div>
+</body>
+</html>

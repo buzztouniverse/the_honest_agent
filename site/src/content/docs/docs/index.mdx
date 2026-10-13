@@ -1,0 +1,27 @@
+---
+title: Overview
+description: What honest-agent checks, and how the pieces fit.
+---
+
+import HowItWorks from '../../../components/docs/HowItWorks.astro';
+
+:::note[Being written]
+This page is an outline for now.
+:::
+
+## What honest-agent checks
+
+- Accuracy: is the agent's answer right?
+- Provenance: did the agent's SQL read the sources it should?
+
+## How a run works
+
+<HowItWorks />
+
+- Known questions go to the agent through its own MCP server, with the tools your team uses.
+- Each answer is graded; results go to a DuckDB file or MotherDuck.
+- The report shows them; `notify` alerts Slack when an eval falls below its threshold.
+
+## Where to start
+
+- [Getting started](/docs/getting-started/)

@@ -1,0 +1,81 @@
+---
+import { Logo } from '@ds';
+---
+<div class="s-footer">
+ <section class="cta">
+  <div class="bot"><img src="/assets/robot.png" alt=""></div>
+  <h2>Is your analytics agent telling the truth?</h2>
+  <p class="sub">Find out in minutes.</p>
+  <div class="cmd"><code><span class="p">$</span> honest-agent init --example</code><button type="button" class="cp" data-copy="honest-agent init --example" title="Copy" aria-label="Copy command"><svg class="ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><svg class="ok" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></button><span class="sr" role="status" aria-live="polite"></span></div>
+  <p class="note">Sets up a demo agent with six evals. All you need is a model API key. <a href="/docs/getting-started/">Full install guide →</a></p>
+  <div class="btns">
+   <a class="btn b1" href="https://github.com/jlcoto/the_honest_agent"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>View on GitHub</a>
+   <a class="btn b2" href="/docs/">Read the docs</a>
+  </div>
+ </section>
+ <footer class="bar"><div class="bin">
+  <div class="brand"><Logo markSrc="/assets/robot.png" size={22} textSize={16} /><span>Open source · MIT license</span></div>
+  <nav class="links"><a href="/docs/">Docs</a><a href="https://github.com/jlcoto/the_honest_agent">GitHub</a><a href="https://github.com/jlcoto/the_honest_agent/blob/main/CONTRIBUTING.md">Contributing</a><a href="https://github.com/jlcoto/the_honest_agent/releases">Releases</a></nav>
+  <div class="made">Made by José Coto<a href="#linkedin"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.3-.02-3-1.83-3s-2.12 1.43-2.12 2.9V21H9z"/></svg>LinkedIn</a><a href="#substack"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h18v2.6H3zm0 4.9h18v2.6H3zM3 12.8h18V22l-9-5-9 5z"/></svg>Substack</a><i>·</i><span>© 2026</span></div>
+ </div></footer>
+</div>
+
+<style>
+.s-footer{box-sizing:border-box;background:#EEF0E8;color:var(--fg-1);font-family:var(--font-sans);font-size:15px;line-height:1.5}
+.s-footer .cta{padding:88px 32px 96px;text-align:center}
+.s-footer .bot{width:84px;height:84px;margin:0 auto 18px;border-radius:999px;background:var(--paper);border:1.5px solid var(--green-300);display:flex;align-items:center;justify-content:center}
+.s-footer .bot img{width:54px;height:auto;transform:translate(1px,-4px)}
+.s-footer h2{margin:0 auto 10px;max-width:760px;font-family:var(--font-display);font-weight:500;font-size:44px;line-height:1.08;letter-spacing:-.02em;text-wrap:balance}
+.s-footer .sub{margin:0 0 32px;font-size:18px;color:var(--fg-2)}
+.s-footer .cmd{display:inline-flex;align-items:center;gap:16px;max-width:100%;box-sizing:border-box;background:var(--green-950);border-radius:12px;padding:14px 16px 14px 20px;font-family:var(--font-mono);font-size:15px;color:#E6EBE3;box-shadow:0 4px 8px rgba(22,33,27,.08),0 18px 36px rgba(22,33,27,.14)}
+.s-footer .cmd .p{color:var(--green-300)}
+.s-footer .cmd code{font-family:inherit;white-space:nowrap}
+.s-footer .cp{flex:none;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:1px solid #2E3F35;color:var(--green-300);cursor:pointer;background:transparent}
+.s-footer .cp:hover{background:#22312A}
+.s-footer .note{margin:14px auto 0;max-width:560px;font-size:14.5px;color:var(--fg-2)}
+.s-footer .note a{color:var(--green-700);font-weight:500;text-decoration:none;white-space:nowrap}
+.s-footer .note a:hover{text-decoration:underline;text-underline-offset:3px}
+.s-footer .btns{display:flex;justify-content:center;gap:12px;margin-top:32px;flex-wrap:wrap}
+.s-footer .btn{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 20px;border-radius:10px;font-weight:500;font-size:15px;text-decoration:none;transition:background .15s,border-color .15s}
+.s-footer .b1{background:var(--green-700);color:var(--paper);border:1px solid var(--green-700)}.s-footer .b1:hover{background:#2F4A35}
+.s-footer .b2{background:transparent;color:var(--fg-1);border:1px solid #C9CEC2}.s-footer .b2:hover{background:#F5F6F0;border-color:var(--green-300)}
+.s-footer .bar{background:#E3E6DC;border-top:1px solid #D2D6CB;padding:26px 32px}
+.s-footer .bin{max-width:1240px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.s-footer .brand{display:flex;align-items:center;gap:10px;min-height:24px}
+.s-footer .brand img{width:26px;height:auto}
+.s-footer .brand b{font-family:var(--font-display);font-weight:600;font-size:16px}
+.s-footer .brand span{font-size:13px;color:var(--fg-3)}
+.s-footer .links{display:flex;gap:22px;flex-wrap:wrap}
+.s-footer .links a{font-size:14px;color:var(--fg-2);text-decoration:none}.s-footer .links a:hover{color:var(--fg-1)}
+.s-footer .made{display:flex;align-items:center;gap:14px;font-size:13.5px;color:var(--fg-2);flex-wrap:wrap}
+.s-footer .made a{color:var(--green-700);font-weight:500;text-decoration:none;display:inline-flex;align-items:center;gap:6px}.s-footer .made a:hover{text-decoration:underline;text-underline-offset:3px}
+.s-footer .made i{font-style:normal;color:#A8AEA6}
+@media (max-width:900px){
+ .s-footer .cta{padding:56px 16px 64px}.s-footer h2{font-size:32px}.s-footer .sub{font-size:16px}
+ .s-footer .cmd{font-size:13px;padding:12px 12px 12px 14px;gap:10px}
+ .s-footer .bar{padding:20px 16px}.s-footer .bin{flex-direction:column;align-items:flex-start;gap:14px}
+}
+.s-footer .cp{padding:0;font:inherit}
+.s-footer .cp .ok{display:none}
+.s-footer .cp.done .ic{display:none}.s-footer .cp.done .ok{display:block}
+.s-footer .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+
+<script>
+  for (const btn of document.querySelectorAll<HTMLButtonElement>('.s-footer .cp')) {
+    const status = btn.nextElementSibling as HTMLElement | null;
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(btn.dataset.copy ?? '');
+      } catch {
+        return;
+      }
+      btn.classList.add('done');
+      if (status) status.textContent = 'Copied';
+      setTimeout(() => {
+        btn.classList.remove('done');
+        if (status) status.textContent = '';
+      }, 1600);
+    });
+  }
+</script>

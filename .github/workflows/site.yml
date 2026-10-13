@@ -1,0 +1,29 @@
+name: Site
+
+# Builds the landing page and docs in site/. The site uses the design system in
+# ui/src/ds, so a change there rebuilds it too. No deploy yet: hosting isn't chosen.
+on:
+  push:
+    branches: [main]
+    paths: ["site/**", "ui/src/ds/**", ".github/workflows/site.yml"]
+  pull_request:
+    branches: [main]
+    paths: ["site/**", "ui/src/ds/**", ".github/workflows/site.yml"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: site
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - run: npm ci
+      - run: npm run build
