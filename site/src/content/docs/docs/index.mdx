@@ -1,27 +1,46 @@
 ---
 title: Overview
-description: What honest-agent checks, and how the pieces fit.
+description: What honest-agent checks, how a run works, and where to start.
 ---
 
 import HowItWorks from '../../../components/docs/HowItWorks.astro';
 
-:::note[Being written]
-This page is an outline for now.
-:::
+honest-agent tests an AI analytics agent the way you'd test code: with questions you
+already know the answers to. Run them every day, and you find out when your agent starts
+getting things wrong, before your team acts on a wrong number.
 
-## What honest-agent checks
+## What it checks
 
-- Accuracy: is the agent's answer right?
-- Provenance: did the agent's SQL read the sources it should?
+Every eval checks two things about the agent's answer:
+
+- **Accuracy:** is the answer right? honest-agent compares it with the answer you wrote
+  in the eval.
+- **Provenance:** did the answer come from the right place? honest-agent checks that the
+  agent's SQL read the tables your team trusts for that question.
+
+An answer can be right by luck, from the wrong table. Provenance catches that; accuracy
+catches a wrong number from the right table. Each eval has a threshold for both.
 
 ## How a run works
 
 <HowItWorks />
 
-- Known questions go to the agent through its own MCP server, with the tools your team uses.
-- Each answer is graded; results go to a DuckDB file or MotherDuck.
-- The report shows them; `notify` alerts Slack when an eval falls below its threshold.
+1. You write evals: a question, its right answer, and the tables it should come from.
+2. honest-agent asks each question with the model you choose, using the tools from your
+   agent's own MCP server: the same tools your team's agent uses.
+3. It grades every answer for accuracy and provenance, and stores the results with
+   everything the agent sent and received.
+4. The report shows the scores over time and why each eval passed or failed. A Slack
+   alert tells your team when one falls below its threshold.
+
+honest-agent refuses SQL that would change your data before it reaches your MCP server.
+It can only check SQL, though, so give the server
+[read-only credentials](/docs/getting-started/#4-fill-in-env) too.
 
 ## Where to start
 
-- [Getting started](/docs/getting-started/)
+- **[Getting started](/docs/getting-started/):** install it, try the example, and set up
+  your own project.
+- **[Connect your agent](/docs/connect/):** point honest-agent at your agent's MCP server.
+- **[Writing evals](/docs/writing-evals/):** what to test, and how to grade it.
+- **[Running it for a team](/docs/team/):** scheduled runs, a shared report and alerts.
