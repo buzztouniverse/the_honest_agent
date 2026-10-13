@@ -102,7 +102,8 @@ See `scripts/report-screenshots/README.md` to regenerate them.
 
 ## Still open
 
-- "Live demo" in the nav (`#live-demo`), and the LinkedIn and Substack links
+- "See a report" in the nav (`#see-a-report` for now): it will open the real report UI,
+  built from runs of `init --example`, at `/report/`. And the LinkedIn and Substack links
   in the footer (`#linkedin`, `#substack`).
 - Hosting: the site's address is `https://thehonestagent.dev` (the domain is on
   Cloudflare), set as `site` in `astro.config.mjs`. `init` and the READMEs already
