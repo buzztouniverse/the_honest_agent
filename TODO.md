@@ -24,6 +24,21 @@ README fixes done 2026-10-08 (example eval, `--target`, sharing via
    commands, pointing to `docs/hosting.md`. Never asks for tokens in chat,
    never suggests public hosting, confirms before creating resources.
 
+## Before the release: the example report on the site
+
+Added 2026-10-13. The landing page's "See a report" button and the Review section's
+"Explore a real report" link point to a placeholder (`#see-a-report`). Before release:
+
+- **Build the example report from real runs** of `honest-agent init --example`, never
+  real data: runs on several days (for the history) and with two or three models (for
+  Model comparison). Each run costs a few cents.
+- **Publish it at `/report/` on the site:** a script copies the report UI
+  (`cli/honest_agent/report_ui`) and the demo data into `site/public/report/` at build
+  time (the report uses relative paths, so a sub-path works), with a "Demo with sample
+  data" banner. Then point both links at `/report/`.
+- **Footer:** the copyable `honest-agent init --example` doesn't say to install first;
+  copied on its own it gives "command not found".
+
 ## First tester release (v0.1.0): versions and migrations
 
 Discussed 2026-10-07. The repo is already public and `cli/pyproject.toml` says
