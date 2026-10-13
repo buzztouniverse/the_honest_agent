@@ -38,7 +38,6 @@ Added 2026-10-13. The landing page's "See a report" button and the Review sectio
   data" banner. Then point both links at `/report/`.
 - **Footer:** the copyable `honest-agent init --example` doesn't say to install first;
   copied on its own it gives "command not found".
-- **Footer:** the Substack link is still a placeholder (`#substack`). LinkedIn is set.
 
 ## First tester release (v0.1.0): versions and migrations
 
