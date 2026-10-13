@@ -24,7 +24,10 @@
   --sl-color-bg-accent: var(--accent);
   --sl-color-text-invert: var(--accent-fg);
 
-  /* Asides: note in the brand green, caution and danger in the accuracy palette. */
+  /* Asides: note in the brand green; tip, caution and danger in the accuracy palette. */
+  --sl-color-purple-low: var(--acc-mostly-tint);
+  --sl-color-purple: var(--acc-mostly);
+  --sl-color-purple-high: var(--acc-mostly-ink);
   --sl-color-blue-low: var(--accent-soft);
   --sl-color-blue: var(--green-500);
   --sl-color-blue-high: var(--accent);
