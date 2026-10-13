@@ -18,10 +18,10 @@ from pathlib import Path
 
 import click
 
-REPO = "https://github.com/jlcoto/the_honest_agent/blob/main"
-CONFIG_DOCS = f"{REPO}/example_project/README.md#the-config-file"
-EVAL_DOCS = f"{REPO}/example_project/README.md#writing-evals"
-S3_DOCS = "https://thehonestagent.dev/docs/team/results-s3/"
+DOCS = "https://thehonestagent.dev/docs"
+CONFIG_DOCS = f"{DOCS}/connect/"
+EVAL_DOCS = f"{DOCS}/writing-evals/"
+S3_DOCS = f"{DOCS}/team/results-s3/"
 
 # key: (menu label, default target name, URL already known, a hint for the URL prompt)
 SERVERS = {  # menu order: hosted servers first, as most agents use one

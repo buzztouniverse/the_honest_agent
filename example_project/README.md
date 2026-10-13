@@ -95,7 +95,7 @@ report`'s run-summary table picks up the trend automatically.
 
 ### Sharing results with a team
 
-See [`docs/hosting.md`](../docs/hosting.md): results in MotherDuck or a file
+See [Running it for a team](https://thehonestagent.dev/docs/team/): results in MotherDuck or a file
 in S3, the report behind a sign-in, and scheduled runs in CI. To query
 results from SQL, open the DuckDB file (or the MotherDuck database) directly.
 

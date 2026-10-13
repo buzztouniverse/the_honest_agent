@@ -75,9 +75,10 @@ See `scripts/report-screenshots/README.md` to regenerate them.
   generated from `honest-agent --help` and the config code.
 - "Live demo" in the nav (`#live-demo`), and the LinkedIn and Substack links
   in the footer (`#linkedin`, `#substack`).
-- Hosting (GitHub Pages or Cloudflare Pages): CI only builds the site
-  (`.github/workflows/site.yml`). Once it's chosen, set `site` in
-  `astro.config.mjs` (Starlight's sitemap needs it).
+- Hosting: the site's address is `https://thehonestagent.dev` (the domain is on
+  Cloudflare), set as `site` in `astro.config.mjs`. `init` and the READMEs already
+  link to `/docs/team/` there, so deploy the site before a release that ships those
+  links. CI only builds it for now (`.github/workflows/site.yml`).
 - Asset paths are root-relative (`/assets/...`). If the site is hosted under a
   sub-path (e.g. a GitHub Pages project site), set `base` in
   `astro.config.mjs` and prefix the paths.

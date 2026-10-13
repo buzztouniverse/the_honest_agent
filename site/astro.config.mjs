@@ -13,6 +13,7 @@ const ds = fileURLToPath(new URL('../ui/src/ds', import.meta.url));
 const lightByDefault = `if (localStorage.getItem('starlight-theme') === null) localStorage.setItem('starlight-theme', 'light');`;
 
 export default defineConfig({
+  site: 'https://thehonestagent.dev',
   integrations: [
     starlight({
       title: 'honest-agent',

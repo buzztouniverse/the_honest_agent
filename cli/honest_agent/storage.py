@@ -41,7 +41,7 @@ allows only one writer process at a time against a given file, so this is a
 good fit for `honest-agent run`'s occasional, sequential writes, but a local
 file is NOT a shared, concurrently-writable store on its own. For a team, keep
 the results in MotherDuck, or the file in private storage with one job at a
-time (docs/hosting.md).
+time (https://thehonestagent.dev/docs/team/).
 
 There's no separate "eval definitions" table: every result row carries its
 own copy of the eval fields it was graded against (prompt, expected_answer,
