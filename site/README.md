@@ -104,8 +104,8 @@ See `scripts/report-screenshots/README.md` to regenerate them.
 
 - "See a report" (the hero's second button) and "Explore a real report" (Review section)
   link to `#see-a-report` for now: they will open the real report UI,
-  built from runs of `init --example`, at `/report/`. And the LinkedIn and Substack links
-  in the footer (`#linkedin`, `#substack`).
+  built from runs of `init --example`, at `/report/`. And the Substack link in the footer
+  (`#substack`).
 - Hosting: the site's address is `https://thehonestagent.dev` (the domain is on
   Cloudflare), set as `site` in `astro.config.mjs`. `init` and the READMEs already
   link to `/docs/team/` there, so deploy the site before a release that ships those
