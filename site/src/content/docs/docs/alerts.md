@@ -68,5 +68,5 @@ Each eval's title in the alert then links to its result page, and "Open the repo
 the report. The links work through a sign-in page in front of the report. Without an
 address, the alert says to run `honest-agent report` instead.
 
-[Running it for a team](/docs/team/) shows how to host the report and run `notify` in CI
-after every run.
+[Running it for a team](/docs/team/) shows how to host the report, and
+[Run it in GitHub Actions](/docs/team/ci/) how to run `notify` after every run.

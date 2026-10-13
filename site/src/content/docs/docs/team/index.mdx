@@ -1,0 +1,49 @@
+---
+title: Running it for a team
+description: Run evals on a schedule, host the report behind a sign-in, and alert your team.
+---
+
+import TeamSetup from '../../../../components/docs/TeamSetup.astro';
+
+To use honest-agent as a team, you'll want two things: the evals running on a regular
+schedule, so you catch a regression soon after it happens, and a report everyone on the
+team can open. This section shows how to set that up, with recipes we tested and advice
+on keeping your data safe along the way.
+
+<TeamSetup />
+
+## Two things, kept apart
+
+- **The results** hold everything: every request and response, the run settings, all
+  history. Only the job that runs the evals reads and writes them.
+- **The report** is built from the results and shows recent runs. Your team opens it in
+  the browser, behind a sign-in. Viewers never get the results.
+
+:::danger[Never make the report public]
+The report shows what your agent's tools returned, which can include data from your
+warehouse. Host it only behind a sign-in. `honest-agent serve` is a local viewer with no
+sign-in: never expose it either.
+:::
+
+## Pick one of each
+
+| | Option | Good for |
+|---|---|---|
+| **Results** | [MotherDuck](/docs/team/results-motherduck/) | Teams already on MotherDuck. Nothing to copy around. |
+| | [A file in cloud storage](/docs/team/results-s3/) | Teams that keep everything in their own cloud: Amazon S3, Google Cloud Storage, Azure Blob Storage. Our recipe uses S3. |
+| | A local file (the default) | One machine that always runs the evals. |
+| **Report** | [Cloudflare Pages with Access](/docs/team/report-cloudflare/) | Free for up to 50 people; sign-in by email code or SSO. |
+| | [S3 and CloudFront with a sign-in](/docs/team/report-aws/) | Teams that keep everything in AWS. |
+| **Runs** | [GitHub Actions](/docs/team/ci/) | Scheduled runs, with results in S3. |
+
+For the alert, see [Setting up alerts](/docs/alerts/).
+
+<span id="your-setup-your-responsibility"></span>
+
+:::caution[Your setup, your responsibility]
+These guides show one way to host honest-agent that we tested. They aren't a security
+review of your setup. Check every setting against your own infrastructure and policies:
+who can open the report, who can read and write the results, where your data is stored,
+and how credentials are handled. Cloud consoles change often, so menu names may differ
+from what you see.
+:::

@@ -39,7 +39,17 @@ export default defineConfig({
         { label: 'Running evals', link: '/docs/running-evals/' },
         { label: 'The report', link: '/docs/report/' },
         { label: 'Setting up alerts', link: '/docs/alerts/' },
-        { label: 'Running it for a team', link: '/docs/team/' },
+        {
+          label: 'Running it for a team',
+          items: [
+            { label: 'Overview', link: '/docs/team/' },
+            { label: 'Store results in MotherDuck', link: '/docs/team/results-motherduck/' },
+            { label: 'Store results in S3', link: '/docs/team/results-s3/' },
+            { label: 'Host the report on Cloudflare', link: '/docs/team/report-cloudflare/' },
+            { label: 'Host the report on AWS', link: '/docs/team/report-aws/' },
+            { label: 'Run it in GitHub Actions', link: '/docs/team/ci/' },
+          ],
+        },
         {
           label: 'Reference',
           items: [

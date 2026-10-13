@@ -35,8 +35,8 @@ Run 7d2e41a0-3c55-4f0b-9a61-2b8e5d90c417 complete. Next: `honest-agent report` /
 - **The exit code:** `run` exits with 0 when every eval meets its thresholds, and 1 when
   any falls below, like a failing test. It also exits with 1 when the run itself fails,
   for example when the MCP server can't be reached. In CI, the job fails on a regression;
-  [Running it for a team](/docs/team/) shows how to still publish the report and send the
-  alert.
+  [Run it in GitHub Actions](/docs/team/ci/) shows how to still publish the report and
+  send the alert.
 - **Step limit:** an agent gets 5 steps per question by default (a step is one model call
   and the tool calls it asks for). An eval that runs out fails with "hit the step limit
   without a final answer". Raise it with `max_tool_steps` in the config, at the top level
@@ -126,7 +126,7 @@ config, or pass `--results-path`:
   `HONEST_AGENT_RESULTS_TOKEN`. Use a token that can only reach the results database, not
   your warehouse.
 - **S3:** honest-agent doesn't copy files to S3 itself. Download the file before a run and
-  upload it after; [Running it for a team](/docs/team/) has the commands.
+  upload it after; [Store results in S3](/docs/team/results-s3/) has the commands.
 
 :::caution[Your results contain what the agent saw]
 The results keep everything each run sent and received, including what the agent's
