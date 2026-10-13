@@ -19,7 +19,7 @@ from pathlib import Path
 import click
 
 DOCS = "https://thehonestagent.dev/docs"
-CONFIG_DOCS = f"{DOCS}/connect/"
+CONFIG_DOCS = f"{DOCS}/reference/config/"
 EVAL_DOCS = f"{DOCS}/writing-evals/"
 S3_DOCS = f"{DOCS}/team/results-s3/"
 

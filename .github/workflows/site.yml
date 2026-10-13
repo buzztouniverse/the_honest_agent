@@ -1,14 +1,15 @@
 name: Site
 
-# Builds the landing page and docs in site/. The site uses the design system in
-# ui/src/ds, so a change there rebuilds it too. No deploy yet: hosting isn't chosen.
+# Builds the landing page and docs in site/, and checks that the generated Reference
+# pages match the CLI. The site uses the design system in ui/src/ds and documents cli/,
+# so a change in either runs this too. No deploy yet.
 on:
   push:
     branches: [main]
-    paths: ["site/**", "ui/src/ds/**", ".github/workflows/site.yml"]
+    paths: ["site/**", "ui/src/ds/**", "cli/honest_agent/**", ".github/workflows/site.yml"]
   pull_request:
     branches: [main]
-    paths: ["site/**", "ui/src/ds/**", ".github/workflows/site.yml"]
+    paths: ["site/**", "ui/src/ds/**", "cli/honest_agent/**", ".github/workflows/site.yml"]
 
 jobs:
   build:
@@ -24,6 +25,15 @@ jobs:
           node-version: 22
           cache: npm
           cache-dependency-path: site/package-lock.json
+
+      - uses: astral-sh/setup-uv@v6
+
+      # The Reference pages are generated from the CLI: regenerate and fail if they changed.
+      - name: Check the Reference pages are up to date
+        working-directory: .
+        run: |
+          uv run --directory cli python ../site/scripts/generate_reference.py
+          git diff --exit-code site/src/content/docs/docs/reference
 
       - run: npm ci
       - run: npm run build
