@@ -22,15 +22,19 @@ import { Logo } from '@ds';
       </div>
     </div>
 
-    <!-- The video's content is not decided yet. -->
     <div class="video">
-      <div class="ph" role="img" aria-label="Video placeholder">
-        <span class="play">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"></path></svg>
-        </span>
-        <span class="lbl">Video placeholder</span>
-        <span class="txt">The problem, explained visually. Scenes to be decided.</span>
-      </div>
+      <!-- Silent, so it autoplays muted and loops, like a GIF. With "reduce motion" on, it
+           stays on the poster with controls instead (see the script below). -->
+      <video
+        class="vid"
+        src="https://media.thehonestagent.dev/hero.mp4"
+        poster="/assets/hero-poster.jpg"
+        muted
+        loop
+        playsinline
+        preload="metadata"
+        aria-label="A short demo: an analytics agent gives a wrong revenue number for an investor update. honest-agent runs evals with known answers, catches the mistake, and the report shows why, before it reaches investors."
+      ></video>
     </div>
   </div>
 </header>
@@ -54,10 +58,7 @@ import { Logo } from '@ds';
 .s-hero .b2{background:var(--paper);border:1px solid var(--border-2);color:var(--fg-1)}
 .s-hero .b2:hover{background:var(--bg-sunken)}
 .s-hero .video{width:100%;max-width:960px}
-.s-hero .ph{width:100%;aspect-ratio:16/9;box-sizing:border-box;border-radius:16px;background:var(--paper);border:1.5px dashed var(--green-300);box-shadow:0 1px 2px rgba(28,42,34,.06);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:24px}
-.s-hero .play{display:inline-flex;align-items:center;justify-content:center;width:64px;height:64px;border-radius:999px;background:var(--accent-soft);color:var(--green-700)}
-.s-hero .lbl{font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-3)}
-.s-hero .txt{max-width:360px;font-size:14px;color:var(--fg-2)}
+.s-hero .vid{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:16px;background:var(--paper);box-shadow:0 1px 2px rgba(28,42,34,.06),0 12px 32px rgba(28,42,34,.10)}
 @media (max-width:900px){
  .s-hero{min-height:0}
  .s-hero .nav{padding:16px}
@@ -66,3 +67,15 @@ import { Logo } from '@ds';
  .s-hero .sub{font-size:21px}
 }
 </style>
+
+<script>
+  const video = document.querySelector<HTMLVideoElement>('.s-hero .vid');
+  if (video) {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      video.controls = true;
+    } else {
+      // A browser that blocks autoplay still gets a way to start it.
+      video.play().catch(() => (video.controls = true));
+    }
+  }
+</script>

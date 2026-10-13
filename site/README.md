@@ -20,7 +20,23 @@ npm run build    # static site in dist/
 - `src/content/docs/docs/`: the docs pages, in Markdown, served at `/docs/...`.
   Starlight's config (sidebar, theme) is in `astro.config.mjs`;
   `src/styles/docs.css` maps its colours and fonts to the design system tokens.
-- `public/assets/`: the robot and the report screenshots from `design/assets/`.
+- `public/assets/`: the robot, the report screenshots from `design/assets/`, and
+  `hero-poster.jpg`, the hero video's first frame (shown before it plays and when
+  "reduce motion" is on).
+
+## The hero video
+
+The video is too big to keep in git, so it's served from Cloudflare R2: the bucket
+`honest-agent-media`, at `https://media.thehonestagent.dev/hero.mp4`. It's silent, and
+autoplays muted and loops. The local copy is in `media/` (ignored by git).
+
+To replace it, upload the new cut under a new name, so browsers don't keep the old one,
+then change `src` in `src/components/sections/Hero.astro` and update the poster:
+
+```sh
+npx wrangler r2 object put honest-agent-media/hero-v2.mp4 --file media/hero-v2.mp4 --content-type video/mp4 --remote
+```
+
 
 ## Reference pages
 
@@ -84,7 +100,6 @@ See `scripts/report-screenshots/README.md` to regenerate them.
 
 ## Still open
 
-- The hero video (placeholder).
 - "Live demo" in the nav (`#live-demo`), and the LinkedIn and Substack links
   in the footer (`#linkedin`, `#substack`).
 - Hosting: the site's address is `https://thehonestagent.dev` (the domain is on
