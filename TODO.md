@@ -129,7 +129,7 @@ filter are gone (grader/agent model defaults were already removed).
 Left on purpose, low value for now (small, rarely-changing code):
 
 - **Stale comments:** Claude-only wording in provider-neutral code
-  (`agent_runner.py` docstrings, `--max-tool-turns` help, `storage.py` token
+  (`agent_runner.py` docstrings, `storage.py` token
   comment, `mcp_agent_runner.py` "MCP backend selected"); references to
   removed things (the eval YAML `tools:` key in `sql_capture.py`, the dbt
   `schema.yml` in `eval_loader.py`, the old `exact` method in `grading.py`);

@@ -87,7 +87,7 @@ honest-agent notify [OPTIONS]
 
 - **`--target TEXT`**: Target (agent) from honest_agent_config.yml to alert on. Defaults to its default_target.
 - **`--results-path TEXT`**: Local DuckDB file where results are stored (created on first `run`), or a MotherDuck database as md:&lt;name>, opened with HONEST_AGENT_RESULTS_TOKEN.
-- **`--webhook-url TEXT`**:  *(environment variable `SLACK_WEBHOOK_URL`)*
+- **`--webhook-url TEXT`**: The Slack incoming webhook to post the alert to. *(environment variable `SLACK_WEBHOOK_URL`)*
 - **`--report-url TEXT`**: Where the report is published, so the alert links to each failing eval. *(environment variable `HONEST_AGENT_REPORT_URL`)*
 
 ## `rebuild`
@@ -126,7 +126,7 @@ honest-agent run [OPTIONS]
 - **`--results-path TEXT`**: Local DuckDB file where results are stored (created on first `run`), or a MotherDuck database as md:&lt;name>, opened with HONEST_AGENT_RESULTS_TOKEN.
 - **`--model TEXT`**: Model to evaluate (the agent under test): a Claude model, or an OpenAI one (gpt-*, o3, o4-mini, ...). Only the API key for its provider is needed. Defaults to claude-haiku-4-5 if ANTHROPIC_API_KEY is set, else gpt-5.4-mini if OPENAI_API_KEY is set. *(environment variable `HONEST_AGENT_MODEL`)*
 - **`--judge-model TEXT`**: Model that grades extract_match/llm_judge evals. Defaults to --model. A fixed judge across runs keeps comparisons between agent models fair. *(environment variable `HONEST_AGENT_JUDGE_MODEL`)*
-- **`--max-tool-steps INTEGER RANGE`**: Max steps per eval before giving up: each step is one model API call and the tool calls it asks for. If Claude is still requesting tools when this is hit, that eval fails with a clear error instead of silently returning an empty answer. *(default `5`)*
+- **`--max-tool-steps INTEGER RANGE`**: Max steps per eval before giving up: each step is one model API call and the tool calls it asks for. If the model still wants to call tools when this is hit, that eval fails with a clear error instead of silently returning an empty answer. *(default `5`)*
 - **`--mcp-command TEXT`**: Shell command launching a local MCP server over stdio, e.g. "python mcp_server/server.py". Mutually exclusive with --mcp-url; when given on the command line, it overrides an MCP_URL set in the environment. *(environment variable `MCP_COMMAND`)*
 - **`--mcp-url TEXT`**: URL of a remote MCP server's streamable-HTTP endpoint. Mutually exclusive with --mcp-command; when given on the command line, it overrides an MCP_COMMAND set in the environment. *(environment variable `MCP_URL`)*
 - **`--mcp-bearer-token TEXT`**: [--mcp-url only] Bearer token sent as the Authorization header. *(environment variable `MCP_BEARER_TOKEN`)*
@@ -144,5 +144,5 @@ honest-agent serve [OPTIONS]
 ```
 
 - **`--out DIRECTORY`**: Report folder (web UI + data/report.json). *(default `honest_agent_report`)*
-- **`--port INTEGER`**:  *(default `8000`)*
-- **`--open-browser / --no-open-browser`**:  *(default `--open-browser`)*
+- **`--port INTEGER`**: Port to serve the report on, at http://127.0.0.1:&lt;port>/. *(default `8000`)*
+- **`--open-browser / --no-open-browser`**: Open the report in your browser. *(default `--open-browser`)*
