@@ -380,9 +380,9 @@ targets:
 - Each run stores the defaults it used, so `honest-agent rebuild` gives the same
   result even if you change them later.
 - **A wrong default fails silently:** provenance would place tables where they
-  aren't. Declare only what your server's connection really uses. Snowflake's
-  managed MCP server has no default database (bare names fail there), so it
-  needs none.
+  aren't. Declare only what your server's connection really uses. For
+  Snowflake's managed MCP server, check where its queries start first: its
+  docs don't say.
 - A server that opens a new connection per tool call (the demo does) doesn't
   keep a `use` from one call to the next, though provenance assumes it does.
   With several schemas on a search path, a default can only name the first.
@@ -510,46 +510,21 @@ those clients rely on to register automatically). PAT, by contrast, is just
 a bearer token — exactly what `--mcp-bearer-token`/`MCP_BEARER_TOKEN` already
 handles, no new code needed.
 
-### Generating a PAT
+### Getting a PAT
 
-Snowflake requires a **network policy** to be attached before it'll issue a
-PAT usable for authentication ([PAT guide][pat-guide], [network policy
-guide][network-policy-guide]) — for a `service`-type user specifically (the
-right type for a non-human/automated credential like this), it's required
-even to *generate* the token, not just to use it afterward. Run this as a
-role with `create user`/`create role` privileges, e.g. `accountadmin`:
+Set this up with Snowflake's docs, the way your account's security rules allow;
+honest-agent only needs the token. In short:
 
-```sql
--- a dedicated role, scoped to only what's needed
-create role if not exists <role_name>;
-grant usage on warehouse <warehouse_name> to role <role_name>;
-grant usage on database <database_name> to role <role_name>;
-grant usage on schema <database_name>.<schema_name> to role <role_name>;
-grant select on table <database_name>.<schema_name>.<table_name> to role <role_name>;  -- repeat per table in use
-
--- a service user -- no password/MFA, meant for programmatic access like this
-create user if not exists <user_name>
-    type = service
-    default_role = <role_name>
-    default_warehouse = <warehouse_name>;
-grant role <role_name> to user <user_name>;
-
--- a network policy must exist on the user before a PAT can be generated
--- (current docs recommend `allowed_network_rule_list` over the legacy
--- `allowed_ip_list` used here -- either works, but network rules are the
--- forward-looking option if you're setting this up fresh)
-create network policy <network_policy_name>
-    allowed_ip_list = ('0.0.0.0/0');  -- or a specific IP/CIDR -- see [network-policy-guide]
-alter user <user_name> set network_policy = <network_policy_name>;
-
--- generate the token -- shown once, save it immediately
-alter user <user_name> add programmatic access token <token_name>
-    role_restriction = '<role_name>'
-    days_to_expiry = 90;
-```
-
-Put the returned token in `.env` as `SNOWFLAKE_MCP_TOKEN=...` (the variable the target's `bearer_token_env` names) ([`ALTER USER ...
-ADD PROGRAMMATIC ACCESS TOKEN` reference][alter-user-pat]).
+1. A role that can only read the tables the agent needs, and a `service`-type
+   user with that role.
+2. A network policy on the user: Snowflake requires one before it issues a PAT
+   for a service user ([PAT guide][pat-guide], [network policy
+   guide][network-policy-guide]). Allow only the addresses honest-agent runs
+   from.
+3. A PAT for the user, restricted to that role ([`ALTER USER ... ADD
+   PROGRAMMATIC ACCESS TOKEN` reference][alter-user-pat]). Put it in `.env` as
+   `SNOWFLAKE_MCP_TOKEN=...` (the variable the target's `bearer_token_env`
+   names).
 
 ### The MCP server object and its URL
 
