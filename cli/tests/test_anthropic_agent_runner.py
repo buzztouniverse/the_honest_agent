@@ -7,7 +7,7 @@ import asyncio
 import copy
 from dataclasses import dataclass, field
 
-from honest_agent.anthropic_agent_runner import AnthropicMCPAgentClient, _mcp_tool_to_anthropic_schema
+from honest_agent.anthropic_agent_runner import MAX_TOKENS, AnthropicMCPAgentClient, _mcp_tool_to_anthropic_schema
 
 
 @dataclass
@@ -143,7 +143,7 @@ def test_a_model_calls_request_leaves_out_what_earlier_events_hold():
     first, second = recorder.calls[0][2], recorder.calls[2][2]
     assert first == {
         "model": "claude-test",
-        "max_tokens": 1024,
+        "max_tokens": MAX_TOKENS,
         "tools": ["calculator"],
         "messages": [{"role": "user", "content": "What is 1+1?"}],
     }

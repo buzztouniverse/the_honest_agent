@@ -14,7 +14,7 @@ from datetime import datetime, timedelta, timezone
 from typing import Any, NamedTuple
 
 from .eval_loader import EvalDefinition
-from .grading import score
+from .grading import CUT_OFF_REPLY, Grade, score
 from .llm import OPENAI, response_stop, response_text, response_tokens
 from .provenance import check_provenance
 from .raw import honest_agent_version
@@ -105,10 +105,28 @@ def conversation(prompt: str, events: list[dict]) -> list[dict]:
     return trace
 
 
+# Why a reply stopped when the model hit its output cap: Anthropic's and OpenAI's words.
+_CUT_OFF_STOPS = ("max_tokens", "length")
+CUT_OFF_ANSWER = "[honest-agent error] The agent's reply was cut off at its token limit"
+
+
+def cut_off(event: dict) -> bool:
+    """Whether a recorded model or grading call stopped at its output cap."""
+    return response_stop(event["provider"], event["response"]) in _CUT_OFF_STOPS
+
+
+def _limit(event: dict) -> str:
+    cap = event["request"].get("max_tokens")
+    return f" ({cap} tokens)" if cap else ""
+
+
 def agent_answer(events: list[dict], max_tool_steps: int) -> tuple[str, bool]:
     """(the agent's final answer, whether it ran out of steps). The answer is the
-    text of its last reply; a last reply still asking for tools means the loop ran out."""
+    text of its last reply; a last reply still asking for tools means the loop ran out,
+    and one cut off at its token limit is reported as such rather than graded as an answer."""
     replies = [e for e in events if e["kind"] == "model_call" and e["response"] is not None]
+    if replies and cut_off(replies[-1]):
+        return f"{CUT_OFF_ANSWER}{_limit(replies[-1])} before it finished. See agent_trace for detail.", False
     if not replies or _wants_tools(replies[-1]):
         return (
             f"[honest-agent error] Exceeded max_tool_steps={max_tool_steps} without a final answer -- "
@@ -166,14 +184,17 @@ def derive_result(con, result_id: str) -> Derived:
 
     grading = next((e for e in events if e["kind"] == "grading_call"), None)
     reply = response_text(grading["provider"], grading["response"]) if grading else None
-    grade = score(
-        definition.grading_method,
-        answer,
-        definition.expected_answer,
-        reply,
-        definition.tolerance,
-        definition.tolerance_percent,
-    )
+    if grading and cut_off(grading):
+        grade = Grade(0.0, f"{CUT_OFF_REPLY}{_limit(grading)}", None)
+    else:
+        grade = score(
+            definition.grading_method,
+            answer,
+            definition.expected_answer,
+            reply,
+            definition.tolerance,
+            definition.tolerance_percent,
+        )
 
     sql_calls = extract_sql_calls(trace, definition.sql_fields, settings.get("ignore_tools", []))
     # Only SQL the agent sent and that ran counts toward provenance: a query that

@@ -18,7 +18,8 @@ from recorded import (
     tool_use,
 )
 
-from honest_agent.derive import derive_result
+from honest_agent.derive import CUT_OFF_ANSWER, derive_result
+from honest_agent.grading import CUT_OFF_REPLY
 from honest_agent.storage import connect
 
 SQL = "select sum(revenue) from agent_quiz_demo.public.lineitem"
@@ -122,6 +123,55 @@ def test_a_last_reply_still_asking_for_tools_means_the_agent_ran_out_of_steps(tm
     assert row["agent_answer"].startswith("[honest-agent error] Exceeded max_tool_steps=5")
     assert row["accuracy_score"] == 0.0
     assert (row["steps"], row["max_steps"], row["hit_step_limit"]) == (1, 5, True)
+
+
+def _cut_off(reply: dict) -> dict:
+    return {**reply, "stop_reason": "max_tokens"}
+
+
+def test_a_reply_cut_off_at_the_token_limit_is_reported_not_graded_as_an_answer(tmp_path: Path):
+    path = str(tmp_path / "results.duckdb")
+    cut = (
+        "model_call",
+        "anthropic",
+        {"model": "claude-test", "max_tokens": 8192, "messages": []},
+        _cut_off(claude_reply(text("Revenue was 3"))),
+    )
+    record(path, [cut])
+
+    row = _derive(path)
+
+    assert row["agent_answer"].startswith(CUT_OFF_ANSWER + " (8192 tokens)")
+    assert row["hit_step_limit"] is False
+    assert row["accuracy_score"] == 0.0
+
+
+def test_an_openai_reply_cut_off_at_its_length_limit_is_reported_too(tmp_path: Path):
+    path = str(tmp_path / "results.duckdb")
+    reply = {"choices": [{"finish_reason": "length", "message": {"content": "Revenue"}}], "usage": {}}
+    record(path, [model_call(reply, provider="openai")])
+
+    assert _derive(path)["agent_answer"].startswith(CUT_OFF_ANSWER)
+
+
+def test_a_grading_reply_cut_off_at_the_token_limit_says_so(tmp_path: Path):
+    path = str(tmp_path / "results.duckdb")
+    cut = (
+        "grading_call",
+        "anthropic",
+        {"model": "claude-judge", "max_tokens": 2048, "prompt": "..."},
+        _cut_off(claude_reply(text('{"extracted_answ'))),
+    )
+    record(
+        path,
+        [model_call(claude_reply(text("It was 2297."))), cut],
+        eval_definition=definition(grading_method="extract_match", expected_answer="2297"),
+    )
+
+    row = _derive(path)
+
+    assert row["accuracy_score"] == 0.0
+    assert row["accuracy_rationale"] == f"{CUT_OFF_REPLY} (2048 tokens)"
 
 
 def test_a_tool_result_flagged_as_an_error_shows_as_one(tmp_path: Path):
