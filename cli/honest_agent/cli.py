@@ -264,11 +264,12 @@ _model_options = _options(
         "else gpt-5.4-mini if OPENAI_API_KEY is set.",
     ),
     click.option(
-        "--judge-model",
-        envvar="HONEST_AGENT_JUDGE_MODEL",
+        "--grading-model",
+        envvar="HONEST_AGENT_GRADING_MODEL",
         default=None,
-        help="Model that grades extract_match/llm_judge evals. Defaults to --model. A fixed judge across "
-        "runs keeps comparisons between agent models fair.",
+        help="Model for grading: it pulls the value out of the answer for extract_match evals and judges "
+        "the answer for llm_judge ones (contains needs none). Defaults to --model. Keeping it the same "
+        "across runs keeps comparisons between agent models fair.",
     ),
 )
 _mcp_options = _options(
@@ -346,7 +347,7 @@ def run(
     evals_dir: str | None,
     results_path: str | None,
     model: str | None,
-    judge_model: str | None,
+    grading_model: str | None,
     max_tool_steps: int,
     mcp_command: str | None,
     mcp_url: str | None,
@@ -362,10 +363,10 @@ def run(
     if chosen:
         click.echo(f"Target: {chosen.name} ({config.path})")
 
-    # Without targets, the file's top-level model/judge_model/max_tool_steps still apply.
+    # Without targets, the file's top-level model/grading_model/max_tool_steps still apply.
     layer = chosen or (Target("config", config.shared) if config else None)
     model = _from_layers(ctx, "model", model, layer)
-    judge_model = _from_layers(ctx, "judge_model", judge_model, layer)
+    grading_model = _from_layers(ctx, "grading_model", grading_model, layer)
     max_tool_steps = _from_layers(ctx, "max_tool_steps", max_tool_steps, layer)
     evals_dir = _evals_dir(evals_dir, chosen)
     if chosen:
@@ -380,13 +381,13 @@ def run(
                 "No model API key set. Add ANTHROPIC_API_KEY (Claude) or OPENAI_API_KEY (GPT) to .env, or export it."
             )
         click.echo(f"No --model given; using {model} ({API_KEY_ENV[provider_for(model)]} is set).")
-    judge_model = judge_model or model
-    providers = {provider_for(model), provider_for(judge_model)}
+    grading_model = grading_model or model
+    providers = {provider_for(model), provider_for(grading_model)}
     missing = [API_KEY_ENV[p] for p in sorted(providers) if not os.environ.get(API_KEY_ENV[p])]
     if missing:
         raise click.ClickException(
             f"{' and '.join(missing)} not set. `honest-agent run` needs the API key for the provider of "
-            f"--model ({model}) and --judge-model ({judge_model}). Export it or add it to .env."
+            f"--model ({model}) and --grading-model ({grading_model}). Export it or add it to .env."
         )
     mcp_command, mcp_url, mcp_bearer_token = _resolve_server(ctx, mcp_command, mcp_url, mcp_bearer_token, chosen)
     mcp_cwd, env_names = _mcp_launch(config, chosen, mcp_command, mcp_env)
@@ -410,7 +411,7 @@ def run(
                 default_schema=chosen.settings.get("default_schema") if chosen else None,
                 mcp_cwd=mcp_cwd,
                 mcp_env=env_names,
-                judge_model=judge_model,
+                grading_model=grading_model,
             )
         )
     except RunError as exc:
@@ -472,7 +473,7 @@ def debug(
     evals_dir: str | None,
     results_path: str | None,
     model: str | None,
-    judge_model: str | None,
+    grading_model: str | None,
     mcp_command: str | None,
     mcp_url: str | None,
     mcp_bearer_token: str | None,
@@ -507,14 +508,14 @@ def debug(
     else:
         report.ok("Config", f"{debug_mod.shown(config.path)}, " + (f"target {chosen.name}" if chosen else "no targets"))
 
-    # The API keys for the model and judge, as `run` picks them.
+    # The API keys for the model and the grading model, as `run` picks them.
     layer = chosen or (Target("config", config.shared) if config else None)
     model = _from_layers(ctx, "model", model, layer) or default_model(os.environ)
-    judge_model = _from_layers(ctx, "judge_model", judge_model, layer) or model
+    grading_model = _from_layers(ctx, "grading_model", grading_model, layer) or model
     if model is None:
         missing.append(f"{API_KEY_ENV['anthropic']} or {API_KEY_ENV['openai']}")
     else:
-        keys = [API_KEY_ENV[p] for p in sorted({provider_for(model), provider_for(judge_model)})]
+        keys = [API_KEY_ENV[p] for p in sorted({provider_for(model), provider_for(grading_model)})]
         needed += keys
         missing += [key for key in keys if not os.environ.get(key)]
     # And what the MCP server needs: its bearer token, or its mcp_env.
@@ -535,7 +536,7 @@ def debug(
     if missing:
         report.failed("Variables", _not_set(missing))
     else:
-        report.ok("Variables", f"{', '.join(dict.fromkeys(needed))} set; model {model}, judge {judge_model}")
+        report.ok("Variables", f"{', '.join(dict.fromkeys(needed))} set; model {model}, grading model {grading_model}")
 
     try:
         evals_dir = _evals_dir(evals_dir, chosen)
@@ -786,7 +787,8 @@ def logs(ctx: click.Context, results_path: str | None, run_id: str | None, eval_
             f"=== eval {evaluation['eval_id']} (run {evaluation['run_id']}, result {evaluation['result_id']}) ==="
         )
         click.echo(
-            f"{run['agent_name']} · {run['model']} · judge {run['judge_model']} · started {evaluation['started_at']}"
+            f"{run['agent_name']} · {run['model']} · grading model {run['judge_model']} "
+            f"· started {evaluation['started_at']}"
         )
         for event in record["events"]:
             provider = f" ({event['provider']})" if event["provider"] else ""

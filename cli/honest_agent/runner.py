@@ -36,7 +36,7 @@ async def eval_loop(
     agent: AgentClient,
     definitions: list[EvalDefinition],
     judge: Judge,
-    judge_model: str,
+    grading_model: str,
     run_id: str,
     recorder: RunRecorder,
     con,
@@ -58,12 +58,12 @@ async def eval_loop(
             prompt = grading_prompt(definition.grading_method, answer, definition.expected_answer, definition.prompt)
             if prompt is not None:
                 schema = GRADING_SCHEMAS[definition.grading_method]
-                request = {"model": judge_model, "max_tokens": GRADING_MAX_TOKENS, "prompt": prompt, "schema": schema}
+                request = {"model": grading_model, "max_tokens": GRADING_MAX_TOKENS, "prompt": prompt, "schema": schema}
                 await record.call(
                     "grading_call",
-                    provider_for(judge_model),
+                    provider_for(grading_model),
                     request,
-                    judge.complete(prompt, model=judge_model, max_tokens=GRADING_MAX_TOKENS, schema=schema),
+                    judge.complete(prompt, model=grading_model, max_tokens=GRADING_MAX_TOKENS, schema=schema),
                 )
             derived = derive_result(con, result_id)
         except Exception as exc:
@@ -101,7 +101,7 @@ async def run_evals(
     default_schema: str | None,
     mcp_cwd: str | None,
     mcp_env: list[str],
-    judge_model: str,
+    grading_model: str,
 ) -> int:
     """Runs the selected evals and stores the results; returns how many fell below
     their thresholds (`run` exits 1 when any did)."""
@@ -122,7 +122,7 @@ async def run_evals(
     from .anthropic_agent_runner import MAX_TOKENS, AnthropicMCPAgentClient
     from .mcp_client import build_mcp_client, describe_connection_error
 
-    judge = make_judge(provider_for(judge_model))
+    judge = make_judge(provider_for(grading_model))
     run_id = str(uuid.uuid4())
     click.echo(f"Starting eval run {run_id} ({len(definitions)} eval{'' if len(definitions) == 1 else 's'})...")
     for warning in number_format_warnings(definitions):
@@ -158,7 +158,7 @@ async def run_evals(
             agent_name=agent_name,
             target=target,
             model=model,
-            judge_model=judge_model,
+            judge_model=grading_model,  # the raw layer's column keeps its first name
             settings={
                 "max_tool_steps": max_tool_steps,
                 "max_tokens": None if openai_agent else MAX_TOKENS,
@@ -178,8 +178,8 @@ async def run_evals(
             agent = OpenAIMCPAgentClient(tool_caller, model=model, tools=tools, max_tool_steps=max_tool_steps)
         else:
             agent = AnthropicMCPAgentClient(tool_caller, model=model, tools=tools, max_tool_steps=max_tool_steps)
-        click.echo(f"Model: {model} · judge model: {judge_model}")
-        rows = await eval_loop(agent, definitions, judge, judge_model, run_id, recorder, con)
+        click.echo(f"Model: {model} · grading model: {grading_model}")
+        rows = await eval_loop(agent, definitions, judge, grading_model, run_id, recorder, con)
     finally:
         con.close()
         await mcp_client.__aexit__(None, None, None)
