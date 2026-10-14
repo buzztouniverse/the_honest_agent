@@ -160,8 +160,8 @@ Use it for names and labels written one way. For numbers, use `extract_match`.
 ### `extract_match`
 
 A model pulls the one value out of the answer and writes it as a plain number,
-whatever the agent's format ("1.284.500,20 €" becomes `1284500.20`). Then code compares
-it with the expected answer.
+whatever the agent's format: "1.284.500,20 €" becomes `1284500.20`, and "$310.33 million"
+becomes `310330000`. Then code compares it with the expected answer.
 
 ```yaml
         grading:
@@ -172,6 +172,9 @@ it with the expected answer.
 
 - Without a tolerance, the value must be exactly right. Set one when the agent may round
   differently.
+- **Agents often round big numbers:** "about $308 million" for `307992639.49`. An absolute
+  `tolerance: 0.01` fails that. For amounts, prefer `tolerance_percent` (for example
+  `0.005`, within 0.5%), and note in a comment what rounding you accept.
 - It expects one value. If the answer lists several numbers, it may pick the wrong one:
   use `llm_judge` instead.
 - Units are dropped: "12%" and "12" become the same value.
