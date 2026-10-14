@@ -75,12 +75,12 @@ def test_existing_files_are_never_overwritten(in_tmp_dir: Path):
     assert "Make sure .env has: ANTHROPIC_API_KEY" in result.output
 
 
-def test_s3_results_print_the_copy_commands(in_tmp_dir: Path):
+def test_s3_results_point_to_the_docs(in_tmp_dir: Path):
     result = _init("--no-input", "--mcp-command", "x", "--results", "s3")
 
     assert result.exit_code == 0, result.output
-    assert "honest-agent won't copy them to S3 for you" in result.output
-    assert "aws s3 cp" in result.output and "docs/hosting.md" in result.output
+    assert "copy it from S3 before each run" in result.output
+    assert "https://thehonestagent.dev/docs/team/results-s3/" in result.output
     assert "results_path" not in (in_tmp_dir / "honest_agent_config.yml").read_text()
 
 

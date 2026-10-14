@@ -21,7 +21,7 @@ import click
 REPO = "https://github.com/jlcoto/the_honest_agent/blob/main"
 CONFIG_DOCS = f"{REPO}/example_project/README.md#the-config-file"
 EVAL_DOCS = f"{REPO}/example_project/README.md#writing-evals"
-HOSTING_DOCS = f"{REPO}/docs/hosting.md"
+S3_DOCS = "https://thehonestagent.dev/docs/team/results-s3/"
 
 # key: (menu label, default target name, URL already known, a hint for the URL prompt)
 SERVERS = {
@@ -183,14 +183,10 @@ def missing_ignores(folder: Path) -> list[str]:
         return []
 
 
-def s3_note(results_path: str = "honest_agent_results/results.duckdb") -> str:
+def s3_note() -> str:
     return (
-        "Results in S3: honest-agent won't copy them to S3 for you. Run the first line before each run, "
-        "the second after (the very first time, only the second):\n"
-        f"  aws s3 cp s3://<bucket>/results/results.duckdb.gz {results_path}.gz"
-        f" && gunzip -t {results_path}.gz && gunzip -f {results_path}.gz\n"
-        f"  gzip -c {results_path} | aws s3 cp - s3://<bucket>/results/results.duckdb.gz\n"
-        f"The bucket, its permissions and CI: {HOSTING_DOCS}"
+        "Results in S3: honest-agent reads and writes a local file, so copy it from S3 before each run\n"
+        f"and back after. How, with the bucket and its permissions: {S3_DOCS}"
     )
 
 
