@@ -245,6 +245,33 @@ def test_grading_is_scored_from_the_recorded_reply(tmp_path: Path):
     assert (row["grading_input_tokens"], row["grading_output_tokens"]) == (10, 5)
 
 
+def test_the_grading_call_is_kept_for_the_report(tmp_path: Path):
+    path = str(tmp_path / "results.duckdb")
+    reply = claude_reply(text('{"extracted_answer": "2297"}'), input_tokens=741, output_tokens=60)
+    reply["usage"]["output_tokens_details"] = {"thinking_tokens": 43}
+    grading = ("grading_call", "anthropic", {"model": "claude-judge", "max_tokens": 2048, "prompt": "..."}, reply)
+    record(
+        path,
+        [model_call(claude_reply(text("It was 2297."))), grading],
+        eval_definition=definition(grading_method="extract_match", expected_answer="2297"),
+    )
+
+    details = json.loads(_derive(path)["grading_call"])
+
+    assert details["model"] == "claude-judge"
+    assert details["reply"] == '{"extracted_answer": "2297"}'
+    assert (details["stop_reason"], details["max_tokens"]) == ("end_turn", 2048)
+    assert (details["input_tokens"], details["output_tokens"], details["thinking_tokens"]) == (741, 60, 43)
+    assert details["duration_ms"] is not None
+
+
+def test_contains_keeps_no_grading_call(tmp_path: Path):
+    path = str(tmp_path / "results.duckdb")
+    record(path, [model_call(claude_reply(text("It was 2297.")))], eval_definition=definition(expected_answer="2297"))
+
+    assert _derive(path)["grading_call"] is None
+
+
 def test_contains_needs_no_grading_model(tmp_path: Path):
     path = str(tmp_path / "results.duckdb")
     record(path, [model_call(claude_reply(text("The answer is 4.")))])

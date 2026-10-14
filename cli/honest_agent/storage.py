@@ -133,6 +133,10 @@ _TRACES_COLUMNS: list[tuple[str, str]] = [
     # JSON: each step's tokens, duration and stop reason, and each tool call's duration
     # (derive.step_details). NULL for rows from before the raw layer.
     ("step_details", "varchar"),
+    # JSON: the grading call, for the report's Grading card (derive.grading_details): its
+    # model, reply, tokens (thinking included), duration and why it stopped. NULL when the
+    # method calls no model (contains), or for rows derived before this column existed.
+    ("grading_call", "varchar"),
 ]
 _TRACES_COLUMN_NAMES = [name for name, _ in _TRACES_COLUMNS]
 
