@@ -1021,7 +1021,13 @@ function GradingCard({ r, call }: { r: ResultRow; call: GradingCall | null }) {
   const ok = accuracyPasses(r)
   const notGraded = (r.accuracy_rationale ?? '').startsWith(NOT_GRADED)
   const usesModel = r.accuracy_method !== 'contains'
-  const role = r.accuracy_method === 'extract_match' ? 'extraction model' : 'grading model'
+  // The chip names the setting (grading_model); this line says what the model did with it.
+  const role =
+    r.accuracy_method === 'extract_match'
+      ? 'The grading model pulled the value out of the answer; code compared it with the expected one.'
+      : r.accuracy_method === 'llm_judge'
+        ? 'The grading model judged the answer and gave it a score.'
+        : null
   const model = call?.model ?? r.grading_model
   const stop = call ? stopWords(call) : null
   const copy = () =>
@@ -1043,6 +1049,7 @@ function GradingCard({ r, call }: { r: ResultRow; call: GradingCall | null }) {
       }
     >
       <span style={{ ...traceMono(12.5, 'var(--fg-3)'), marginTop: -8 }}>{r.accuracy_method}</span>
+      {role ? <p style={{ ...para, color: 'var(--fg-2)', marginTop: -6 }}>{role}</p> : null}
       {notGraded ? <p style={{ ...para, color: 'var(--acc-mostly-ink)' }}>{r.accuracy_rationale}</p> : null}
       {!usesModel ? (
         <p style={{ ...para, color: 'var(--fg-2)' }}>
@@ -1099,7 +1106,7 @@ function GradingCard({ r, call }: { r: ResultRow; call: GradingCall | null }) {
         </div>
       )}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-        <Badge mono>{usesModel ? `${role} ${model ?? ''}`.trim() : 'graded in code, no model call'}</Badge>
+        <Badge mono>{usesModel ? `grading model ${model ?? ''}`.trim() : 'graded in code, no model call'}</Badge>
       </div>
     </Card>
   )
