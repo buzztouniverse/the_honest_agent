@@ -21,7 +21,7 @@ import click
 REPO = "https://github.com/jlcoto/the_honest_agent/blob/main"
 CONFIG_DOCS = f"{REPO}/example_project/README.md#the-config-file"
 EVAL_DOCS = f"{REPO}/example_project/README.md#writing-evals"
-HOSTING_DOCS = f"{REPO}/docs/hosting.md"
+S3_DOCS = "https://thehonestagent.dev/docs/team/results-s3/"
 
 # key: (menu label, default target name, URL already known, a hint for the URL prompt)
 SERVERS = {
@@ -183,14 +183,10 @@ def missing_ignores(folder: Path) -> list[str]:
         return []
 
 
-def s3_note(results_path: str = "honest_agent_results/results.duckdb") -> str:
+def s3_note() -> str:
     return (
-        "Results in S3: honest-agent won't copy them to S3 for you. Run the first line before each run, "
-        "the second after (the very first time, only the second):\n"
-        f"  aws s3 cp s3://<bucket>/results/results.duckdb.gz {results_path}.gz"
-        f" && gunzip -t {results_path}.gz && gunzip -f {results_path}.gz\n"
-        f"  gzip -c {results_path} | aws s3 cp - s3://<bucket>/results/results.duckdb.gz\n"
-        f"The bucket, its permissions and CI: {HOSTING_DOCS}"
+        "Results in S3: honest-agent reads and writes a local file, so copy it from S3 before each run\n"
+        f"and back after. How, with the bucket and its permissions: {S3_DOCS}"
     )
 
 
@@ -275,6 +271,8 @@ def write_example(folder: Path, provider: str) -> None:
 SKILL_NAME = "honest-agent-setup"
 SKILL_SOURCE = Path(__file__).parent / "skill" / SKILL_NAME
 SKILL_FOLDERS = (".agents/skills", ".claude/skills")
+ENTER_HINT = "A few questions to set up this folder. Press Enter to keep the value in [brackets]."
+SKILL_HINT = "At the end, you can add a skill so your coding agent helps with the rest."
 ASK_FOR_SKILL = "Continue the setup with a coding agent? (It helps connect your MCP server and write your first evals.)"
 
 
@@ -348,6 +346,8 @@ def _ask(question: str, given: str | None, default: str | None, no_input: bool, 
 
 
 def prompt_example(model_provider: str | None, no_input: bool, with_skill: bool = False) -> None:
+    if model_provider is None and not no_input:
+        click.echo(ENTER_HINT + "\n")
     providers = {key: label for key, (label, _var) in PROVIDERS.items()}
     provider = _choose("Which model runs the agent?", providers, model_provider, "anthropic", no_input)
     folder = Path.cwd() / EXAMPLE_FOLDER
@@ -389,6 +389,9 @@ def prompt_project(
 ) -> None:
     """`honest-agent init`: asks what isn't given by a flag, writes the files, says what's next.
     Adds the setup skill with --with-skill, or when asked and the user doesn't say no."""
+    if not no_input and (None in (server, model_provider, results) or not with_skill):
+        # Said once up front: click shows a default as `[value]` without saying what it is.
+        click.echo(ENTER_HINT + ("" if with_skill else "\n" + SKILL_HINT) + "\n")
     servers = {key: label for key, (label, *_rest) in SERVERS.items()}
     server = _choose("Which MCP server does your agent use?", servers, server, "local", no_input)
     _label, default_target, known_url, url_hint = SERVERS[server]
@@ -397,12 +400,18 @@ def prompt_project(
     else:
         prompt = "MCP server URL" + (f" ({url_hint})" if url_hint and not known_url else "")
         mcp_url = _ask(prompt, mcp_url, known_url, no_input, "--mcp-url")
-    target = target_name or (default_target if no_input else click.prompt("Target name", default=default_target))
+    target = target_name or default_target  # not asked, as dbt init does; --target-name or the config renames it
     providers = {key: label for key, (label, _var) in PROVIDERS.items()}
     provider = _choose("Which model runs the agent?", providers, model_provider, "anthropic", no_input)
     results = _choose("Where should results live?", RESULTS, results, "local", no_input)
     if results == "motherduck":
-        results_db = _ask("MotherDuck database for results", results_db, "honest_agent_results", no_input, "")
+        results_db = _ask(
+            "Name of the MotherDuck database where results will be stored (created if it doesn't exist)",
+            results_db,
+            "honest_agent_results",
+            no_input,
+            "",
+        )
 
     answers = Answers(
         server=server,

@@ -18,6 +18,7 @@ def test_no_input_writes_a_local_project_that_loads(in_tmp_dir: Path):
     result = _init("--no-input", "--mcp-command", "uv run python server.py")
 
     assert result.exit_code == 0, result.output
+    assert "Press Enter" not in result.output
     assert "Created honest_agent_config.yml, evals/first_eval.yml, .env" in result.output
     target = load_config(in_tmp_dir / "honest_agent_config.yml").target(None)
     assert target.name == "local"
@@ -29,9 +30,9 @@ def test_no_input_writes_a_local_project_that_loads(in_tmp_dir: Path):
 
 
 def test_prompts_put_a_snowflake_url_in_env_and_read_it_with_env_var(in_tmp_dir: Path, monkeypatch):
-    # server 2 (Snowflake), the URL, default target name, model 2 (OpenAI), results 2 (MotherDuck), default db,
+    # server 2 (Snowflake), the URL, model 2 (OpenAI), results 2 (MotherDuck), default db,
     # no setup skill
-    result = _init(input=f"2\n{SNOWFLAKE_URL}\n\n2\n2\n\nn\n")
+    result = _init(input=f"2\n{SNOWFLAKE_URL}\n2\n2\n\nn\n")
 
     assert result.exit_code == 0, result.output
     env = (in_tmp_dir / ".env").read_text()
@@ -74,12 +75,12 @@ def test_existing_files_are_never_overwritten(in_tmp_dir: Path):
     assert "Make sure .env has: ANTHROPIC_API_KEY" in result.output
 
 
-def test_s3_results_print_the_copy_commands(in_tmp_dir: Path):
+def test_s3_results_point_to_the_docs(in_tmp_dir: Path):
     result = _init("--no-input", "--mcp-command", "x", "--results", "s3")
 
     assert result.exit_code == 0, result.output
-    assert "honest-agent won't copy them to S3 for you" in result.output
-    assert "aws s3 cp" in result.output and "docs/hosting.md" in result.output
+    assert "copy it from S3 before each run" in result.output
+    assert "https://thehonestagent.dev/docs/team/results-s3/" in result.output
     assert "results_path" not in (in_tmp_dir / "honest_agent_config.yml").read_text()
 
 
@@ -171,11 +172,17 @@ def _skill_folders(folder: Path) -> list[Path]:
 
 
 def test_init_asks_for_the_setup_skill_and_yes_is_the_default(in_tmp_dir: Path):
-    # server 1 (local), its command, default target, default model, default results, Enter at the skill question
-    result = _init(input="1\nuv run python server.py\n\n\n\n\n")
+    # server 1 (local), its command, default model, default results, Enter at the skill question
+    result = _init(input="1\nuv run python server.py\n\n\n\n")
 
     assert result.exit_code == 0, result.output
+    assert result.output.startswith(
+        "A few questions to set up this folder. Press Enter to keep the value in [brackets].\n"
+        "At the end, you can add a skill so your coding agent helps with the rest.\n"
+    )
     assert "Continue the setup with a coding agent?" in result.output
+    assert "Target name" not in result.output
+    assert load_config(in_tmp_dir / "honest_agent_config.yml").target(None).name == "local"
     assert "Added the setup skill in .agents/skills/honest-agent-setup/ and .claude/skills/honest-agent-setup/" in (
         result.output
     )
@@ -186,10 +193,18 @@ def test_init_asks_for_the_setup_skill_and_yes_is_the_default(in_tmp_dir: Path):
 
 
 def test_saying_no_adds_nothing_for_coding_agents(in_tmp_dir: Path):
-    result = _init(input="1\nuv run python server.py\n\n\n\nn\n")
+    result = _init(input="1\nuv run python server.py\n\n\nn\n")
 
     assert result.exit_code == 0, result.output
     assert not (in_tmp_dir / ".agents").exists() and not (in_tmp_dir / ".claude").exists()
+
+
+def test_the_hint_skips_the_skill_line_when_it_is_already_asked_for(in_tmp_dir: Path):
+    result = _init("--with-skill", input="1\nuv run python server.py\n\n\n")
+
+    assert result.exit_code == 0, result.output
+    assert result.output.startswith("A few questions to set up this folder. Press Enter")
+    assert "At the end, you can add a skill" not in result.output
 
 
 def test_no_input_adds_the_skill_only_with_the_flag(in_tmp_dir: Path):
