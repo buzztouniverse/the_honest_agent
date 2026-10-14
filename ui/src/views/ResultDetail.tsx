@@ -215,7 +215,9 @@ function AccuracyCard({ r }: { r: ResultRow }) {
       })
     }
   } else {
-    rows = [{ ...expected, text: true }, { label: 'Agent answer', value: answerText(r.agent_answer), text: true }]
+    // llm_judge gives a score between 0 and 1, so it goes under the answer it scored.
+    const scored = r.accuracy_method === 'llm_judge' ? `score ${pct(r.accuracy_score)}` : undefined
+    rows = [{ ...expected, text: true }, { label: 'Agent answer', hint: scored, value: answerText(r.agent_answer), text: true }]
     if (r.accuracy_method === 'llm_judge') {
       rows.push({
         label: 'Judge',
