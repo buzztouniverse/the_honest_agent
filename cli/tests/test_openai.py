@@ -133,7 +133,7 @@ def _invoke_run(args, env):
             "ANTHROPIC_API_KEY": "",
             "OPENAI_API_KEY": "",
             "HONEST_AGENT_MODEL": "",
-            "HONEST_AGENT_JUDGE_MODEL": "",
+            "HONEST_AGENT_GRADING_MODEL": "",
             **env,
         },
     )
@@ -146,7 +146,7 @@ def test_an_openai_only_run_needs_only_the_openai_key(fake_run, in_tmp_dir):
 
 
 def test_a_missing_key_names_the_provider_it_is_for(fake_run, in_tmp_dir):
-    result = _invoke_run(["--model", "gpt-5.4-mini", "--judge-model", "claude-haiku-4-5"], {"OPENAI_API_KEY": "test"})
+    result = _invoke_run(["--model", "gpt-5.4-mini", "--grading-model", "claude-haiku-4-5"], {"OPENAI_API_KEY": "test"})
 
     assert result.exit_code != 0
     assert "ANTHROPIC_API_KEY not set" in result.output
@@ -156,7 +156,7 @@ def test_without_model_an_openai_only_user_gets_the_openai_default(fake_run, in_
     result = _invoke_run([], {"OPENAI_API_KEY": "test"})
 
     assert result.exit_code == 0, result.output
-    assert (fake_run["model"], fake_run["judge_model"]) == ("gpt-5.4-mini", "gpt-5.4-mini")
+    assert (fake_run["model"], fake_run["grading_model"]) == ("gpt-5.4-mini", "gpt-5.4-mini")
     assert "No --model given; using gpt-5.4-mini (OPENAI_API_KEY is set)" in result.output
 
 

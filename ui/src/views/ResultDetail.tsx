@@ -255,7 +255,7 @@ function AccuracyCard({ r }: { r: ResultRow }) {
               </Badge>
             ))
           : null}
-        {r.accuracy_method === 'llm_judge' && r.grading_model ? <Badge mono>judge {r.grading_model}</Badge> : null}
+        {r.accuracy_method === 'llm_judge' && r.grading_model ? <Badge mono>grading model {r.grading_model}</Badge> : null}
       </div>
     </Card>
   )

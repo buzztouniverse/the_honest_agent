@@ -182,23 +182,23 @@ def _run_capturing_models(fake_run, args: list[str]):
     result = CliRunner().invoke(
         main,
         ["run", "--evals-dir", "evals", "--mcp-command", "python server.py", *args],
-        env={"ANTHROPIC_API_KEY": "test", "HONEST_AGENT_JUDGE_MODEL": ""},
+        env={"ANTHROPIC_API_KEY": "test", "HONEST_AGENT_GRADING_MODEL": ""},
     )
     assert result.exit_code == 0, result.output
-    return {"model": fake_run["model"], "judge_model": fake_run["judge_model"]}
+    return {"model": fake_run["model"], "grading_model": fake_run["grading_model"]}
 
 
-def test_judge_model_defaults_to_the_agent_model(fake_run, in_tmp_dir):
+def test_grading_model_defaults_to_the_agent_model(fake_run, in_tmp_dir):
     assert _run_capturing_models(fake_run, ["--model", "claude-sonnet-5"]) == {
         "model": "claude-sonnet-5",
-        "judge_model": "claude-sonnet-5",
+        "grading_model": "claude-sonnet-5",
     }
 
 
-def test_judge_model_can_differ_from_the_agent_model(fake_run, in_tmp_dir):
-    models = _run_capturing_models(fake_run, ["--model", "claude-sonnet-5", "--judge-model", "claude-haiku-4-5"])
+def test_grading_model_can_differ_from_the_agent_model(fake_run, in_tmp_dir):
+    models = _run_capturing_models(fake_run, ["--model", "claude-sonnet-5", "--grading-model", "claude-haiku-4-5"])
 
-    assert models == {"model": "claude-sonnet-5", "judge_model": "claude-haiku-4-5"}
+    assert models == {"model": "claude-sonnet-5", "grading_model": "claude-haiku-4-5"}
 
 
 @pytest.mark.parametrize(("failures", "exit_code"), [(0, 0), (2, 1)])

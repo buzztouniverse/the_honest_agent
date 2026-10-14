@@ -23,7 +23,7 @@ CLEAN_ENV = {
         "ANTHROPIC_API_KEY",
         "OPENAI_API_KEY",
         "HONEST_AGENT_MODEL",
-        "HONEST_AGENT_JUDGE_MODEL",
+        "HONEST_AGENT_GRADING_MODEL",
         "MCP_COMMAND",
         "MCP_URL",
         "MCP_BEARER_TOKEN",
