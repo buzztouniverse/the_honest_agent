@@ -122,8 +122,21 @@ def missing_config_hint(start: Path) -> str:
     return ""
 
 
+def yaml_error(name: str, exc: yaml.YAMLError) -> str:
+    """A YAML syntax error as one line naming the file, e.g. "evals.yml isn't valid YAML
+    (line 7, column 1): could not find expected ':'"; PyYAML's own says "<unicode string>"."""
+    # Where the broken part starts (e.g. a key missing its ':'), else where PyYAML noticed.
+    mark = getattr(exc, "context_mark", None) or getattr(exc, "problem_mark", None)
+    where = f" (line {mark.line + 1}, column {mark.column + 1})" if mark else ""
+    problem = getattr(exc, "problem", None) or str(exc)
+    return f"{name} isn't valid YAML{where}: {problem}"
+
+
 def load_config(path: Path) -> Config:
-    doc = yaml.safe_load(path.read_text()) or {}
+    try:
+        doc = yaml.safe_load(path.read_text()) or {}
+    except yaml.YAMLError as exc:
+        raise ConfigError(yaml_error(path.name, exc)) from exc
     if not isinstance(doc, dict):
         raise ConfigError(f"{path.name} must be a mapping of settings.")
     _check_keys(doc, _TOP_LEVEL_KEYS, f"{path.name}")

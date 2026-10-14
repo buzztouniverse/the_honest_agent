@@ -194,3 +194,26 @@ def test_a_refused_motherduck_token_shows_motherducks_reason():
     )
     assert motherduck_reason(raw) == "Your request is not authenticated. Please check your MotherDuck token."
     assert motherduck_reason("something else") == "something else"
+
+
+def test_a_config_file_that_isnt_valid_yaml_is_a_failed_check_not_a_crash(demo_project):
+    Path("honest_agent_config.yml").write_text("default_target: demo\ntargets\n  demo:\n    mcp_command: x\n")
+
+    result = _debug()
+
+    assert result.exit_code == 1, result.output
+    assert "Traceback" not in result.output
+    assert _lines(result.output)["Config"].startswith(
+        "FAILED   honest_agent_config.yml isn't valid YAML (line 2, column 1):"
+    )
+
+
+def test_an_eval_file_that_isnt_valid_yaml_is_named(demo_project):
+    Path("evals/b.yml").write_text("evals:\n  - id: q2\n    prompt: x\n       expected_answer: '1'\n")
+
+    result = _debug()
+
+    assert result.exit_code == 1, result.output
+    evals_line = _lines(result.output)["Evals"]
+    assert evals_line.startswith("FAILED   b.yml isn't valid YAML (line 4, column 23):")
+    assert "<unicode string>" not in result.output
