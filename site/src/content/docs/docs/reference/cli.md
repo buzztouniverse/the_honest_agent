@@ -40,7 +40,7 @@ Write a new project's starter files: config, a first eval and .env.
 honest-agent init [OPTIONS]
 ```
 
-- **`--server [local|snowflake|motherduck|url]`**: The MCP server your agent uses.
+- **`--server [snowflake|motherduck|url|local]`**: The MCP server your agent uses.
 - **`--mcp-command TEXT`**: The command that starts a local MCP server (--server local).
 - **`--mcp-url TEXT`**: The MCP server's URL (any other --server); it goes into .env.
 - **`--target-name TEXT`**: The target's name. Defaults to the server's name.
