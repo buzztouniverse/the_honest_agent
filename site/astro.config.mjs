@@ -37,6 +37,7 @@ export default defineConfig({
         { label: 'Connect your agent', link: '/docs/connect/' },
         { label: 'Writing evals', link: '/docs/writing-evals/' },
         { label: 'Running evals', link: '/docs/running-evals/' },
+        { label: 'Storing results', link: '/docs/storing-results/' },
         { label: 'The report', link: '/docs/report/' },
         { label: 'Setting up alerts', link: '/docs/alerts/' },
         {

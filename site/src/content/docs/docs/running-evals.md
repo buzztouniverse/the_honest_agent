@@ -116,17 +116,9 @@ those records. It calls no model, so it costs nothing. `--run-id <id>` rebuilds 
 
 ## Where results are stored
 
-By default, in a DuckDB file in your project: `honest_agent_results/results.duckdb`.
-The folder keeps itself out of git. Every target's results share one store, so the
-report can compare agents. To store them elsewhere, set `results_path` at the top of the
-config, or pass `--results-path`:
-
-- **Another local file:** a path, like `results/evals.duckdb`.
-- **MotherDuck:** `md:<database>`. honest-agent opens it with the token in
-  `HONEST_AGENT_RESULTS_TOKEN`. Use a token that can only reach the results database, not
-  your warehouse.
-- **S3:** honest-agent doesn't copy files to S3 itself. Download the file before a run and
-  upload it after; [Store results in S3](/docs/team/results-s3/) has the commands.
+By default, in a DuckDB file in your project, `honest_agent_results/results.duckdb`. They
+can also live in MotherDuck or in cloud storage: [Storing results](/docs/storing-results/)
+compares the options.
 
 :::caution[Your results contain what the agent saw]
 The results keep everything each run sent and received, including what the agent's

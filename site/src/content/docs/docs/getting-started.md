@@ -79,7 +79,8 @@ uv run honest-agent init
 - its URL, or the command that starts it;
 - a name for the target (the server's name by default);
 - which model provider runs the agent: Anthropic (Claude) or OpenAI;
-- where results live: in this folder, in MotherDuck, or in a file in S3.
+- where results live: in this folder, in MotherDuck, or in a file in S3. Not sure? Keep
+  the default, this folder; [Storing results](/docs/storing-results/) compares the three.
 
 Then it writes three files, and never overwrites one that exists:
 
