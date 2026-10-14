@@ -207,8 +207,8 @@ one-sentence reason. It's the only method with partial credit.
 - The score comes from a model, so a borderline answer may pass one run and fail the
   next. The reason it gives shows why.
 
-The grading model is the target's `judge_model`, or its `model` if none is set (see
-[Models](/docs/connect/#models)).
+Both `extract_match` and `llm_judge` use the same model: the target's `grading_model`, or
+its `model` if none is set (see [Models](/docs/connect/#models)).
 
 ## Checking provenance
 

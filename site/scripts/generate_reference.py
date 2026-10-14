@@ -33,7 +33,11 @@ SETTINGS = {
         "database as `md:<name>`. Every target shares it, so the report can compare agents.",
     ),
     "model": ("both", "The model that plays the agent. Default: chosen from the API key you have."),
-    "judge_model": ("both", "The model that grades `extract_match` and `llm_judge` evals. Default: `model`."),
+    "grading_model": (
+        "both",
+        "The model for grading: it pulls the value out for `extract_match` and judges the answer for "
+        "`llm_judge` (`contains` uses none). Default: `model`.",
+    ),
     "max_tool_steps": (
         "both",
         f"Steps the agent may take per question; a step is one model call and the tool calls it asks for. "

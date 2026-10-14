@@ -16,7 +16,7 @@ each eval as it goes, then which ones fell below their thresholds:
 Target: sales-agent (honest_agent_config.yml)
 Starting eval run 7d2e41a0-3c55-4f0b-9a61-2b8e5d90c417 (4 evals)...
 Evaluating agent: sales-agent
-Model: claude-sonnet-4-5 · judge model: claude-sonnet-4-5
+Model: claude-sonnet-4-5 · grading model: claude-sonnet-4-5
   - revenue_q4: 'What was our revenue in Q4 2026, net of discounts and before tax?'
   - order_total_2026: 'What was the total price of all the orders placed in 2026?'
   - top_segment: 'Which market segment has the most customers?'
@@ -30,7 +30,7 @@ Run 7d2e41a0-3c55-4f0b-9a61-2b8e5d90c417 complete. Next: `honest-agent report` /
 
 - **Which agent:** `run` evaluates the config's `default_target`. `--target <name>` picks
   another one.
-- **Which model:** the target's `model`, or `--model` for one run. `--judge-model` sets
+- **Which model:** the target's `model`, or `--model` for one run. `--grading-model` sets
   the grading model. See [Models](/docs/connect/#models).
 - **The exit code:** `run` exits with 0 when every eval meets its thresholds, and 1 when
   any falls below, like a failing test. It also exits with 1 when the run itself fails,

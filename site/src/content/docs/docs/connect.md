@@ -133,7 +133,7 @@ model: claude-sonnet-4-5        # for every target
 targets:
   sales-agent:
     model: claude-sonnet-4-5    # or per target
-    judge_model: claude-haiku-4-5
+    grading_model: claude-haiku-4-5
 ```
 
 - **`model`** runs the agent. Without one, honest-agent picks a small, cheap model from
@@ -141,8 +141,9 @@ targets:
   `gpt-5.4-mini`. It prints which one it chose.
 - **The provider comes from the name:** `gpt-*`, `o3`, `o4-mini` and similar are OpenAI;
   anything else is Claude.
-- **`judge_model`** grades the answers, for the grading methods that use a model.
-  Without one, `model` grades too.
+- **`grading_model`** is the model for grading, for both methods that use one:
+  `extract_match` has it pull the value out of the answer, `llm_judge` has it judge the
+  answer. `contains` uses none. Without one, `model` grades too.
 
 ## Other target settings
 

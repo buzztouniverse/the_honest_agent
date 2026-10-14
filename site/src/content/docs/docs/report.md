@@ -78,7 +78,7 @@ percentage points, on the evals both ran.
 - **Scores over time** has one row per model, with a point for its last run each day.
 
 To compare models, run the same evals with each one:
-`honest-agent run --model gpt-5.4-mini`. Keep the same `--judge-model` for every run, so
+`honest-agent run --model gpt-5.4-mini`. Keep the same `--grading-model` for every run, so
 the grading is the same and the comparison is fair.
 
 ## A result
