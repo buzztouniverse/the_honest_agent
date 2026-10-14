@@ -52,6 +52,19 @@ export interface AgentLogRow {
   eval_id: string
   agent_trace: string // JSON-encoded turn-by-turn trace
   step_details: string | null // JSON StepDetails; null for runs from before the raw layer
+  grading_call?: string | null // JSON GradingCall; null when no model graded (contains) or for older rows
+}
+
+/** The grading call, as derive.grading_details records it, for the Grading card. */
+export interface GradingCall {
+  model: string | null
+  reply: string
+  stop_reason: string | null
+  max_tokens: number | null
+  input_tokens: number
+  output_tokens: number
+  thinking_tokens: number | null
+  duration_ms: number | null
 }
 
 export interface StepDetails {

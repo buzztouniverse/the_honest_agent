@@ -210,7 +210,7 @@ def test_agent_name_column_is_added_to_an_existing_results_table(tmp_path: Path)
 
 def test_a_column_added_to_traces_reaches_an_existing_file(tmp_path: Path):
     """Like `results` and `tool_calls`: a file written before a traces column existed
-    (here `step_details`) gets the column, so writing the new version's rows works."""
+    (here `step_details` and `grading_call`) gets the columns, so writing the new version's rows works."""
     import duckdb
 
     db_path = str(tmp_path / "results.duckdb")
@@ -219,11 +219,14 @@ def test_a_column_added_to_traces_reaches_an_existing_file(tmp_path: Path):
     con.execute("insert into traces values ('old', 'run_0', 'q0', '[]')")
     con.close()
 
-    write_run_results(db_path, "run_1", [_row(step_details=json.dumps([{"step": 1}]))])
+    write_run_results(
+        db_path, "run_1", [_row(step_details=json.dumps([{"step": 1}]), grading_call=json.dumps({"model": "m"}))]
+    )
 
     by_id = {t["result_id"]: t for t in read_traces(db_path)}
     assert by_id["old"]["step_details"] is None
     assert json.loads(by_id["r1"]["step_details"]) == [{"step": 1}]
+    assert (by_id["old"]["grading_call"], json.loads(by_id["r1"]["grading_call"])) == (None, {"model": "m"})
 
 
 def test_grading_model_roundtrips(tmp_path: Path):

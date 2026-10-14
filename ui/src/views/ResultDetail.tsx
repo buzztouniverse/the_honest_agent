@@ -11,7 +11,7 @@ import {
   stripMarkdown,
   toolCallsFor,
 } from '../data/derive'
-import type { ReportData, ResultRow, SourceRef, StepDetails, ToolCallRow } from '../data/types'
+import type { GradingCall, ReportData, ResultRow, SourceRef, StepDetails, ToolCallRow } from '../data/types'
 import { Badge, Button, Card, Icon, ScoreStat } from '../ds'
 
 const mono: CSSProperties = { fontFamily: 'var(--font-mono)' }
@@ -215,7 +215,9 @@ function AccuracyCard({ r }: { r: ResultRow }) {
       })
     }
   } else {
-    rows = [{ ...expected, text: true }, { label: 'Agent answer', value: answerText(r.agent_answer), text: true }]
+    // llm_judge gives a score between 0 and 1, so it goes under the answer it scored.
+    const scored = r.accuracy_method === 'llm_judge' ? `score ${pct(r.accuracy_score)}` : undefined
+    rows = [{ ...expected, text: true }, { label: 'Agent answer', hint: scored, value: answerText(r.agent_answer), text: true }]
     if (r.accuracy_method === 'llm_judge') {
       rows.push({
         label: 'Judge',
@@ -998,6 +1000,111 @@ function TraceCard({ r, raw, details, sqlCalls }: { r: ResultRow; raw: string | 
   )
 }
 
+// ---- Grading ------------------------------------------------------------------------------
+
+const NOT_GRADED = 'Not graded:' // the rationale grading.py records when an eval couldn't be graded
+const CUT_OFF_STOPS = ['max_tokens', 'length'] // Anthropic's and OpenAI's words for "hit the token limit"
+
+/** How the grading call stopped, in plain words. */
+function stopWords(call: GradingCall): string | null {
+  if (call.stop_reason && CUT_OFF_STOPS.includes(call.stop_reason))
+    return `stopped: reached the token limit${call.max_tokens ? ` (${call.max_tokens.toLocaleString('en-US')})` : ''}`
+  if (call.stop_reason === 'end_turn' || call.stop_reason === 'stop') return 'stopped for the reply'
+  return call.stop_reason ? `stopped: ${call.stop_reason}` : null
+}
+
+/** What the grading model did: its full reply (opened like a Trace step), how much it thought, its tokens,
+ * time and why it stopped. The verdict and the values it graded on stay in the Accuracy card. */
+function GradingCard({ r, call }: { r: ResultRow; call: GradingCall | null }) {
+  const [open, setOpen] = useState(false)
+  const [copied, setCopied] = useState(false)
+  const ok = accuracyPasses(r)
+  const notGraded = (r.accuracy_rationale ?? '').startsWith(NOT_GRADED)
+  const usesModel = r.accuracy_method !== 'contains'
+  const role = r.accuracy_method === 'extract_match' ? 'extraction model' : 'grading model'
+  const model = call?.model ?? r.grading_model
+  const stop = call ? stopWords(call) : null
+  const copy = () =>
+    navigator.clipboard?.writeText(call?.reply ?? '').then(
+      () => {
+        setCopied(true)
+        setTimeout(() => setCopied(false), 1500)
+      },
+      () => undefined,
+    )
+
+  return (
+    <Card
+      title="Grading"
+      actions={
+        <Badge tone={notGraded ? 'mostly' : ok ? 'correct' : 'wrong'} dot>
+          {notGraded ? 'Not graded' : ok ? 'Passed' : 'Failed'}
+        </Badge>
+      }
+    >
+      <span style={{ ...traceMono(12.5, 'var(--fg-3)'), marginTop: -8 }}>{r.accuracy_method}</span>
+      {notGraded ? <p style={{ ...para, color: 'var(--acc-mostly-ink)' }}>{r.accuracy_rationale}</p> : null}
+      {!usesModel ? (
+        <p style={{ ...para, color: 'var(--fg-2)' }}>
+          No model call: <span style={mono}>contains</span> checks the answer in code, so there's no reply to show.
+        </p>
+      ) : !call ? (
+        <p style={{ ...para, color: 'var(--fg-2)' }}>The grading call wasn't recorded for this result. `honest-agent rebuild` adds it from the run's record.</p>
+      ) : (
+        <div style={stack(10)}>
+          <div style={{ borderTop: '1px solid var(--border-1)', borderBottom: '1px solid var(--border-1)' }}>
+            <div
+              onClick={() => setOpen(!open)}
+              style={{ display: 'grid', gridTemplateColumns: '18px 52px minmax(0, 1fr)', gap: '0 8px', alignItems: 'baseline', padding: '11px 0', cursor: 'pointer' }}
+            >
+              <span
+                style={{ display: 'inline-flex', alignSelf: 'center', color: 'var(--fg-2)', transform: open ? 'rotate(90deg)' : 'none', transition: 'transform var(--dur-fast) var(--ease-out)' }}
+              >
+                <Icon name="chevron-right" size={14} />
+              </span>
+              <span style={{ font: '500 12px/1 var(--font-mono)', color: 'var(--fg-3)' }}>Reply</span>
+              {open ? (
+                <span />
+              ) : (
+                <span style={{ ...traceMono(12.5, 'var(--fg-2)'), minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {call.reply || '(empty)'}
+                  {stop?.startsWith('stopped: reached') ? ' … (cut off)' : ''}
+                </span>
+              )}
+            </div>
+            {open ? (
+              <div style={{ ...stack(6), padding: '0 0 14px 78px', position: 'relative' }}>
+                <pre style={codeBlock}>{call.reply || '(empty)'}</pre>
+                <button
+                  type="button"
+                  onClick={copy}
+                  style={{ all: 'unset', cursor: 'pointer', alignSelf: 'flex-start', font: 'var(--type-label)', color: 'var(--accent)' }}
+                >
+                  {copied ? 'Copied' : 'Copy the reply'}
+                </button>
+              </div>
+            ) : null}
+          </div>
+          {call.thinking_tokens ? (
+            <i style={muted}>
+              Thought before replying: {call.thinking_tokens.toLocaleString('en-US')} of {call.output_tokens.toLocaleString('en-US')} output tokens (hidden by
+              the provider)
+            </i>
+          ) : null}
+          <span style={traceMono(12, 'var(--fg-3)')}>
+            {call.input_tokens.toLocaleString('en-US')} in · {call.output_tokens.toLocaleString('en-US')} out
+            {call.duration_ms != null ? ` · ${secs(call.duration_ms)}` : ''}
+            {stop ? ` · ${stop}` : ''}
+          </span>
+        </div>
+      )}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+        <Badge mono>{usesModel ? `${role} ${model ?? ''}`.trim() : 'graded in code, no model call'}</Badge>
+      </div>
+    </Card>
+  )
+}
+
 export function ResultDetail({ data, resultId }: { data: ReportData; resultId: string }) {
   const r = data.results.find((x) => x.result_id === resultId)
   const back = (
@@ -1012,6 +1119,7 @@ export function ResultDetail({ data, resultId }: { data: ReportData; resultId: s
   const calls = toolCallsFor(data, r.result_id)
   const log = data.agent_logs.find((l) => l.result_id === r.result_id)
   const details = log?.step_details ? (parseJson(log.step_details) as StepDetails | null) : null
+  const grading = log?.grading_call ? (parseJson(log.grading_call) as GradingCall | null) : null
   const tokens = (r.agent_input_tokens ?? 0) + (r.agent_output_tokens ?? 0)
   const title = evalTitles(data.results).get(r.eval_id)
   const fmt = (n: number | null) => (n ?? 0).toLocaleString('en-US')
@@ -1082,6 +1190,8 @@ export function ResultDetail({ data, resultId }: { data: ReportData; resultId: s
       <SqlCallsCard calls={calls} />
 
       <TraceCard r={r} raw={log?.agent_trace} details={details} sqlCalls={calls} />
+
+      <GradingCard key={r.result_id} r={r} call={grading} />
     </div>
   )
 }
