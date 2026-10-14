@@ -228,7 +228,7 @@ blending or fallback between them (see `honest_agent/grading.py`):
   correctly identifying which value is the "final" one if the agent's
   answer mentions more than one candidate — usually reliable when the
   answer clearly signals its conclusion, not guaranteed otherwise.
-- **`llm_judge`** — the judge model reads the question, expected answer, and
+- **`llm_judge`** — the grading model reads the question, expected answer, and
   given answer, and scores correctness holistically from 0.0 to 1.0 with a
   rationale. The only method that can give real partial credit, not just
   pass/fail, and the only one that checks how the answer is given: an

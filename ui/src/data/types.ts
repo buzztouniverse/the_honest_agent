@@ -15,7 +15,7 @@ export interface ResultRow {
   tools_used: string[] | null
   accuracy_score: number
   accuracy_method: string
-  grading_model: string | null // judge model for extract_match/llm_judge; null for contains
+  grading_model: string | null // grading model for extract_match/llm_judge; null for contains
   accuracy_rationale: string | null // the judge's reason (llm_judge only)
   extracted_answer: string | null // the value extract_match compared (extract_match only)
   accuracy_tolerance: number | null // extract_match's allowed absolute difference
