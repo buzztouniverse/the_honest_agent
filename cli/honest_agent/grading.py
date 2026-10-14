@@ -105,8 +105,10 @@ def _as_data(answer: str) -> str:
     return "<answer>\n" + answer.replace("</answer", "<\\/answer") + "\n</answer>"
 
 
-# Output cap for a grading call: the reply is a one-line JSON object.
-GRADING_MAX_TOKENS = 200
+# Output cap for a grading call. The reply is a one-line JSON object, but models that think
+# before answering (Claude's newer models think on their own) spend part of the cap on
+# that, so it leaves room. Only the tokens used are billed.
+GRADING_MAX_TOKENS = 2048
 
 
 def _object(**properties: dict) -> dict:
@@ -165,8 +167,10 @@ def grading_prompt(method: str, answer: str, expected_answer: str, prompt: str) 
     raise ValueError(f"Unknown grading method: {method!r}")
 
 
-# The start of the rationale recorded when the grading model's reply can't be read.
-UNREADABLE_REPLY = "Not graded: the grading model's reply wasn't the JSON it was asked for"
+# The rationales recorded when an eval can't be graded; `run` warns about any of them.
+NOT_GRADED = "Not graded:"
+UNREADABLE_REPLY = f"{NOT_GRADED} the grading model's reply wasn't the JSON it was asked for"
+CUT_OFF_REPLY = f"{NOT_GRADED} the grading model reached its token limit before finishing its reply"
 
 
 def _reply_json(reply: str) -> dict:
@@ -200,7 +204,7 @@ def score(
         raise ValueError(f"Unknown grading method: {method!r}")
     # A reply that isn't the JSON asked for fails this eval, with the reason, rather than
     # stopping the whole run. Structured output makes that rare, but a refusal or a reply
-    # cut off at GRADING_MAX_TOKENS can still break the schema.
+    # cut off at its token limit (see CUT_OFF_REPLY in derive.py) can still break the schema.
     try:
         payload = _reply_json(reply or "")
         if method == "extract_match":
