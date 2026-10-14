@@ -5,10 +5,9 @@ honest-agent talks to the same MCP server the agent uses. Setting that server up
 docs. Your part: explain what's needed, point to the right docs, and fill in
 honest-agent's side. Never ask for or handle a token's value.
 
-honest-agent's guides live in the repository's `example_project/README.md`
-(https://github.com/jlcoto/the_honest_agent/blob/main/example_project/README.md):
-"The config file", "Where bare table names run", "Pointing at a real MCP server",
-"Connecting to a real MotherDuck account" and "Connecting to a real Snowflake account".
+honest-agent's guide for this is "Connect your agent"
+(https://thehonestagent.dev/docs/connect/). Use only the part for the user's kind of
+server below.
 
 ## Advice for every server
 
@@ -31,8 +30,8 @@ honest-agent's guides live in the repository's `example_project/README.md`
   name there.
 - **Snowflake managed MCP server** (`mcp_url` + `bearer_token_env`): the user creates
   an MCP server object and a programmatic access token (PAT) for a read-only role.
-  Snowflake requires a network policy on the user before it issues a usable PAT.
-  honest-agent's "Connecting to a real Snowflake account" section walks through it.
+  Snowflake requires a network policy on the user before it issues a usable PAT;
+  the user sets it up with Snowflake's docs, as their account's security rules allow.
   The token goes in the variable the target's `bearer_token_env` names (e.g.
   `SNOWFLAKE_MCP_TOKEN`), not `MCP_BEARER_TOKEN`, which is never sent to a target's
   server.
@@ -44,20 +43,6 @@ honest-agent's guides live in the repository's `example_project/README.md`
   pre-fills it in `.env` as `<TARGET>_MCP_URL`): a MotherDuck token, ideally a
   read-only (read scaling) one:
   https://motherduck.com/docs/key-tasks/authenticating-and-connecting-to-motherduck/read-scaling/.
-  See honest-agent's "Connecting to a real MotherDuck account" section.
+  See the MotherDuck section of https://thehonestagent.dev/docs/connect/.
 - **Any other server:** its own docs say how to reach it and authenticate. Fill in
   `mcp_url` (and `bearer_token_env` if it needs a bearer token) or `mcp_command`.
-
-## Settings that affect provenance
-
-- **`default_database` / `default_schema`:** where the server's connection runs a bare
-  table name (`from orders`). Set them when the agent writes bare names and the
-  connection has a fixed starting point, so evals can check where a table lives.
-  Snowflake's managed server has none (bare names fail there), so leave them unset. They must match the connection; a wrong one attributes
-  tables to the wrong place without warning.
-- **SQL found in tool arguments:** honest-agent reads SQL from arguments named `sql`,
-  `query` or `statement`. A tool that keeps SQL in another argument needs the eval's
-  `provenance.sql_fields: {tool_name: argument}`; a tool whose `query` argument isn't
-  SQL (a search term) goes in the target's `ignore_tools`. A tool with structured
-  arguments (`query_metrics(metric, grain)`) has no SQL to read: provenance can't
-  check evals answered through it.
