@@ -68,8 +68,8 @@ uv run honest-agent init
 ```
 
 `init` asks a few questions, with numbered options and defaults (Enter accepts
-them): which MCP server your agent uses (a local command, Snowflake's managed
-MCP server, MotherDuck or another URL), its URL or command, which model runs
+them): which MCP server your agent uses (Snowflake's managed MCP server,
+MotherDuck, another URL or a local command), its URL or command, which model runs
 the agent (Claude or OpenAI) and where results live (here, MotherDuck or a
 file in S3). Then it writes three files, and never overwrites one that exists:
 
