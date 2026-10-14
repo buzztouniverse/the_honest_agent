@@ -90,6 +90,33 @@ def step_details(events: list[dict]) -> dict:
     return {"steps": steps, "tool_ms": tool_ms}
 
 
+def _thinking_tokens(provider: str, response: dict) -> int | None:
+    """Output tokens the model spent thinking, when the provider reports them."""
+    usage = response.get("usage") or {}
+    details = usage.get("completion_tokens_details" if provider == OPENAI else "output_tokens_details") or {}
+    return details.get("reasoning_tokens" if provider == OPENAI else "thinking_tokens")
+
+
+def grading_details(event: dict | None) -> dict | None:
+    """What the report's Grading card shows about the grading call: its model, its full
+    reply, its tokens (and how many went to thinking), its duration, why it stopped, and
+    its token limit. None when there was no grading call (contains)."""
+    if event is None or event["response"] is None:
+        return None
+    provider, response = event["provider"], event["response"]
+    tokens = response_tokens(provider, response)
+    return {
+        "model": event["request"].get("model"),
+        "reply": response_text(provider, response),
+        "stop_reason": response_stop(provider, response),
+        "max_tokens": event["request"].get("max_tokens"),
+        "input_tokens": tokens[0],
+        "output_tokens": tokens[1],
+        "thinking_tokens": _thinking_tokens(provider, response),
+        "duration_ms": event["duration_ms"],
+    }
+
+
 def conversation(prompt: str, events: list[dict]) -> list[dict]:
     """The agent's conversation in the one format sql_capture, the report and `logs` read:
     the prompt, each model reply, and each batch of tool results as a user turn."""
@@ -265,6 +292,7 @@ def derive_result(con, result_id: str) -> Derived:
         # -- traces --
         "agent_trace": json.dumps(trace),
         "step_details": json.dumps(step_details(agent_events)),
+        "grading_call": json.dumps(details) if (details := grading_details(grading)) else None,
         # -- tool_calls (expanded into one row per call by storage.py) --
         "sql_calls": sql_calls,
     }
