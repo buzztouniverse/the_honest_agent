@@ -92,12 +92,17 @@ that answer was graded, which tables it read, and the steps it took to get there
   used, and how many steps it took out of the limit.
 - **Accuracy:** what was expected and what the agent answered. For `extract_match`, the
   value the grader pulled out and the difference, against the tolerance; for
-  `llm_judge`, the judge's reason. "Show the agent's full reply" shows the whole answer.
+  `llm_judge`, the judge's score (under the answer) and its reason. "Show the agent's full
+  reply" shows the whole answer.
 - **Provenance:** each expected source, with the database, schema and table the agent
   read, or "not read".
 - **SQL calls:** every query the agent sent, in order, and whether it ran or failed.
 - **Trace:** the agent's steps, from the prompt to the final answer. Expand a step to see
   the tool call, what it returned, and its tokens and time.
+- **Grading:** what the grading model did, for `extract_match` and `llm_judge`. "› Reply"
+  opens its full reply, as it came back. Below it: how many tokens it spent thinking, its
+  tokens and time, and how it stopped. A reply cut off at its token limit shows "Not
+  graded" and "reached the token limit". `contains` calls no model, so the card says so.
 
 For the raw records of every call, use
 [`honest-agent logs`](/docs/running-evals/#find-out-why-an-eval-failed).
