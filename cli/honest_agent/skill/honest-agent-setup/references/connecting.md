@@ -2,8 +2,9 @@
 
 honest-agent talks to the same MCP server the agent uses. Setting that server up
 (creating it, its users, roles and tokens) is the user's job, done with the vendor's
-docs. Your part: explain what's needed, point to the right docs, and fill in
-honest-agent's side. Never ask for or handle a token's value.
+docs. First ask whether they already have the server's URL (or start command) and a
+token: the agent being tested usually does. Explain setup only if not, pointing to the
+vendor's docs, then fill in honest-agent's side. Never ask for or handle a token's value.
 
 honest-agent's guide for this is "Connect your agent"
 (https://thehonestagent.dev/docs/connect/). Use only the part for the user's kind of
@@ -11,10 +12,8 @@ server below.
 
 ## Advice for every server
 
-- **Read-only credentials.** honest-agent runs the agent with every tool its server
-  offers. It refuses SQL that isn't a read (select, show, describe, use) before it
-  reaches the server, but it only sees SQL: a tool like `delete_customer(id)` isn't
-  checked. A read-only role or token is the real protection.
+- **Read-only credentials.** Suggest a read-only role or token: honest-agent refuses
+  SQL that isn't a read, but it can't block every tool that writes.
 - **Secrets stay in `.env`.** For a remote server, `init` writes the target with
   `mcp_url: "{{ env_var('<TARGET>_MCP_URL') }}"` and `bearer_token_env:
   <TARGET>_MCP_TOKEN` (e.g. `SNOWFLAKE_MCP_URL`, `SNOWFLAKE_MCP_TOKEN`), and puts both
@@ -30,11 +29,10 @@ server below.
   name there.
 - **Snowflake managed MCP server** (`mcp_url` + `bearer_token_env`): the user creates
   an MCP server object and a programmatic access token (PAT) for a read-only role.
-  Snowflake requires a network policy on the user before it issues a usable PAT;
-  the user sets it up with Snowflake's docs, as their account's security rules allow.
-  The token goes in the variable the target's `bearer_token_env` names (e.g.
-  `SNOWFLAKE_MCP_TOKEN`), not `MCP_BEARER_TOKEN`, which is never sent to a target's
-  server.
+  If the PAT is refused: Snowflake requires a network policy on the user before it
+  issues a usable PAT; the user sets it up with Snowflake's docs. If they put the token
+  in `MCP_BEARER_TOKEN`: it is never sent to a target's server; it goes in the variable
+  the target's `bearer_token_env` names (e.g. `SNOWFLAKE_MCP_TOKEN`).
   Snowflake docs: https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-agents-mcp,
   https://docs.snowflake.com/en/sql-reference/sql/create-mcp-server and
   https://docs.snowflake.com/en/user-guide/programmatic-access-tokens and

@@ -1,7 +1,8 @@
 # Finding what to evaluate
 
 Skip this if the user already knows their questions. Otherwise, the best evals are the
-questions people really ask. Places to look, roughly in order of effort:
+questions people really ask. Places to look, roughly in order of effort (start with the first; offer the next only
+if needed):
 
 1. **Ask the team:** the questions they ask the agent or an analyst most often, and the
    ones where a wrong answer would hurt.

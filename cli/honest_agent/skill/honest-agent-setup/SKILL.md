@@ -29,8 +29,8 @@ files they approve.
 - **Never touch their data.** Don't run queries, list tables or call the agent's MCP
   server, even with tools your own session has. When data is needed, propose a query
   for the user to run, or ask them.
-- **Commands:** you may run `honest-agent ls`, `honest-agent logs`, `honest-agent debug`
-  and `--help` freely; they don't call a model or query data. Ask before every
+- **Commands:** you may run `honest-agent ls`, `honest-agent logs`, `honest-agent debug`,
+  `honest-agent report` and `--help` freely; they don't call a model or query data. Ask before every
   `honest-agent run`, in one line (what runs, with which model): it costs money. Never
   run `honest-agent notify` or `honest-agent init`. `honest-agent serve` keeps running,
   so give the user the command instead.
@@ -43,24 +43,24 @@ Every step can be skipped except `honest-agent debug` before the first run.
 1. **Starting point.** Check that `honest_agent_config.yml`, an evals folder (usually
    `evals/`) and `.env` exist, without opening `.env`. If not, ask the user to run
    `honest-agent init` and stop. Read the config, give the no-secrets line, say in one
-   sentence what the steps are, and ask where to start.
+   sentence what the steps are, and propose starting with the server.
 2. **Connect the server.** Help the user get their MCP server's details and credentials
    into place, pointing to the vendor's own docs. You don't create servers, users or
    tokens. Open `references/connecting.md` for their kind of server. Done when
    `honest-agent debug` shows the MCP server connected.
 3. **What to evaluate.** Ask whether they already know which questions to test. If not,
    help them find some: `references/finding-questions.md`.
-4. **Write the evals, one at a time.** For each question, ask how users really word it,
-   what the right answer is (it must come from them or a source they trust, never from
-   the agent), and which table the team trusts for it, if any. Show the YAML, write it
+4. **Write the evals, one at a time.** For each question, ask, one at a time: how users
+   really word it, what the right answer is (it must come from them or a source they
+   trust, never from the agent), and which table the team trusts for it, if any. Show the YAML, write it
    once approved, then ask "Another one, or move on?". Replace the `TODO` eval that
    `init` wrote with the first real one. Open `references/writing-evals.md` for the
    format and to pick the grading method.
 5. **Check, then run.** Run `honest-agent debug` and help fix what it reports. Then ask
    before running one eval (`honest-agent run --select <id>`), and before running the
    rest.
-6. **Read the results.** If every eval passed, say so briefly. If one fails, open
-   `references/reading-results.md` and work out why with the user.
+6. **Read the results.** If every eval passed, say so briefly. If one fails, say which score failed
+   (accuracy or provenance), then open `references/reading-results.md`.
 
 ## Updating this skill
 

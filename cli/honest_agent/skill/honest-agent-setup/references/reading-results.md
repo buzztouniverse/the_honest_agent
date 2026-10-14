@@ -1,8 +1,8 @@
 # Reading results
 
-Open this when an eval fails. Work out which case it is with the user, one step at a
-time: `honest-agent logs --eval-id <id>` shows every call the agent and the grading
-model made, and the report (`honest-agent report`, then `honest-agent serve`) shows the
+Open this when an eval fails. Don't list the cases to the user: check the logs
+yourself, then say which case it looks like and why. `honest-agent logs --eval-id <id>`
+shows every call the agent and the grading model made, and the report (`honest-agent report`, then `honest-agent serve`) shows the
 same more readably. Full reference: https://thehonestagent.dev/docs/running-evals/.
 
 ## Which case is it?
@@ -23,18 +23,20 @@ same more readably. Full reference: https://thehonestagent.dev/docs/running-eval
 
 Only bring these up when a provenance score points to them.
 
-- **Only SQL is seen.** honest-agent reads SQL from tool arguments named `sql`, `query`
-  or `statement`. If the agent answered through a tool with structured arguments
-  instead (a semantic-layer or search tool, such as `query_metrics(metric, grain)` or
-  Snowflake's Cortex Analyst or Cortex Search), there's no SQL to read, so a correct
-  answer scores 0. `logs` shows which tools the agent called. For that eval, leave
-  `expected_sources` out and tell the user its provenance can't be checked; they can
-  open an issue at https://github.com/jlcoto/the_honest_agent/issues naming the tool,
-  so support can be added.
+- **The SQL was written but not run.** Snowflake's Cortex Analyst returns the SQL it
+  wrote without running it; honest-agent shows that SQL but doesn't count it. If the
+  agent didn't then run it with another tool, a correct answer scores 0 on provenance.
+  For that eval, leave `expected_sources` out and tell the user its provenance can't be
+  checked this way.
+- **No SQL at all.** honest-agent reads SQL from tool arguments (or results) named
+  `sql`, `query` or `statement`. A tool with only structured arguments, such as
+  `query_metrics(metric, grain)`, leaves nothing to read. Same fix; the user can open
+  an issue at https://github.com/jlcoto/the_honest_agent/issues naming the tool, so
+  support can be added.
 - **A tool's argument isn't SQL.** If a tool has a `query`-style argument that holds a
-  search term, add the tool to the target's `ignore_tools`. A tool that keeps its SQL
-  in an argument with another name needs `provenance.sql_fields: {tool_name: argument}`
-  in the eval.
+  search term (a search tool such as Snowflake's Cortex Search), add the tool to the
+  target's `ignore_tools`. A tool that keeps its SQL in an argument with another name
+  needs `provenance.sql_fields: {tool_name: argument}` in the eval.
 - **What counts as reading a table:** a successful `select`, including a quick one while
   exploring. `show`, `describe`, catalog queries and failed queries don't count.
 - **Where a table lives.** If an expected source names a database or schema
