@@ -100,6 +100,7 @@ def test_extract_match_prompt_asks_for_canonical_numbers():
     assert "'.' as the decimal point" in prompt
     assert "'1.284.500,20 €' is 1284500.20" in prompt
     assert "'12%' is 12" in prompt
+    assert "'310.33 million' is 310330000" in prompt
 
 
 def test_extract_match_reads_json_inside_a_code_block():
