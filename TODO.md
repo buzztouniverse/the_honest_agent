@@ -29,9 +29,23 @@ README fixes done 2026-10-08 (example eval, `--target`, sharing via
 Added 2026-10-13. The landing page's "See a report" button and the Review section's
 "Explore a real report" link point to a placeholder (`#see-a-report`). Before release:
 
-- **Build the example report from real runs** of `honest-agent init --example`, never
-  real data: runs on several days (for the history) and with two or three models (for
-  Model comparison). Each run costs a few cents.
+- **First, move the example's dates forward 27 years** (decided 2026-10-14). TPC-H's
+  dates run 1992 to August 1998, so the example asks about 1995-1997, which reads as
+  dated. In `init.py`'s `seed_tpch`, shift every date column of `orders` and
+  `lineitem` by `interval 27 year` (data then runs 2019 to August 2025; 29 February
+  moves to 28 February in the same year, so no total changes). Rename the evals in
+  `example/evals.yml` and the example's README: `revenue_1997` -> `revenue_2024`,
+  `avg_order_total_1996` -> `avg_order_total_2023`, `order_total_1995` ->
+  `order_total_2022`, `top_ship_mode_1995` -> `top_ship_mode_2022`, and
+  `top_nations_last_year` expects 2024. Expected numbers stay the same. 27 years (not
+  28) keeps "last year" ambiguous today: 2025 has data only to August, 2024 is the last
+  full year. Add a test for the shifted dates.
+- **Build the example report from real runs** of the new `honest-agent init --example`
+  (the runs made so far use the old questions), never real data: runs on several days
+  (for the history) and with two or three models (for Model comparison), all with one
+  fixed `grading_model` so the comparison is fair. Each run costs a few cents. Check
+  the report data for private details before publishing (none found in a first check:
+  no keys, tokens or local paths).
 - **Publish it at `/report/` on the site:** a script copies the report UI
   (`cli/honest_agent/report_ui`) and the demo data into `site/public/report/` at build
   time (the report uses relative paths, so a sub-path works), with a "Demo with sample
