@@ -8,6 +8,7 @@ from pathlib import Path
 
 import yaml
 
+from .config_file import yaml_error
 from .grading import looks_like_formatted_number
 
 # Defaults match what the (now-removed) dbt schema.yml used to hardcode as
@@ -58,7 +59,10 @@ def load_evals(evals_dir: Path) -> list[EvalDefinition]:
     seen_in: dict[str, tuple[Path, str, str]] = {}
 
     for yml_path in sorted(evals_dir.glob("*.yml")):
-        doc = yaml.safe_load(yml_path.read_text()) or {}
+        try:
+            doc = yaml.safe_load(yml_path.read_text()) or {}
+        except yaml.YAMLError as exc:
+            raise ValueError(yaml_error(yml_path.name, exc)) from exc
 
         for item in _eval_items(doc):
             title = item.get("title")
