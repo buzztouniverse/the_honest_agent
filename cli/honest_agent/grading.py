@@ -105,8 +105,10 @@ def _as_data(answer: str) -> str:
     return "<answer>\n" + answer.replace("</answer", "<\\/answer") + "\n</answer>"
 
 
-# Output cap for a grading call: the reply is a one-line JSON object.
-GRADING_MAX_TOKENS = 200
+# Output cap for a grading call. The reply is a one-line JSON object, but models that think
+# before answering (Claude's newer models think on their own) spend part of the cap on
+# that, so it leaves room. Only the tokens used are billed.
+GRADING_MAX_TOKENS = 2048
 
 
 def _object(**properties: dict) -> dict:
@@ -137,7 +139,9 @@ def grading_prompt(method: str, answer: str, expected_answer: str, prompt: str) 
             "decimal point from the thousands separator by the response's context (its "
             "language, its currency, how the digits are grouped): '1.284.500,20 €' is "
             "1284500.20 and '12,5 %' is 12.5. If nothing settles it, read '.' as the "
-            "decimal point. Write a percentage as the number shown: '12%' is 12. For "
+            "decimal point. Write out size words and their abbreviations as the full "
+            "number: '310.33 million' is 310330000, '$1.2B' is 1200000000 and '45K' is "
+            "45000. Write a percentage as the number shown: '12%' is 12. For "
             "any other value, strip punctuation and leading articles like 'the'. Do not "
             "judge whether it's correct -- only extract and normalize.\n\n"
             f"{_DATA_NOTE}"
@@ -163,8 +167,10 @@ def grading_prompt(method: str, answer: str, expected_answer: str, prompt: str) 
     raise ValueError(f"Unknown grading method: {method!r}")
 
 
-# The start of the rationale recorded when the grading model's reply can't be read.
-UNREADABLE_REPLY = "Not graded: the grading model's reply wasn't the JSON it was asked for"
+# The rationales recorded when an eval can't be graded; `run` warns about any of them.
+NOT_GRADED = "Not graded:"
+UNREADABLE_REPLY = f"{NOT_GRADED} the grading model's reply wasn't the JSON it was asked for"
+CUT_OFF_REPLY = f"{NOT_GRADED} the grading model reached its token limit before finishing its reply"
 
 
 def _reply_json(reply: str) -> dict:
@@ -198,7 +204,7 @@ def score(
         raise ValueError(f"Unknown grading method: {method!r}")
     # A reply that isn't the JSON asked for fails this eval, with the reason, rather than
     # stopping the whole run. Structured output makes that rare, but a refusal or a reply
-    # cut off at GRADING_MAX_TOKENS can still break the schema.
+    # cut off at its token limit (see CUT_OFF_REPLY in derive.py) can still break the schema.
     try:
         payload = _reply_json(reply or "")
         if method == "extract_match":

@@ -11,7 +11,7 @@ from pathlib import Path
 import click
 
 from .agent_runner import AgentClient
-from .derive import derive_result, recorded_answer
+from .derive import CUT_OFF_ANSWER, derive_result, recorded_answer
 from .eval_loader import (
     EvalDefinition,
     SelectorError,
@@ -20,7 +20,7 @@ from .eval_loader import (
     number_format_warnings,
     select_evals,
 )
-from .grading import GRADING_MAX_TOKENS, GRADING_SCHEMAS, UNREADABLE_REPLY, grading_prompt
+from .grading import GRADING_MAX_TOKENS, GRADING_SCHEMAS, NOT_GRADED, grading_prompt
 from .llm import OPENAI, Judge, make_judge, provider_for
 from .raw import RunRecorder
 from .sql_guard import ReadOnlySQL
@@ -53,6 +53,8 @@ async def eval_loop(
             answer, hit_turn_limit = recorded_answer(con, result_id)
             if hit_turn_limit:
                 click.echo(f"    WARNING: {definition.eval_id} hit the step limit without a final answer.")
+            elif answer.startswith(CUT_OFF_ANSWER):
+                click.echo(f"    WARNING: {definition.eval_id}: {answer}")
             prompt = grading_prompt(definition.grading_method, answer, definition.expected_answer, definition.prompt)
             if prompt is not None:
                 schema = GRADING_SCHEMAS[definition.grading_method]
@@ -68,7 +70,7 @@ async def eval_loop(
             record.eval_error(exc)
             raise
         write_derived(con, [derived.row])
-        if (derived.row.get("accuracy_rationale") or "").startswith(UNREADABLE_REPLY):
+        if (derived.row.get("accuracy_rationale") or "").startswith(NOT_GRADED):
             click.echo(f"    WARNING: {definition.eval_id}: {derived.row['accuracy_rationale']}")
         for sql in derived.unparsed:
             click.echo(f"    WARNING: couldn't parse this SQL, so it doesn't count toward provenance: {sql[:80]!r}")

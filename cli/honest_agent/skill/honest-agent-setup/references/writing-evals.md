@@ -106,13 +106,16 @@ interpreted, so:
 
 **`extract_match`**: a model pulls the one value out of the answer and writes a number
 in the same form as above, whatever the agent's locale ("1.284.500,20 €" becomes
-1284500.20, "12%" becomes 12); then code compares it. It doesn't judge correctness
+1284500.20, "12%" becomes 12, "$310.33 million" becomes 310330000); then code compares it. It doesn't judge correctness
 itself.
 
 - Without a tolerance the value must be exactly right. Numbers are compared as
   numbers ("1284500.2" equals "1284500.20"), anything else as text, ignoring case.
   When the agent may round differently from your expected value, set `tolerance` or
-  `tolerance_percent`.
+  `tolerance_percent`. Agents often round big numbers ("about $308 million" for
+  307992639.49): an absolute `tolerance: 0.01` fails that, so for amounts like this
+  prefer `tolerance_percent` (e.g. 0.005, within 0.5%), and say in a comment what
+  rounding is acceptable.
 - When the agent's answer gives no clue to its number format ("1,284" alone), the
   model reads "." as the decimal point.
 - It expects one value. If the answer lists several numbers, the model may pick the

@@ -15,9 +15,10 @@ from .agent_runner import AgentClient, plain_content
 if TYPE_CHECKING:
     from .raw import EvalRecorder
 
-# Output cap per model turn. A turn cut off by it shows stop_reason "max_tokens" in its
-# recorded response.
-MAX_TOKENS = 1024
+# Output cap per model turn. Models that think before answering spend part of it on that,
+# so it leaves room; only the tokens used are billed. A turn cut off by it shows
+# stop_reason "max_tokens" in its recorded response, and derive.py reports it.
+MAX_TOKENS = 8192
 
 
 def _mcp_tool_to_anthropic_schema(tool: Any) -> dict:
