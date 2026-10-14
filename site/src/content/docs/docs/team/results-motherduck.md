@@ -57,8 +57,9 @@ account: logged in as yourself, you won't see it until it's shared with you.
 
 Share it from the service account, read-only and only with the people who should see it,
 since the results hold what your agent's tools returned. Run this as the service account,
-for example in the DuckDB CLI opened with its token (`duckdb "md:?motherduck_token=…"`, or
-with `motherduck_token` set in your environment):
+for example in the DuckDB CLI (`duckdb md:`) with the service account's token in the
+`motherduck_token` environment variable. Don't put the token in the command itself: it
+would stay in your shell history.
 
 ```sql
 create share honest_agent_results_share from honest_agent_results
