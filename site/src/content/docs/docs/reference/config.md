@@ -33,7 +33,7 @@ Set at the top level, a value applies to every target; a target's own value wins
 
 | Setting | What it does |
 |---|---|
-| `judge_model` | The model that grades `extract_match` and `llm_judge` evals. Default: `model`. |
+| `grading_model` | The model for grading: it pulls the value out for `extract_match` and judges the answer for `llm_judge` (`contains` uses none). Default: `model`. |
 | `max_tool_steps` | Steps the agent may take per question; a step is one model call and the tool calls it asks for. Default: 5. |
 | `model` | The model that plays the agent. Default: chosen from the API key you have. |
 
