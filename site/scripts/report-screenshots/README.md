@@ -24,5 +24,5 @@ is captured from the real report UI with the sample data in `sample-data/`.
 
 `rename.py` is the one-off rename that turned the 1997/1995 evals into
 `revenue_q4` ("Revenue in Q4 2026") and `order_total_2026`. The sample data here
-has already been renamed; the original data is in `design/report-screenshots/`.
+has already been renamed (the data before it is in git history).
 SQL in the data stays lowercase, per the repo's `CLAUDE.md`.

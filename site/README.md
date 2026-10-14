@@ -1,8 +1,8 @@
 # The Honest Agent: site
 
 The public site for `honest-agent`: the landing page at `/`, built with Astro
-from the Claude Design handoff in `design/` (start with `design/HANDOFF.md`),
-and the docs at `/docs/`, built with Starlight.
+from mockups made in Claude Design (the "First Screen Mockups" canvas, the source of
+truth for the page's design), and the docs at `/docs/`, built with Starlight.
 
 ```sh
 npm install
@@ -13,14 +13,14 @@ npm run build    # static site in dist/
 ## Layout
 
 - `src/pages/index.astro`: the page, sections in handoff order.
-- `src/components/sections/`: one component per mockup in `design/screens/`
+- `src/components/sections/`: one component per mockup section
   (Hero, Connect, Loop, Define, Run, Review, Improve, Footer).
 - `src/layouts/Base.astro`: `<head>`, the design-system styles, and two
   page-wide behaviours (see below).
 - `src/content/docs/docs/`: the docs pages, in Markdown, served at `/docs/...`.
   Starlight's config (sidebar, theme) is in `astro.config.mjs`;
   `src/styles/docs.css` maps its colours and fonts to the design system tokens.
-- `public/assets/`: the robot, the report screenshots from `design/assets/`, and
+- `public/assets/`: the robot, the report screenshots, and
   `hero-poster.jpg`, the hero video's first frame (shown before it plays and when
   "reduce motion" is on).
 
