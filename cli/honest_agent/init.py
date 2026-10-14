@@ -275,6 +275,8 @@ def write_example(folder: Path, provider: str) -> None:
 SKILL_NAME = "honest-agent-setup"
 SKILL_SOURCE = Path(__file__).parent / "skill" / SKILL_NAME
 SKILL_FOLDERS = (".agents/skills", ".claude/skills")
+ENTER_HINT = "A few questions to set up this folder. Press Enter to keep the value in [brackets]."
+SKILL_HINT = "At the end, you can add a skill so your coding agent helps with the rest."
 ASK_FOR_SKILL = "Continue the setup with a coding agent? (It helps connect your MCP server and write your first evals.)"
 
 
@@ -348,6 +350,8 @@ def _ask(question: str, given: str | None, default: str | None, no_input: bool, 
 
 
 def prompt_example(model_provider: str | None, no_input: bool, with_skill: bool = False) -> None:
+    if model_provider is None and not no_input:
+        click.echo(ENTER_HINT + "\n")
     providers = {key: label for key, (label, _var) in PROVIDERS.items()}
     provider = _choose("Which model runs the agent?", providers, model_provider, "anthropic", no_input)
     folder = Path.cwd() / EXAMPLE_FOLDER
@@ -389,6 +393,9 @@ def prompt_project(
 ) -> None:
     """`honest-agent init`: asks what isn't given by a flag, writes the files, says what's next.
     Adds the setup skill with --with-skill, or when asked and the user doesn't say no."""
+    if not no_input and (None in (server, target_name, model_provider, results) or not with_skill):
+        # Said once up front: click shows a default as `[value]` without saying what it is.
+        click.echo(ENTER_HINT + ("" if with_skill else "\n" + SKILL_HINT) + "\n")
     servers = {key: label for key, (label, *_rest) in SERVERS.items()}
     server = _choose("Which MCP server does your agent use?", servers, server, "local", no_input)
     _label, default_target, known_url, url_hint = SERVERS[server]

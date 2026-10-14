@@ -18,6 +18,7 @@ def test_no_input_writes_a_local_project_that_loads(in_tmp_dir: Path):
     result = _init("--no-input", "--mcp-command", "uv run python server.py")
 
     assert result.exit_code == 0, result.output
+    assert "Press Enter" not in result.output
     assert "Created honest_agent_config.yml, evals/first_eval.yml, .env" in result.output
     target = load_config(in_tmp_dir / "honest_agent_config.yml").target(None)
     assert target.name == "local"
@@ -175,6 +176,10 @@ def test_init_asks_for_the_setup_skill_and_yes_is_the_default(in_tmp_dir: Path):
     result = _init(input="1\nuv run python server.py\n\n\n\n\n")
 
     assert result.exit_code == 0, result.output
+    assert result.output.startswith(
+        "A few questions to set up this folder. Press Enter to keep the value in [brackets].\n"
+        "At the end, you can add a skill so your coding agent helps with the rest.\n"
+    )
     assert "Continue the setup with a coding agent?" in result.output
     assert "Added the setup skill in .agents/skills/honest-agent-setup/ and .claude/skills/honest-agent-setup/" in (
         result.output
@@ -190,6 +195,14 @@ def test_saying_no_adds_nothing_for_coding_agents(in_tmp_dir: Path):
 
     assert result.exit_code == 0, result.output
     assert not (in_tmp_dir / ".agents").exists() and not (in_tmp_dir / ".claude").exists()
+
+
+def test_the_hint_skips_the_skill_line_when_it_is_already_asked_for(in_tmp_dir: Path):
+    result = _init("--with-skill", input="1\nuv run python server.py\n\n\n\n")
+
+    assert result.exit_code == 0, result.output
+    assert result.output.startswith("A few questions to set up this folder. Press Enter")
+    assert "At the end, you can add a skill" not in result.output
 
 
 def test_no_input_adds_the_skill_only_with_the_flag(in_tmp_dir: Path):
