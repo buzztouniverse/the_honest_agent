@@ -393,7 +393,7 @@ def prompt_project(
 ) -> None:
     """`honest-agent init`: asks what isn't given by a flag, writes the files, says what's next.
     Adds the setup skill with --with-skill, or when asked and the user doesn't say no."""
-    if not no_input and (None in (server, target_name, model_provider, results) or not with_skill):
+    if not no_input and (None in (server, model_provider, results) or not with_skill):
         # Said once up front: click shows a default as `[value]` without saying what it is.
         click.echo(ENTER_HINT + ("" if with_skill else "\n" + SKILL_HINT) + "\n")
     servers = {key: label for key, (label, *_rest) in SERVERS.items()}
@@ -404,7 +404,7 @@ def prompt_project(
     else:
         prompt = "MCP server URL" + (f" ({url_hint})" if url_hint and not known_url else "")
         mcp_url = _ask(prompt, mcp_url, known_url, no_input, "--mcp-url")
-    target = target_name or (default_target if no_input else click.prompt("Target name", default=default_target))
+    target = target_name or default_target  # not asked, as dbt init does; --target-name or the config renames it
     providers = {key: label for key, (label, _var) in PROVIDERS.items()}
     provider = _choose("Which model runs the agent?", providers, model_provider, "anthropic", no_input)
     results = _choose("Where should results live?", RESULTS, results, "local", no_input)
