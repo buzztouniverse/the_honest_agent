@@ -13,7 +13,7 @@ and you can change it later in the config.
 | **What it is** | A DuckDB file next to your config | A MotherDuck database | The same DuckDB file, kept in a bucket |
 | **You need** | Nothing | A MotherDuck account and a separate token for the results | A bucket and credentials that can read and write one file |
 | **Who can run evals** | This machine | Any machine with the token, at the same time | One run at a time, copying the file in and out |
-| **Good for** | Trying honest-agent, one person | Teams already on MotherDuck | Teams that keep everything in their own cloud |
+| **Good for** | Trying honest-agent, one person | Teams already on MotherDuck | Scheduled or CI runs, for teams that keep everything in their own cloud |
 
 Not sure? Start with the default. You can move later; see
 [Changing where results live](#changing-where-results-live).
@@ -42,7 +42,8 @@ results_path: md:honest_agent_results
 ```
 
 honest-agent opens the database with the token in `HONEST_AGENT_RESULTS_TOKEN`, and
-creates it on the first `run`. Several machines can write at the same time. Give the
+creates it on the first `run`. Use a database of its own for results; honest-agent
+creates its tables there. Several machines can write at the same time. Give the
 results their own MotherDuck service account and token, never the agent's: the agent being
 evaluated must not be able to change its own results.
 
@@ -51,9 +52,11 @@ service account, its token, and how to see the results in MotherDuck's own web p
 
 ## In cloud storage
 
-honest-agent itself only reads and writes a local file. To keep it in Amazon S3 (or Google
-Cloud Storage, or Azure Blob Storage), copy the file in before each run and out after, so
-`results_path` stays the local default. Only one run may do this at a time.
+This suits runs started by a CI pipeline or a scheduled job, which can copy the file in
+and out as steps around the run. honest-agent itself only reads and writes a local file.
+To keep it in Amazon S3 (or Google Cloud Storage, or Azure Blob Storage), copy the file in
+before each run and out after, so `results_path` stays the local default. Only one run may
+do this at a time.
 
 [Store results in S3](/docs/team/results-s3/) has the bucket, the permissions, and a
 script that downloads the file before a run (or starts a new history when there's none
