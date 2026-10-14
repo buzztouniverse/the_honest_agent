@@ -38,7 +38,7 @@ _ENV_VARS = [
     "MCP_BEARER_TOKEN",
     "MOTHERDUCK_TOKEN",
     "HONEST_AGENT_MODEL",
-    "HONEST_AGENT_JUDGE_MODEL",
+    "HONEST_AGENT_GRADING_MODEL",
     "HONEST_AGENT_AGENT_NAME",
     "HONEST_AGENT_CONFIG_FILE",
 ]
@@ -177,6 +177,19 @@ def test_other_commands_read_results_path_from_the_file(project, monkeypatch, fa
 
     assert result.exit_code == 0, result.output
     assert read_from == [str(project / "out" / "results.duckdb")]
+
+
+def test_grading_model_in_the_config_grades_and_judge_model_is_no_longer_a_setting(project, fake_run):
+    config = project / "honest_agent_config.yml"
+    config.write_text("grading_model: claude-sonnet-5\n" + config.read_text())
+
+    result, run = _run(fake_run)
+
+    assert result.exit_code == 0, result.output
+    assert (run["model"], run["grading_model"]) == ("claude-haiku-4-5", "claude-sonnet-5")
+    config.write_text(config.read_text().replace("grading_model:", "judge_model:"))
+    with pytest.raises(ConfigError, match="Unknown setting.*judge_model"):
+        load_config(config)
 
 
 def test_typos_and_conflicting_servers_are_errors(tmp_path):

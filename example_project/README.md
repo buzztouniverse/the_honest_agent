@@ -228,7 +228,7 @@ blending or fallback between them (see `honest_agent/grading.py`):
   correctly identifying which value is the "final" one if the agent's
   answer mentions more than one candidate — usually reliable when the
   answer clearly signals its conclusion, not guaranteed otherwise.
-- **`llm_judge`** — the judge model reads the question, expected answer, and
+- **`llm_judge`** — the grading model reads the question, expected answer, and
   given answer, and scores correctness holistically from 0.0 to 1.0 with a
   rationale. The only method that can give real partial credit, not just
   pass/fail, and the only one that checks how the answer is given: an
@@ -247,20 +247,22 @@ blending or fallback between them (see `honest_agent/grading.py`):
 | A single number or literal value (possibly rounded)      | `extract_match`  |
 | Free text — an explanation, summary, or judgment call     | `llm_judge`      |
 
-### The judge model
+### The grading model
 
-`extract_match` and `llm_judge` call a model to grade. By default that's the
-same model being evaluated (`--model`). Pass `--judge-model` (or set
-`HONEST_AGENT_JUDGE_MODEL`) to grade with a different one, e.g. evaluate Sonnet and
+`extract_match` and `llm_judge` both call a model to grade: `extract_match` has it
+pull the value out of the answer, `llm_judge` has it judge the answer. That's the
+grading model, `grading_model` in the config. By default it's the same model being
+evaluated (`--model`). Set `grading_model`, pass `--grading-model` (or set
+`HONEST_AGENT_GRADING_MODEL`) to grade with a different one, e.g. evaluate Sonnet and
 grade with Haiku:
 
 ```bash
-honest-agent run ... --model claude-sonnet-5 --judge-model claude-haiku-4-5
+honest-agent run ... --model claude-sonnet-5 --grading-model claude-haiku-4-5
 ```
 
-Using the same judge for every run keeps comparisons between agent models
+Using the same grading model for every run keeps comparisons between agent models
 fair: otherwise each model grades itself, and part of a difference between
-two models can come from the judge. Each result records its judge in
+two models can come from the grading model. Each result records its grading model in
 `grading_model` (empty for `contains`, which uses no model).
 
 ## Claude or OpenAI (GPT) models
@@ -284,7 +286,7 @@ command as everyone else:
 uv run honest-agent run --target motherduck
 ```
 
-Without `--judge-model`, the eval model also grades. The
+Without a grading model, the eval model also grades. The
 agent runs the same loop either way (same MCP tools, same SQL capture and
 provenance checks), and the report shows GPT runs alongside Claude ones in
 the model menus and Model comparison.
@@ -328,7 +330,7 @@ targets:
 | Setting | Where | Flag it replaces |
 |---|---|---|
 | `results_path` | top level only: every agent's results share one file, so the report can compare them | `--results-path` |
-| `model`, `judge_model`, `max_tool_steps` | top level, or per target | `--model`, `--judge-model`, `--max-tool-steps` |
+| `model`, `grading_model`, `max_tool_steps` | top level, or per target | `--model`, `--grading-model`, `--max-tool-steps` |
 | `mcp_command` or `mcp_url` (one of them) | target | `--mcp-command`, `--mcp-url` |
 | `bearer_token_env`: the variable holding the server's token | target | `--mcp-bearer-token` |
 | `evals_dir` | target | `--evals-dir` |
