@@ -8,7 +8,7 @@ grading model sent and received. The report, `logs`, `notify` and `rebuild` all 
 this store. You choose where it lives when you run `init` ("Where should results live?"),
 and you can change it later in the config.
 
-| | In this folder (default) | In MotherDuck | In cloud storage (S3, …) |
+| | On your machine (default) | In MotherDuck | In cloud storage (S3, …) |
 |---|---|---|---|
 | **What it is** | A DuckDB file next to your config | A MotherDuck database | The same DuckDB file, kept in a bucket |
 | **You need** | Nothing | A MotherDuck account and a separate token for the results | A bucket and credentials that can read and write one file |
@@ -18,9 +18,10 @@ and you can change it later in the config.
 Not sure? Start with the default. You can move later; see
 [Changing where results live](#changing-where-results-live).
 
-## In this folder
+## On your machine
 
-The default. Results go to `honest_agent_results/results.duckdb`, next to your config.
+The default. Results go to a file in your project, `honest_agent_results/results.duckdb`,
+next to your config.
 
 - **Out of git by itself:** honest-agent puts a `.gitignore` in the folder it creates, so
   the file is never committed by accident.
