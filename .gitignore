@@ -25,3 +25,10 @@ example_project/honest_agent_config.yml
 
 # wrangler (Cloudflare) local cache: holds the account ID
 .wrangler/
+
+# The site (site/): installed packages, build output and Astro's cache, plus the hero
+# video's local copy (it's served from Cloudflare R2, see site/README.md)
+node_modules/
+.astro/
+site/dist/
+site/media/
