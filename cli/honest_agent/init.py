@@ -24,8 +24,7 @@ EVAL_DOCS = f"{REPO}/example_project/README.md#writing-evals"
 S3_DOCS = "https://thehonestagent.dev/docs/team/results-s3/"
 
 # key: (menu label, default target name, URL already known, a hint for the URL prompt)
-SERVERS = {
-    "local": ("a local command", "local", None, None),
+SERVERS = {  # menu order: hosted servers first, as most agents use one
     "snowflake": (
         "Snowflake managed MCP",
         "snowflake",
@@ -34,6 +33,7 @@ SERVERS = {
     ),
     "motherduck": ("MotherDuck", "motherduck", "https://api.motherduck.com/mcp", None),
     "url": ("another URL", "agent", None, "https://..."),
+    "local": ("a local command", "local", None, None),
 }
 PROVIDERS = {"anthropic": ("Anthropic (Claude)", "ANTHROPIC_API_KEY"), "openai": ("OpenAI", "OPENAI_API_KEY")}
 RESULTS = {"local": "here, a local file", "motherduck": "MotherDuck", "s3": "a file in S3"}
@@ -322,15 +322,23 @@ def skill_note(written: list[str], replaced: bool) -> str:
     )
 
 
-def _choose(question: str, options: dict[str, str], given: str | None, default: str, no_input: bool) -> str:
-    """A numbered menu, e.g. `1) Claude  2) OpenAI  [1]:`; a flag's value or --no-input skips it."""
+def _choose(
+    question: str, options: dict[str, str], given: str | None, default: str, no_input: bool, offer_default: bool = True
+) -> str:
+    """A numbered menu, e.g. `1) Claude  2) OpenAI  [1]:`; a flag's value or --no-input skips it.
+    Without `offer_default`, Enter alone doesn't pick: the user types a number (`default` is
+    then only --no-input's)."""
     if given is not None:
         return given
     if no_input:
         return default
     keys = list(options)
     menu = "  ".join(f"{i}) {options[key]}" for i, key in enumerate(keys, 1))
-    pick = click.prompt(f"{question}\n  {menu}", type=click.IntRange(1, len(keys)), default=keys.index(default) + 1)
+    pick = click.prompt(
+        f"{question}\n  {menu}",
+        type=click.IntRange(1, len(keys)),
+        default=keys.index(default) + 1 if offer_default else None,
+    )
     return keys[pick - 1]
 
 
@@ -393,7 +401,8 @@ def prompt_project(
         # Said once up front: click shows a default as `[value]` without saying what it is.
         click.echo(ENTER_HINT + ("" if with_skill else "\n" + SKILL_HINT) + "\n")
     servers = {key: label for key, (label, *_rest) in SERVERS.items()}
-    server = _choose("Which MCP server does your agent use?", servers, server, "local", no_input)
+    # No default to offer: any guess would be wrong for many people, and every later question depends on it.
+    server = _choose("Which MCP server does your agent use?", servers, server, "local", no_input, offer_default=False)
     _label, default_target, known_url, url_hint = SERVERS[server]
     if server == "local":
         mcp_command = _ask("Command that starts the MCP server", mcp_command, None, no_input, "--mcp-command")

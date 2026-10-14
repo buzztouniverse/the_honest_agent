@@ -83,11 +83,14 @@ export interface Eval {
   title: string | null
 }
 
-/** Evals in first-seen order, with their category and title. */
+/** Evals in first-seen order, with their title and their most recent category, so an eval
+ *  moved to another category is grouped under the new one. */
 export function evalsOf(results: ResultRow[], titles: Map<string, string>): Eval[] {
-  const seen = new Map<string, string>()
-  for (const r of results) if (!seen.has(r.eval_id)) seen.set(r.eval_id, r.category ?? 'Uncategorized')
-  return [...seen.entries()].map(([eval_id, category]) => ({ eval_id, category, title: titles.get(eval_id) ?? null }))
+  const ids = [...new Set(results.map((r) => r.eval_id))]
+  const categories = new Map<string, string>()
+  const byTime = [...results].sort((a, b) => a.run_timestamp.localeCompare(b.run_timestamp))
+  for (const r of byTime) categories.set(r.eval_id, r.category ?? 'Uncategorized')
+  return ids.map((eval_id) => ({ eval_id, category: categories.get(eval_id)!, title: titles.get(eval_id) ?? null }))
 }
 
 /** Heatmap row for an eval: the title as label with the eval_id underneath, or the eval_id alone. */
