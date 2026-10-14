@@ -111,6 +111,13 @@ def define(c):
             pg.evaluate(f"(()=>{{const s=({find})();window.scrollTo(0,s.getBoundingClientRect().top+scrollY-{top})}})()")
         pg.mouse.move(1270, 750); pg.wait_for_timeout(300)
         pg.screenshot(path=D + f'define-{name}.png')
+        # The page frames these at 1280x600 (like the YAML panel next to them): crop to that,
+        # moving the window down just enough to keep the whole highlighted card in view.
+        bottom = pg.evaluate(f"(()=>({find})().getBoundingClientRect().bottom)()")
+        top = max(0, min(760 - 600, round(bottom + 20 - 600)))
+        img = Image.open(D + f'define-{name}.png')
+        k = img.width / 1280
+        img.crop((0, int(top * k), img.width, int((top + 600) * k))).save(D + f'define-{name}.png')
     pg.close()
 
 
