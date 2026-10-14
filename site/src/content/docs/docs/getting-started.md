@@ -74,15 +74,15 @@ uv run honest-agent init
 
 `init` asks a few questions with numbered options and defaults (Enter accepts them):
 
-- which MCP server your agent uses: a local command, Snowflake's managed MCP server,
-  MotherDuck, or another URL;
+- which MCP server your agent uses: Snowflake's managed MCP server, MotherDuck, another
+  URL, or a local command;
 - its URL, or the command that starts it;
-- a name for the target (the server's name by default);
 - which model provider runs the agent: Anthropic (Claude) or OpenAI;
 - where results live: on your machine, in MotherDuck, or in a file in S3. Not sure? Keep
   the default, your machine; [Storing results](/docs/storing-results/) compares the three.
 
-Then it writes three files, and never overwrites one that exists:
+The target is named after the server (`snowflake`, `motherduck`, …); `--target-name`
+chooses another name. Then it writes three files, and never overwrites one that exists:
 
 | File | What it holds |
 |---|---|
