@@ -409,7 +409,13 @@ def prompt_project(
     provider = _choose("Which model runs the agent?", providers, model_provider, "anthropic", no_input)
     results = _choose("Where should results live?", RESULTS, results, "local", no_input)
     if results == "motherduck":
-        results_db = _ask("MotherDuck database for results", results_db, "honest_agent_results", no_input, "")
+        results_db = _ask(
+            "Name of the MotherDuck database where results will be stored (created if it doesn't exist)",
+            results_db,
+            "honest_agent_results",
+            no_input,
+            "",
+        )
 
     answers = Answers(
         server=server,
