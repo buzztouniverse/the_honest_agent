@@ -26,14 +26,7 @@ README fixes done 2026-10-08 (example eval, `--target`, sharing via
 
 ## Before the release: the example report on the site
 
-Done 2026-10-14, except one step:
-
-- **Before deploying, one more round of demo runs** (claude-haiku-5-5, claude-sonnet-5-5,
-  gpt-5.5, each graded by itself as the existing runs are), so Model comparison's
-  "Scores over time" has two days per model instead of one dot. Then refresh
-  `site/report-demo/report.json` and check it again for private details.
-
-Done: the demo report is at `/report/` (`site/scripts/build-report.mjs` copies the CLI's
+Done 2026-10-15. The demo report is at `/report/` (`site/scripts/build-report.mjs` copies the CLI's
 report UI and `site/report-demo/report.json` into `public/report/`, with a "Demo report"
 banner and a link back to the landing page); "See a report" and "Explore a real report"
 point there; the footer shows the install command before `init --example`. Decided: the
