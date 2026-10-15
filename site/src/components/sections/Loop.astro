@@ -161,7 +161,7 @@
 .s-loop .term .ty{text-indent:0;display:inline-block;vertical-align:bottom;overflow:hidden;white-space:nowrap;width:0;animation:lp-tyIn calc(var(--n) * .06s) steps(var(--n)) var(--d) forwards}
 .s-loop .term .cur{display:inline-block;width:.6em;height:1.15em;vertical-align:-.2em;margin-left:2px;background:var(--green-300);animation:lp-curB 1s steps(1) infinite}
 @keyframes lp-lnIn{to{opacity:1}}
-@keyframes lp-tyIn{to{width:calc(var(--n) * 1ch)}}
+@keyframes lp-tyIn{to{width:calc(var(--n) * 1ch + 4px)}}
 @keyframes lp-curB{50%{opacity:0}}
 @media (prefers-reduced-motion:reduce){.s-loop .term .ln{animation:none;opacity:1}.s-loop .term .ty{animation:none;width:auto}.s-loop .term .cur{animation:none}}
 /* report */
