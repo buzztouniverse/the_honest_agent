@@ -21,6 +21,7 @@ import {
 import type { ReportData, ResultRow } from '../data/types'
 import { Badge, Card, DataTable, DateRangePicker, Heatmap, Icon, IconButton, ScoreCell, ScoreStat, Select, Tabs } from '../ds'
 import { navigate } from '../router'
+import { useNarrow } from '../useNarrow'
 
 const METRICS = [
   { id: 'overall', label: 'Combined' },
@@ -71,6 +72,7 @@ export function Overview({
   agent: string
   setAgent: (agent: string) => void
 }) {
+  const narrow = useNarrow()
   const allRuns = useMemo(() => runsOf(data.results), [data])
   const agents = useMemo(() => agentsOf(data.results), [data])
   const titles = useMemo(() => evalTitles(data.results), [data])
@@ -136,7 +138,7 @@ export function Overview({
         </Empty>
       ) : (
         <>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(200px, 100%), 1fr))', gap: 16 }}>
             <Card>
               <ScoreStat
                 label="Overall"
@@ -187,7 +189,7 @@ export function Overview({
               metric={metric}
               showToggle={false}
               rowHeader="Eval"
-              rowLabelWidth={360}
+              rowLabelWidth={narrow ? 150 : 360}
               groupBy="category"
               defaultExpanded={categories}
               rows={heatRows}

@@ -4,6 +4,7 @@ import { runsOf } from './data/derive'
 import { loadReportData } from './data/load'
 import type { ReportData } from './data/types'
 import { useRoute } from './router'
+import { useNarrow } from './useNarrow'
 import { Compare } from './views/Compare'
 import { Overview } from './views/Overview'
 import { ResultDetail } from './views/ResultDetail'
@@ -30,6 +31,7 @@ function App() {
   // Shared by Overview and Compare, so switching pages keeps the agent. Defaults to the latest run's.
   const [agent, setAgent] = useState('')
   const route = useRoute()
+  const narrow = useNarrow()
 
   useEffect(() => {
     loadReportData()
@@ -59,7 +61,7 @@ function App() {
         setTheme={setTheme}
         generatedAt={state.status === 'ready' ? state.data.generated_at : null}
       />
-      <main style={{ flex: 1, minWidth: 0, padding: '28px 32px' }}>
+      <main style={{ flex: 1, minWidth: 0, padding: narrow ? '20px 12px' : '28px 32px' }}>
         <div style={{ maxWidth: 'var(--content-max)', margin: '0 auto' }}>
           {state.status === 'loading' && <p style={{ color: 'var(--fg-3)' }}>Loading…</p>}
           {state.status === 'error' && (
