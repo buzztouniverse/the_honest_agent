@@ -4,9 +4,11 @@ honest-agent is in alpha: a minor version (0.1 -> 0.2) can break things, and
 its notes start with what changed and what to do. A patch version (0.1.0 ->
 0.1.1) only fixes bugs.
 
-## v0.1.0 (alpha) — 2026-10-13
+## v0.1.0 (alpha) — 2026-10-15
 
 The first release for testers. Install it from the tag (see the README).
+Documentation: https://thehonestagent.dev/docs/, with a demo report at
+https://thehonestagent.dev/report/.
 
 **What it does:** asks your analytics AI agent known questions through its
 MCP server and checks each answer for **accuracy** (is it right?) and
@@ -16,7 +18,7 @@ MCP server and checks each answer for **accuracy** (is it right?) and
   needs only a model API key), `debug` (checks the setup without calling a
   model), `ls`, `run`, `report`, `serve`, `logs`, `notify` (Slack) and
   `rebuild`.
-- **Models:** Anthropic (Claude) or OpenAI, for the agent and the grader.
+- **Models:** Anthropic (Claude) or OpenAI, for the agent and the grading model.
 - **Grading:** `contains`, `extract_match` (one number or value, with an
   optional tolerance) and `llm_judge`; per-eval thresholds for accuracy and
   provenance.
@@ -25,8 +27,8 @@ MCP server and checks each answer for **accuracy** (is it right?) and
 - **Results:** a local DuckDB file or a MotherDuck database, with every model
   and tool call kept, so `logs` and `rebuild` work after the fact.
 - **CI:** `run` exits 1 when any eval falls below its threshold.
-  `docs/hosting.md` has a recipe for running it in GitHub Actions and
-  hosting the report behind a sign-in.
+  [Running it for a team](https://thehonestagent.dev/docs/team/) has recipes
+  for GitHub Actions, shared results and hosting the report behind a sign-in.
 - **Setup skill:** `init` can add a skill that helps a coding agent (Claude
   Code, Codex, Cursor and others) set up the project and write the first
   evals with you.
@@ -39,4 +41,9 @@ MCP server and checks each answer for **accuracy** (is it right?) and
   step, which its notes will explain.
 - Provenance only sees SQL: an agent that reads data through structured,
   non-SQL tools can't have its sources checked.
+- Each eval is one fresh question: no multi-turn conversations, and not the
+  exact behaviour of a user's chat client (its own instructions and history).
+- MCP servers are reached by URL with a bearer token, or started with a local
+  command. Servers that only allow signing in through a browser (OAuth) aren't
+  supported yet.
 - Install from git only; not on PyPI yet.
