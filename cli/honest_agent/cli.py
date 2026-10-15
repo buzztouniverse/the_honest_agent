@@ -50,6 +50,7 @@ _REPORT_DIR_HELP = "Report folder (web UI + data/report.json)."
 
 
 @click.group()
+@click.version_option(package_name="honest-agent", prog_name="honest-agent")
 @click.option(
     "--env-file",
     envvar="HONEST_AGENT_ENV_FILE",

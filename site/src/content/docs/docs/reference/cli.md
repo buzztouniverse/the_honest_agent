@@ -11,6 +11,7 @@ Run any command with `--help` to see the same in your terminal. A flag beats an 
 
 These go before the command, like `honest-agent --env-file prod.env run`.
 
+- **`--version`**: Show the version and exit.
 - **`--env-file FILE`**: Load settings and API keys from this file instead of the .env found from the current directory (or its parents). Variables already set in your shell take precedence. *(environment variable `HONEST_AGENT_ENV_FILE`)*
 - **`--config-file FILE`**: Read settings and targets from this file instead of the honest_agent_config.yml found from the current directory (or its parents). *(environment variable `HONEST_AGENT_CONFIG_FILE`)*
 
