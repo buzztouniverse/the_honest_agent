@@ -325,7 +325,7 @@ _mcp_options = _options(
     type=click.IntRange(min=1),
     default=DEFAULT_MAX_TOOL_STEPS,
     help="Max steps per eval before giving up: each step is one model API call and the tool calls it asks for. "
-    "If Claude is still requesting tools when this is hit, that eval fails with a clear error "
+    "If the model still wants to call tools when this is hit, that eval fails with a clear error "
     "instead of silently returning an empty answer.",
 )
 @_mcp_options
@@ -609,8 +609,8 @@ def report(ctx: click.Context, results_path: str | None, out: str, days: int):
 
 @main.command()
 @click.option("--out", default=DEFAULT_REPORT_DIR, type=click.Path(exists=True, file_okay=False), help=_REPORT_DIR_HELP)
-@click.option("--port", default=8000, type=int)
-@click.option("--open-browser/--no-open-browser", default=True)
+@click.option("--port", default=8000, type=int, help="Port to serve the report on, at http://127.0.0.1:<port>/.")
+@click.option("--open-browser/--no-open-browser", default=True, help="Open the report in your browser.")
 def serve(out: str, port: int, open_browser: bool):
     """Serve a generated report folder locally, the same way `dbt docs serve` does."""
     if not report_mod.is_report(Path(out)):
@@ -629,7 +629,9 @@ def serve(out: str, port: int, open_browser: bool):
     help=f"Target (agent) from {CONFIG_FILE_NAME} to alert on. Defaults to its default_target.",
 )
 @click.option("--results-path", default=None, help=_RESULTS_PATH_HELP)
-@click.option("--webhook-url", envvar="SLACK_WEBHOOK_URL", default=None)
+@click.option(
+    "--webhook-url", envvar="SLACK_WEBHOOK_URL", default=None, help="The Slack incoming webhook to post the alert to."
+)
 @click.option(
     "--report-url",
     envvar="HONEST_AGENT_REPORT_URL",

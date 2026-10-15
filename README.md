@@ -27,6 +27,8 @@ never a hand-rolled `venv`/`pip install`.
   >=3.10.
 - **`ui/`** — the source of the web report (React + Vite). Its build is
   committed to `cli/honest_agent/report_ui/`, so users don't need Node.
+- **`site/`** — the public landing page and docs (Astro + Starlight); see
+  `site/README.md`. It uses the report's design system in `ui/src/ds/`.
 - **`example_project/`** — a real-world-shaped consumer of the CLI: its own
   example eval YAML and a README showing the actual install/run flow. This
   is the only place example data lives.
@@ -108,9 +110,9 @@ SNOWFLAKE_MCP_TOKEN=...      # the token for your MCP server
 Only secrets and account URLs go here. The config reads the URL with
 `{{ env_var('SNOWFLAKE_MCP_URL') }}`, the way dbt does, so the config holds no
 account and you can commit it to share targets with your team
-([details](example_project/README.md#reading-values-from-the-environment)).
+([details](https://thehonestagent.dev/docs/connect/#secrets-stay-in-env)).
 More targets, `mcp_env` for local servers and every other setting are in
-[The config file](example_project/README.md#the-config-file).
+[Connect your agent](https://thehonestagent.dev/docs/connect/).
 
 **Give the MCP server read-only credentials.** honest-agent runs your agent
 with every tool its MCP server offers, and the agent reads your data, which
@@ -136,8 +138,8 @@ should read. For example:
 `expected_answer` checks accuracy; `expected_sources` checks provenance, i.e.
 that the SQL the agent ran actually read `orders`. (This example fits the
 bundled demo warehouse's TPC-H data, not yours.) See
-[Writing evals](example_project/README.md#writing-evals) and
-[Choosing a grading method](example_project/README.md#choosing-a-grading-method).
+[Writing evals](https://thehonestagent.dev/docs/writing-evals/) and
+[Grading accuracy](https://thehonestagent.dev/docs/writing-evals/#grading-accuracy).
 
 ### 5. Run and look at the results
 
@@ -150,7 +152,7 @@ uv run honest-agent serve     # opens it in your browser (Ctrl+C to stop)
 - `run` uses `default_target`, so you only need `--target` for another one:
   `run --target motherduck`.
 - `run` exits 1 when any eval falls below its threshold, like a failing test,
-  so a CI job fails on a regression. See [`docs/hosting.md`](docs/hosting.md)
+  so a CI job fails on a regression. See [Running it for a team](https://thehonestagent.dev/docs/team/)
   for a workflow that still publishes the report and sends the alert.
 - `uv run honest-agent debug` checks the setup first, like `dbt debug`: config,
   variables, evals, the MCP server and the results store, without calling a
@@ -231,7 +233,8 @@ bundled demo MCP server (`python -m honest_agent.demo_server`), against a real s
 TPC-H warehouse — real SQL, real data, real provenance checking (does the
 agent's SQL actually hit the table we expect). By default results land in
 `./honest_agent_results/results.duckdb`. See `example_project/README.md` for
-details, including how to point at a real
+the example's details,
+[Connect your agent](https://thehonestagent.dev/docs/connect/) to point at a real
 MCP server (MotherDuck, Snowflake, or your own) instead of the bundled demo
 one, and `example_project/evals/example_eval.yml` for how each eval
 declares its own accuracy/provenance thresholds (`grading.min_score` /
@@ -254,7 +257,7 @@ more (all history, the raw records, run settings). Sharing the report doesn't
 share the database, and the database is never put on the report's host.
 
 A scheduled job ties them together: it runs the evals into the database,
-rebuilds the report and publishes it. [`docs/hosting.md`](docs/hosting.md) is
+rebuilds the report and publishes it. [Running it for a team](https://thehonestagent.dev/docs/team/) is
 a tested recipe for all of it (results in MotherDuck or S3, the report on
 Cloudflare Pages or CloudFront, GitHub Actions, Slack). Never host the report
 publicly: it holds what your agent's tools returned.

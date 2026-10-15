@@ -1,0 +1,22 @@
+/* The online demo's banner (added by scripts/build-report.mjs, not part of the CLI's
+   report). Uses the report's own tokens, so it follows its light and dark themes. */
+.demo-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px 16px;
+  padding: 8px 16px;
+  background: var(--bg-inverse);
+  color: var(--fg-inverse);
+  font: 400 13px/1.4 var(--font-sans);
+  text-align: center;
+}
+.demo-banner strong { font-weight: 600; }
+.demo-banner a {
+  color: inherit;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.demo-banner a:hover { text-decoration-thickness: 2px; }

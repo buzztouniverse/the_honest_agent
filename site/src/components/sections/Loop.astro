@@ -1,0 +1,341 @@
+---
+---
+<section class="s-loop" id="how-it-works" data-play>
+ <div class="wrap">
+  <h2>Close the loop, from test to action</h2>
+  <input class="r" type="radio" name="lp-step" id="lp-s1" checked aria-label="Step 1: Define">
+  <input class="r" type="radio" name="lp-step" id="lp-s2" aria-label="Step 2: Run">
+  <input class="r" type="radio" name="lp-step" id="lp-s3" aria-label="Step 3: Review">
+  <input class="r" type="radio" name="lp-step" id="lp-s4" aria-label="Step 4: Improve">
+  <div class="layout">
+   <div class="steps">
+    <label class="step st1" for="lp-s1"><span class="n">1</span><span><div class="t">Define</div><div class="d">Write the questions you already know the answers to.<a class="more" href="#define">Learn more →</a></div></span></label>
+    <label class="step st2" for="lp-s2"><span class="n">2</span><span><div class="t">Run</div><div class="d">Grade every answer for accuracy and check the sources behind it.<a class="more" href="#run">Learn more →</a></div></span></label>
+    <label class="step st3" for="lp-s3"><span class="n">3</span><span><div class="t">Review</div><div class="d">Build the report and see which answers failed, and why.<a class="more" href="#review">Learn more →</a></div></span></label>
+    <label class="step st4" for="lp-s4"><span class="n">4</span><span><div class="t">Improve</div><div class="d">Get alerted, fix your agent, and run again.<a class="more" href="#improve">Learn more →</a></div></span></label>
+    <span class="ret" aria-hidden="true"></span><svg class="retw" viewBox="-40 0 80 540" fill="none" aria-hidden="true"><path d="M23 488 V496 A24 24 0 0 1 -25 496 V24 A24 24 0 0 1 23 24" stroke="#8E9A89" stroke-width="2" stroke-linecap="round"/><path d="M16 23 L23 31 L30 23 Z" fill="#8E9A89"/></svg>
+   </div>
+
+   <div class="win">
+    <!-- 1 Define -->
+    <div class="panel p1" style="flex-direction:column">
+     <div class="bar"><i></i><i></i><i></i><span>my-analytics-project</span></div>
+     <div style="display:flex;flex:1;min-height:0">
+      <div class="files"><div class="h">Explorer</div><div><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-1px"><path d="m6 9 6 6 6-6"/></svg>evals</div><div class="on" style="padding-left:32px">example_evals.yml</div><div>honest_agent_config.yml</div><div>.env</div></div>
+      <div class="code"><div class="tab"><b>evals/example_evals.yml</b></div>
+<pre><span class="l" data-n="1"><span class="k">version</span>: <span class="v">1</span></span><span class="l" data-n="2"></span><span class="l" data-n="3"><span class="k">evals</span>:</span><span class="l" data-n="4">  - <span class="k">category</span>: <span class="v">sales</span></span><span class="l" data-n="5">    <span class="k">grading</span>:</span><span class="l" data-n="6">      <span class="k">method</span>: <span class="v">extract_match</span>   <span class="c"># code compares the value</span></span><span class="l" data-n="7">      <span class="k">min_score</span>: <span class="v">0.8</span></span><span class="l" data-n="8">    <span class="k">provenance</span>:</span><span class="l" data-n="9">      <span class="k">min_score</span>: <span class="v">0.7</span></span><span class="l" data-n="10">    <span class="k">tests</span>:</span><span class="l hl new" data-n="11" style="--d:0.50s"><span class="ty2" style="--d:0.50s;--n:22">      - <span class="k">id</span>: <span class="v">revenue_q4</span></span></span><span class="l hl new" data-n="12" style="--d:0.98s"><span class="ty2" style="--d:0.98s;--n:33">        <span class="k">title</span>: <span class="v">Revenue in Q4 2026</span></span></span><span class="l hl new" data-n="13" style="--d:1.56s"><span class="ty2" style="--d:1.56s;--n:81">        <span class="k">prompt</span>: <span class="v">What was our revenue in Q4 2026, net of discounts and before tax?</span></span></span><span class="l hl new" data-n="14" style="--d:2.91s"><span class="ty2" style="--d:2.91s;--n:39">        <span class="k">expected_answer</span>: <span class="v">"307992639.49"</span></span></span><span class="l hl new" data-n="15" style="--d:3.64s"><span class="ty2" style="--d:3.64s;--n:19">        <span class="k">provenance</span>:</span></span><span class="l hl new" data-n="16" style="--d:4.04s"><span class="ty2" style="--d:4.04s;--n:61">          <span class="k">expected_sources</span>: [<span class="v">lineitem</span>, <span class="v">warehouse.main.orders</span>]</span></span><span class="l" data-n="17"></span><span class="l" data-n="18">      - <span class="k">id</span>: <span class="v">order_total_2026</span></span><span class="l" data-n="19">        <span class="k">title</span>: <span class="v">Order total in 2026</span></span><span class="l" data-n="20">        <span class="k">expected_answer</span>: <span class="v">"35055813985.22"</span></span></pre>
+      </div>
+     </div>
+    </div>
+
+    <!-- 2 Run -->
+    <div class="panel p2" style="flex-direction:column">
+     <div class="bar dk"><i></i><i></i><i></i><span>Terminal</span></div>
+<div class="term"><div class="ln" style="--d:0.00s"><span class="p">~/my-analytics-project $</span> <span class="ty" style="--d:0.40s;--n:16">honest-agent run</span></div><div class="ln" style="--d:1.76s">Target: sales-agent (honest_agent_config.yml)</div><div class="ln" style="--d:2.06s">Starting eval run 7d2e41a0-3c55-4f0b-9a61-2b8e5d90c417 (4 evals)...</div><div class="ln" style="--d:2.36s">Evaluating agent: sales-agent</div><div class="ln" style="--d:2.66s">Model: claude-sonnet-4-5 · grading model: claude-sonnet-4-5</div><div class="ln" style="--d:3.26s">  - revenue_q4: &#x27;What was our revenue in Q4 2026, net of discounts and before tax?&#x27;</div><div class="ln" style="--d:4.06s">  - order_total_2026: &#x27;What was the total price of all the orders placed in 2026?&#x27;</div><div class="ln" style="--d:4.86s">  - top_segment: &#x27;Which market segment has the most customers?&#x27;</div><div class="ln" style="--d:5.66s">  - top_nations_last_year: &#x27;Which 5 nations placed the most orders last year?&#x27;</div><div class="ln" style="--d:6.46s">Wrote 4 result(s) to ./honest_agent_results/results.duckdb</div><div class="ln" style="--d:6.86s"><span class="no">2/4 eval(s) below threshold this run:</span></div><div class="ln" style="--d:7.06s"><span class="no">  - revenue_q4: accuracy 0.00 &lt; 0.8, provenance 0.50 &lt; 0.7</span></div><div class="ln" style="--d:7.26s"><span class="no">  - order_total_2026: provenance 0.50 &lt; 0.7</span></div><div class="ln" style="--d:7.56s">Run 7d2e41a0-3c55-4f0b-9a61-2b8e5d90c417 complete. Next: `honest-agent report` / `honest-agent notify`.</div><div class="ln" style="--d:8.36s">&nbsp;</div><div class="ln" style="--d:8.36s"><span class="p">~/my-analytics-project $</span> <span class="ty" style="--d:8.76s;--n:19">honest-agent report</span></div><div class="ln" style="--d:10.40s">Wrote honest_agent_report/. View it with `honest-agent serve --out honest_agent_report`.</div><div class="ln" style="--d:11.20s">&nbsp;</div><div class="ln" style="--d:11.20s"><span class="p">~/my-analytics-project $</span> <span class="ty" style="--d:11.60s;--n:18">honest-agent serve</span></div><div class="ln" style="--d:13.18s">Serving honest_agent_report/ at http://127.0.0.1:8000/ (Ctrl+C to stop)<span class="cur"></span></div></div>
+    </div>
+
+    <!-- 3 Review -->
+    <div class="panel p3" style="flex-direction:column">
+     <div class="bar"><i></i><i></i><i></i><span>honest_agent_report/index.html</span></div>
+     <div class="rpt">
+      <aside class="sb">
+       <div class="sblogo"><img src="/assets/robot.png" alt=""><span>The Honest Agent</span></div>
+       <div class="sbi on"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>Overview</div>
+       <div class="sbi"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="6" r="3"/><path d="M12 6h5a2 2 0 0 1 2 2v7"/><path d="m15 9-3-3 3-3"/><circle cx="19" cy="18" r="3"/><path d="M12 18H7a2 2 0 0 1-2-2V9"/><path d="m9 15 3 3-3 3"/></svg>Model comparison</div>
+      </aside>
+      <div class="main">
+       <div class="ph"><div><h3>Overview</h3><p>Last eval run Oct 10, 08:02</p></div><div class="sels"><span class="sel">sales-agent</span><span class="sel">claude-sonnet-4-5</span></div></div>
+       <div class="stats"><div class="rc"><div class="sl"><i class="dot b-partly"></i>Overall</div><div class="sv">73.8%</div><div class="sd"><span class="dl d">−2.9 pp</span><span>vs previous run</span></div></div><div class="rc"><div class="sl"><i class="dot b-partly"></i>Accuracy</div><div class="sv">72.5%</div><div class="sd"><span class="dl u">+2.5 pp</span><span>vs previous run</span></div></div><div class="rc"><div class="sl"><i class="dot b-mostly"></i>Provenance</div><div class="sv">75.0%</div><div class="sd"><span class="dl d">−8.3 pp</span><span>vs previous run</span></div></div><div class="rc"><div class="sl">Passed thresholds</div><div class="sv">2 / 4</div><div class="sd"><span>2 below min score</span><span></span></div></div></div>
+       <section class="card"><header><div><h4>Scores by eval run</h4><p>Hover a cell to see its scores</p></div><div class="tabs"><b>Combined</b><span>Accuracy</span><span>Provenance</span></div></header>
+        <div class="hmw"><table class="hm"><thead><tr><th class="lbh">Category / Eval</th><th class="hd"><span><em class="fd">2026-10-07</em><em class="sd2">10-07</em></span></th><th class="hd"><span><em class="fd">2026-10-08</em><em class="sd2">10-08</em></span></th><th class="hd"><span><em class="fd">2026-10-09</em><em class="sd2">10-09</em></span></th><th class="hd"><span><em class="fd">2026-10-10</em><em class="sd2">10-10</em></span></th><th class="hd"><span style="font-weight:600;color:var(--fg1)">Overall</span></th></tr></thead><tbody><tr class="grp g1"><td class="lb"><input type="checkbox" class="cx" id="lp-c1" aria-label="Toggle category"><label class="cxl" for="lp-c1"></label><div class="lbi"><svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg><div><div class="nm">sales</div><div class="sub">2 evals</div></div></div></td><td class="hc"><div class="cl b-mostly"><div class="tt"><div class="th1">sales</div><div class="th2">2026-10-07</div><div class="tl"><span>Combined</span><b>75.0%</b></div><div class="tl o"><span>Accuracy</span><b>100.0%</b></div><div class="tl o"><span>Provenance</span><b>50.0%</b></div><div class="tb">Mostly right</div></div></div></td><td class="hc"><div class="cl b-correct"><div class="tt"><div class="th1">sales</div><div class="th2">2026-10-08</div><div class="tl"><span>Combined</span><b>100.0%</b></div><div class="tl o"><span>Accuracy</span><b>100.0%</b></div><div class="tl o"><span>Provenance</span><b>100.0%</b></div><div class="tb">Correct</div></div></div></td><td class="hc"><div class="cl b-mostly"><div class="tt"><div class="th1">sales</div><div class="th2">2026-10-09</div><div class="tl"><span>Combined</span><b>75.0%</b></div><div class="tl o"><span>Accuracy</span><b>100.0%</b></div><div class="tl o"><span>Provenance</span><b>50.0%</b></div><div class="tb">Mostly right</div></div></div></td><td class="hc"><div class="cl b-partly"><div class="tt"><div class="th1">sales</div><div class="th2">2026-10-10</div><div class="tl"><span>Combined</span><b>50.0%</b></div><div class="tl o"><span>Accuracy</span><b>50.0%</b></div><div class="tl o"><span>Provenance</span><b>50.0%</b></div><div class="tb">Partly right</div></div></div></td><td class="hc"><div class="cl b-mostly"><div class="tt"><div class="th1">sales</div><div class="th2">Overall</div><div class="tl"><span>Combined</span><b>75.0%</b></div><div class="tl o"><span>Accuracy</span><b>87.5%</b></div><div class="tl o"><span>Provenance</span><b>62.5%</b></div><div class="tb">Mostly right</div></div></div></td></tr><tr class="chd k1"><td class="lb"><div class="lbi"><div><div class="nm">revenue_q4</div><div class="sub">Revenue in Q4 2026</div></div></div></td><td class="hc"><div class="cl b-none"><div class="tt"><div class="th1">revenue_q4</div><div class="th2">2026-10-07</div><div class="tb">No run</div></div></div></td><td class="hc"><div class="cl b-none"><div class="tt"><div class="th1">revenue_q4</div><div class="th2">2026-10-08</div><div class="tb">No run</div></div></div></td><td class="hc"><div class="cl b-none"><div class="tt"><div class="th1">revenue_q4</div><div class="th2">2026-10-09</div><div class="tb">No run</div></div></div></td><td class="hc"><div class="cl b-wrong"><div class="tt"><div class="th1">revenue_q4</div><div class="th2">2026-10-10</div><div class="tl"><span>Combined</span><b>25.0%</b></div><div class="tl o"><span>Accuracy</span><b>0.0%</b></div><div class="tl o"><span>Provenance</span><b>50.0%</b></div><div class="tb">Wrong</div></div></div></td><td class="hc"><div class="cl b-wrong"><div class="tt"><div class="th1">revenue_q4</div><div class="th2">Overall</div><div class="tl"><span>Combined</span><b>25.0%</b></div><div class="tl o"><span>Accuracy</span><b>0.0%</b></div><div class="tl o"><span>Provenance</span><b>50.0%</b></div><div class="tb">Wrong</div></div></div></td></tr><tr class="chd k1"><td class="lb"><div class="lbi"><div><div class="nm">order_total_2026</div><div class="sub">Order total in 2026</div></div></div></td><td class="hc"><div class="cl b-mostly"><div class="tt"><div class="th1">order_total_2026</div><div class="th2">2026-10-07</div><div class="tl"><span>Combined</span><b>75.0%</b></div><div class="tl o"><span>Accuracy</span><b>100.0%</b></div><div class="tl o"><span>Provenance</span><b>50.0%</b></div><div class="tb">Mostly right</div></div></div></td><td class="hc"><div class="cl b-correct"><div class="tt"><div class="th1">order_total_2026</div><div class="th2">2026-10-08</div><div class="tl"><span>Combined</span><b>100.0%</b></div><div class="tl o"><span>Accuracy</span><b>100.0%</b></div><div class="tl o"><span>Provenance</span><b>100.0%</b></div><div class="tb">Correct</div></div></div></td><td class="hc"><div class="cl b-mostly"><div class="tt"><div class="th1">order_total_2026</div><div class="th2">2026-10-09</div><div class="tl"><span>Combined</span><b>75.0%</b></div><div class="tl o"><span>Accuracy</span><b>100.0%</b></div><div class="tl o"><span>Provenance</span><b>50.0%</b></div><div class="tb">Mostly right</div></div></div></td><td class="hc"><div class="cl b-mostly"><div class="tt"><div class="th1">order_total_2026</div><div class="th2">2026-10-10</div><div class="tl"><span>Combined</span><b>75.0%</b></div><div class="tl o"><span>Accuracy</span><b>100.0%</b></div><div class="tl o"><span>Provenance</span><b>50.0%</b></div><div class="tb">Mostly right</div></div></div></td><td class="hc"><div class="cl b-mostly"><div class="tt"><div class="th1">order_total_2026</div><div class="th2">Overall</div><div class="tl"><span>Combined</span><b>81.2%</b></div><div class="tl o"><span>Accuracy</span><b>100.0%</b></div><div class="tl o"><span>Provenance</span><b>62.5%</b></div><div class="tb">Mostly right</div></div></div></td></tr><tr class="grp g2"><td class="lb"><input type="checkbox" class="cx" id="lp-c2" aria-label="Toggle category"><label class="cxl" for="lp-c2"></label><div class="lbi"><svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg><div><div class="nm">customers</div><div class="sub">2 evals</div></div></div></td><td class="hc"><div class="cl b-partly"><div class="tt"><div class="th1">customers</div><div class="th2">2026-10-07</div><div class="tl"><span>Combined</span><b>65.0%</b></div><div class="tl o"><span>Accuracy</span><b>50.0%</b></div><div class="tl o"><span>Provenance</span><b>80.0%</b></div><div class="tb">Partly right</div></div></div></td><td class="hc"><div class="cl b-mostly"><div class="tt"><div class="th1">customers</div><div class="th2">2026-10-08</div><div class="tl"><span>Combined</span><b>77.5%</b></div><div class="tl o"><span>Accuracy</span><b>55.0%</b></div><div class="tl o"><span>Provenance</span><b>100.0%</b></div><div class="tb">Mostly right</div></div></div></td><td class="hc"><div class="cl b-mostly"><div class="tt"><div class="th1">customers</div><div class="th2">2026-10-09</div><div class="tl"><span>Combined</span><b>77.5%</b></div><div class="tl o"><span>Accuracy</span><b>55.0%</b></div><div class="tl o"><span>Provenance</span><b>100.0%</b></div><div class="tb">Mostly right</div></div></div></td><td class="hc"><div class="cl b-correct"><div class="tt"><div class="th1">customers</div><div class="th2">2026-10-10</div><div class="tl"><span>Combined</span><b>97.5%</b></div><div class="tl o"><span>Accuracy</span><b>95.0%</b></div><div class="tl o"><span>Provenance</span><b>100.0%</b></div><div class="tb">Correct</div></div></div></td><td class="hc"><div class="cl b-mostly"><div class="tt"><div class="th1">customers</div><div class="th2">Overall</div><div class="tl"><span>Combined</span><b>79.4%</b></div><div class="tl o"><span>Accuracy</span><b>63.7%</b></div><div class="tl o"><span>Provenance</span><b>95.0%</b></div><div class="tb">Mostly right</div></div></div></td></tr><tr class="chd k2"><td class="lb"><div class="lbi"><div><div class="nm">top_segment</div><div class="sub">Market segment with the most customers</div></div></div></td><td class="hc"><div class="cl b-correct"><div class="tt"><div class="th1">top_segment</div><div class="th2">2026-10-07</div><div class="tl"><span>Combined</span><b>100.0%</b></div><div class="tl o"><span>Accuracy</span><b>100.0%</b></div><div class="tl o"><span>Provenance</span><b>100.0%</b></div><div class="tb">Correct</div></div></div></td><td class="hc"><div class="cl b-correct"><div class="tt"><div class="th1">top_segment</div><div class="th2">2026-10-08</div><div class="tl"><span>Combined</span><b>100.0%</b></div><div class="tl o"><span>Accuracy</span><b>100.0%</b></div><div class="tl o"><span>Provenance</span><b>100.0%</b></div><div class="tb">Correct</div></div></div></td><td class="hc"><div class="cl b-correct"><div class="tt"><div class="th1">top_segment</div><div class="th2">2026-10-09</div><div class="tl"><span>Combined</span><b>100.0%</b></div><div class="tl o"><span>Accuracy</span><b>100.0%</b></div><div class="tl o"><span>Provenance</span><b>100.0%</b></div><div class="tb">Correct</div></div></div></td><td class="hc"><div class="cl b-correct"><div class="tt"><div class="th1">top_segment</div><div class="th2">2026-10-10</div><div class="tl"><span>Combined</span><b>100.0%</b></div><div class="tl o"><span>Accuracy</span><b>100.0%</b></div><div class="tl o"><span>Provenance</span><b>100.0%</b></div><div class="tb">Correct</div></div></div></td><td class="hc"><div class="cl b-correct"><div class="tt"><div class="th1">top_segment</div><div class="th2">Overall</div><div class="tl"><span>Combined</span><b>100.0%</b></div><div class="tl o"><span>Accuracy</span><b>100.0%</b></div><div class="tl o"><span>Provenance</span><b>100.0%</b></div><div class="tb">Correct</div></div></div></td></tr><tr class="chd k2"><td class="lb"><div class="lbi"><div><div class="nm">top_nations_last_year</div><div class="sub">Nations with the most orders last year</div></div></div></td><td class="hc"><div class="cl b-wrong"><div class="tt"><div class="th1">top_nations_last_year</div><div class="th2">2026-10-07</div><div class="tl"><span>Combined</span><b>30.0%</b></div><div class="tl o"><span>Accuracy</span><b>0.0%</b></div><div class="tl o"><span>Provenance</span><b>60.0%</b></div><div class="tb">Wrong</div></div></div></td><td class="hc"><div class="cl b-partly"><div class="tt"><div class="th1">top_nations_last_year</div><div class="th2">2026-10-08</div><div class="tl"><span>Combined</span><b>55.0%</b></div><div class="tl o"><span>Accuracy</span><b>10.0%</b></div><div class="tl o"><span>Provenance</span><b>100.0%</b></div><div class="tb">Partly right</div></div></div></td><td class="hc"><div class="cl b-partly"><div class="tt"><div class="th1">top_nations_last_year</div><div class="th2">2026-10-09</div><div class="tl"><span>Combined</span><b>55.0%</b></div><div class="tl o"><span>Accuracy</span><b>10.0%</b></div><div class="tl o"><span>Provenance</span><b>100.0%</b></div><div class="tb">Partly right</div></div></div></td><td class="hc"><div class="cl b-correct"><div class="tt"><div class="th1">top_nations_last_year</div><div class="th2">2026-10-10</div><div class="tl"><span>Combined</span><b>95.0%</b></div><div class="tl o"><span>Accuracy</span><b>90.0%</b></div><div class="tl o"><span>Provenance</span><b>100.0%</b></div><div class="tb">Correct</div></div></div></td><td class="hc"><div class="cl b-partly"><div class="tt"><div class="th1">top_nations_last_year</div><div class="th2">Overall</div><div class="tl"><span>Combined</span><b>58.8%</b></div><div class="tl o"><span>Accuracy</span><b>27.5%</b></div><div class="tl o"><span>Provenance</span><b>90.0%</b></div><div class="tb">Partly right</div></div></div></td></tr></tbody><tfoot><tr class="grp tot"><td class="lb"><div class="lbi"><svg style="display:none" class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg><div><div class="nm">Overall</div></div></div></td><td class="hc"><div class="cl b-partly"><div class="tt"><div class="th1">Overall</div><div class="th2">2026-10-07</div><div class="tl"><span>Combined</span><b>68.3%</b></div><div class="tl o"><span>Accuracy</span><b>66.7%</b></div><div class="tl o"><span>Provenance</span><b>70.0%</b></div><div class="tb">Partly right</div></div></div></td><td class="hc"><div class="cl b-mostly"><div class="tt"><div class="th1">Overall</div><div class="th2">2026-10-08</div><div class="tl"><span>Combined</span><b>85.0%</b></div><div class="tl o"><span>Accuracy</span><b>70.0%</b></div><div class="tl o"><span>Provenance</span><b>100.0%</b></div><div class="tb">Mostly right</div></div></div></td><td class="hc"><div class="cl b-mostly"><div class="tt"><div class="th1">Overall</div><div class="th2">2026-10-09</div><div class="tl"><span>Combined</span><b>76.7%</b></div><div class="tl o"><span>Accuracy</span><b>70.0%</b></div><div class="tl o"><span>Provenance</span><b>83.3%</b></div><div class="tb">Mostly right</div></div></div></td><td class="hc"><div class="cl b-partly"><div class="tt"><div class="th1">Overall</div><div class="th2">2026-10-10</div><div class="tl"><span>Combined</span><b>73.8%</b></div><div class="tl o"><span>Accuracy</span><b>72.5%</b></div><div class="tl o"><span>Provenance</span><b>75.0%</b></div><div class="tb">Partly right</div></div></div></td><td class="hc"><div class="cl b-mostly"><div class="tt"><div class="th1">Overall</div><div class="th2">Overall</div><div class="tl"><span>Combined</span><b>75.9%</b></div><div class="tl o"><span>Accuracy</span><b>69.8%</b></div><div class="tl o"><span>Provenance</span><b>82.1%</b></div><div class="tb">Mostly right</div></div></div></td></tr></tfoot></table></div>
+       </section>
+       <section class="card"><header><div><h4>Below threshold</h4><p>Latest eval run, Oct 10 · 2 evals failed accuracy or provenance min score</p></div></header>
+        <table class="ft"><thead><tr><th>Eval</th><th>Category</th><th>Accuracy</th><th>Provenance</th><th></th></tr></thead><tbody><tr><td><div class="et">Revenue in Q4 2026</div><div class="ei">revenue_q4</div></td><td>sales</td><td><span class="scc"><span class="tr"><span class="fl b-wrong" style="width:0.0%"></span><span class="tick" style="left:80.0%"></span></span><span class="mono bad">0.0%</span></span></td><td><span class="scc"><span class="tr"><span class="fl b-partly" style="width:50.0%"></span><span class="tick" style="left:70.0%"></span></span><span class="mono bad">50.0%</span></span></td><td><span class="bdg t-wrong"><i></i>Accuracy</span><span class="bdg t-partly"><i></i>Provenance</span></td></tr><tr><td><div class="et">Order total in 2026</div><div class="ei">order_total_2026</div></td><td>sales</td><td><span class="scc"><span class="tr"><span class="fl b-correct" style="width:100.0%"></span><span class="tick" style="left:80.0%"></span></span><span class="mono ">100.0%</span></span></td><td><span class="scc"><span class="tr"><span class="fl b-partly" style="width:50.0%"></span><span class="tick" style="left:70.0%"></span></span><span class="mono bad">50.0%</span></span></td><td><span class="bdg t-partly"><i></i>Provenance</span></td></tr></tbody></table>
+       </section>
+      </div>
+     </div>
+    </div>
+
+    <!-- 4 Act -->
+    <div class="panel p4" style="flex-direction:column">
+     <div class="bar sbar"><i></i><i></i><i></i><div class="srch"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Search Acme Analytics</div></div>
+     <div class="sl2">
+      <aside class="sls">
+       <div class="ws">Acme Analytics <span>▾</span></div>
+       <div class="sh">Channels</div>
+       <div class="ch"><b>#</b> general</div>
+       <div class="ch on"><b>#</b> analytics-alerts</div>
+       <div class="ch"><b>#</b> data-team</div>
+       <div class="ch"><b>#</b> finance</div>
+       <div class="sh" style="margin-top:14px">Apps</div>
+       <div class="ch"><i class="ap"></i> honest-agent</div>
+      </aside>
+      <div class="slm">
+       <div class="slhd"><b># analytics-alerts</b><span>Alerts when the analytics agent fails its checks</span></div>
+       <div class="slbody">
+        <div class="dv"><span>Today</span></div>
+        <div class="msg">
+         <div class="av2"><img src="/assets/robot.png" alt=""></div>
+         <div class="mc">
+          <div class="who2"><b>honest-agent</b><i>APP</i><u>8:04 AM</u></div>
+          <h4>🔴 2 of 4 evals below threshold</h4>
+          <div class="ctx"><b>sales-agent</b> · claude-sonnet-4-5 · run started 2026-10-10 08:02 UTC</div>
+          <hr>
+          <div class="f"><a><b>Revenue in Q4 2026</b></a>&nbsp; <code>revenue_q4</code><br>Accuracy <b>0.00</b> (min 0.8) &nbsp;·&nbsp; Provenance <b>0.50</b> (min 0.7)</div><div class="f"><a><b>Order total in 2026</b></a>&nbsp; <code>order_total_2026</code><br>Accuracy <b>1.00</b> (min 0.8) &nbsp;·&nbsp; Provenance <b>0.50</b> (min 0.7)</div>
+          
+          <hr>
+          <div class="ctx"><a>Open the report</a> · honest-agent</div>
+          <div class="rx"><span>👀 <b>2</b></span><span>✅ <b>1</b></span></div>
+          <div class="rp"><i>MR</i> <a>1 reply</a> <u>Last reply today at 8:21 AM</u></div>
+         </div>
+        </div>
+       </div>
+       <div class="cmp"><div class="cmpb"><span>Message #analytics-alerts</span><div class="tb2"><b>B</b><b style="font-style:italic;font-weight:600">I</b><b>@</b><b>☺</b><svg width="16" height="16" viewBox="0 0 24 24" fill="#007A5A"><path d="M3 20v-6l8-2-8-2V4l19 8z"/></svg></div></div></div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="morep"><a class="mp1" href="#define">Learn more about Define →</a><a class="mp2" href="#run">Learn more about Run →</a><a class="mp3" href="#review">Learn more about Review →</a><a class="mp4" href="#improve">Learn more about Improve →</a></div>
+  </div>
+ </div>
+</section>
+
+<style>
+.s-loop{min-height:900px;box-sizing:border-box;background:#EEF0E8;color:var(--fg-1);font-family:var(--font-sans);font-size:15px;line-height:1.5;padding:96px 32px}
+.s-loop .wrap{max-width:1240px;margin:0 auto}
+.s-loop .loopmark{position:relative;width:72px;height:72px;margin:0 auto 18px}
+.s-loop .loopmark svg{position:absolute;inset:0;overflow:visible}
+.s-loop .loopmark img{position:absolute;left:50%;top:50%;width:34px;height:auto;transform:translate(-50%,-52%)}
+.s-loop h2{margin:0 0 32px;text-align:center;font-family:var(--font-display);font-weight:500;font-size:44px;line-height:1.08;letter-spacing:-0.02em;text-wrap:balance}
+.s-loop input.r{position:absolute;opacity:0;pointer-events:none}
+.s-loop .layout{display:grid;grid-template-columns:340px minmax(0,1fr);gap:40px;align-items:start}
+.s-loop .steps{display:flex;flex-direction:column;gap:4px;position:relative;padding-top:18px}
+.s-loop .step{min-height:132px;box-sizing:border-box}
+.s-loop .step:not(:last-of-type)::before{content:"";position:absolute;z-index:2;left:23px;top:62px;bottom:-9px;width:2px;background:#8E9A89}
+.s-loop .step:not(:last-of-type)::after{content:"";position:absolute;z-index:2;left:17px;bottom:-17px;border-left:7px solid transparent;border-right:7px solid transparent;border-top:8px solid #8E9A89}
+.s-loop .ret{display:none;position:absolute;z-index:0;box-sizing:border-box;pointer-events:none}
+.s-loop .ret::before{content:"";position:absolute}
+.s-loop .ret::after{content:"";position:absolute}
+.s-loop .retw{position:absolute;z-index:0;left:-40px;top:0;width:80px;height:540px;overflow:visible;pointer-events:none}
+.s-loop .step{position:relative;display:flex;gap:16px;align-items:flex-start;padding:14px 16px 14px 0;border-radius:12px;cursor:pointer}
+.s-loop .step .n{flex:none;width:48px;height:48px;border-radius:999px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;background:var(--paper);border:2px solid var(--border-1);color:#A8AEA6;font-family:var(--font-display);font-weight:600;font-size:18px;position:relative;z-index:1}
+.s-loop .step .t{font-family:var(--font-display);font-weight:500;font-size:24px;line-height:1.1;color:#A3AB9F;padding-top:2px;transition:color .2s}
+.s-loop .step .d{display:none;margin-top:4px;color:var(--fg-3);font-size:14px}
+@keyframes lp-dIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+#lp-s1:checked ~ .layout .st1 .d,#lp-s2:checked ~ .layout .st2 .d,#lp-s3:checked ~ .layout .st3 .d,#lp-s4:checked ~ .layout .st4 .d{display:block;animation:lp-dIn .25s ease-out}
+.s-loop .step:hover .t{color:var(--fg-2)}
+.s-loop .win{background:var(--paper);border:1px solid var(--border-1);border-radius:14px;box-shadow:0 8px 28px rgba(28,42,34,.08);overflow:hidden;height:560px;display:flex;flex-direction:column}
+.s-loop .bar{flex:none;display:flex;align-items:center;gap:8px;padding:0 14px;height:40px;background:#EEEDE4;border-bottom:1px solid var(--border-1)}
+.s-loop .bar i{width:11px;height:11px;border-radius:99px;background:var(--border-2);display:block}
+.s-loop .bar span{margin-left:10px;font-size:12.5px;color:var(--fg-3);font-family:var(--font-mono)}
+.s-loop .panel{display:none;flex:1;min-height:0}
+#lp-s1:checked ~ .layout .p1,#lp-s2:checked ~ .layout .p2,#lp-s3:checked ~ .layout .p3,#lp-s4:checked ~ .layout .p4{display:flex}
+#lp-s1:checked ~ .layout .st1 .n,#lp-s2:checked ~ .layout .st2 .n,#lp-s3:checked ~ .layout .st3 .n,#lp-s4:checked ~ .layout .st4 .n{background:var(--green-500);border:1.5px solid var(--green-300);color:var(--green-900);font-weight:700}
+#lp-s1:checked ~ .layout .st1 .t,#lp-s2:checked ~ .layout .st2 .t,#lp-s3:checked ~ .layout .st3 .t,#lp-s4:checked ~ .layout .st4 .t{color:var(--fg-1)}
+.s-loop input.r:focus-visible ~ .layout .steps{outline:none}
+/* editor */
+.s-loop .files{flex:none;width:190px;background:#F5F4EC;border-right:1px solid var(--border-1);padding:12px 0;font-size:13px;color:var(--fg-2)}
+.s-loop .files div{padding:4px 16px;white-space:nowrap}
+.s-loop .files .on{background:var(--accent-soft);color:var(--fg-1)}
+.s-loop .files .h{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-3);padding-bottom:8px}
+.s-loop .code{flex:1;min-width:0;display:flex;flex-direction:column}
+.s-loop .tab{flex:none;display:flex;height:36px;background:#F5F4EC;border-bottom:1px solid var(--border-1)}
+.s-loop .tab b{font-weight:400;font-size:13px;padding:0 16px;display:flex;align-items:center;background:var(--paper);border-right:1px solid var(--border-1);border-top:2px solid var(--green-700)}
+.s-loop pre{margin:0;flex:1;overflow:hidden;padding:14px 0;font-family:var(--font-mono);font-size:13px;line-height:1.65;color:var(--fg-1)}
+.s-loop pre .l{display:block;padding-left:56px;position:relative;white-space:pre}
+.s-loop pre .l:before{content:attr(data-n);position:absolute;left:0;width:40px;text-align:right;color:#A8AEA6}
+.s-loop .k{color:#2F5D3A}.s-loop .v{color:#8A5A12}.s-loop .c{color:#8E978F;font-style:italic}.s-loop .y{color:#3A4F9A}
+.s-loop .hl{background:#E9F0DF}
+.s-loop pre .l{min-height:1.65em}
+.s-loop pre .l.new{min-height:0;max-height:0;overflow:hidden;animation:lp-lnGrow .12s ease-out var(--d) forwards}
+.s-loop pre .ty2{display:inline-block;vertical-align:top;overflow:hidden;white-space:pre;width:0;animation:lp-tyIn2 calc(var(--n) * .016s) steps(var(--n)) var(--d) forwards}
+@keyframes lp-lnGrow{to{max-height:1.65em}}
+@keyframes lp-tyIn2{to{width:calc(var(--n) * 1ch + 6px)}}
+@media (prefers-reduced-motion:reduce){.s-loop pre .l.new{animation:none;max-height:none;min-height:1.65em}.s-loop pre .ty2{animation:none;width:auto}}
+/* terminal */
+.s-loop .term{flex:1;padding:18px 22px;font-family:var(--font-mono);font-size:12px;line-height:1.65;background:var(--green-950);color:#E6EBE3;white-space:pre;overflow:hidden}
+.s-loop .term .p{color:var(--green-300)}.s-loop .term .ok{color:#6FCFC2}.s-loop .term .no{color:#F09A82}.s-loop .term .m{color:#86927F}
+.s-loop .bar.dk{background:#0F1712;border-bottom:1px solid #26352C}.s-loop .bar.dk i{background:#3A4A40}.s-loop .bar.dk span{color:#86927F}
+.s-loop .term{white-space:normal}
+.s-loop .term .ln{white-space:pre;min-height:1.65em;opacity:0;animation:lp-lnIn .01s linear var(--d) forwards}
+.s-loop .term .ty{display:inline-block;vertical-align:bottom;overflow:hidden;white-space:nowrap;width:0;animation:lp-tyIn calc(var(--n) * .06s) steps(var(--n)) var(--d) forwards}
+.s-loop .term .cur{display:inline-block;width:.6em;height:1.15em;vertical-align:-.2em;margin-left:2px;background:var(--green-300);animation:lp-curB 1s steps(1) infinite}
+@keyframes lp-lnIn{to{opacity:1}}
+@keyframes lp-tyIn{to{width:calc(var(--n) * 1ch)}}
+@keyframes lp-curB{50%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.s-loop .term .ln{animation:none;opacity:1}.s-loop .term .ty{animation:none;width:auto}.s-loop .term .cur{animation:none}}
+/* report */
+.s-loop{--fg1:var(--fg-1);--fg2:var(--fg-2);--fg3:var(--fg-3);--bd:var(--border-1)}
+.s-loop .rpt{flex:1;min-height:0;display:flex;background:var(--green-50)}
+.s-loop .sb{flex:none;width:176px;background:var(--paper);border-right:1px solid var(--bd);padding:14px 10px;display:flex;flex-direction:column;gap:3px}
+.s-loop .sblogo{display:flex;align-items:center;gap:8px;padding:10px;margin-bottom:16px;border:1.5px solid var(--green-300);border-radius:12px;font-family:var(--font-display);font-weight:600;font-size:12.5px;letter-spacing:-.01em}
+.s-loop .sblogo img{height:22px;width:auto}
+.s-loop .sbi{display:flex;align-items:center;gap:9px;height:32px;padding:0 10px;border-radius:8px;font-size:13px;font-weight:500;color:var(--fg2)}
+.s-loop .sbi.on{background:var(--accent-soft);color:var(--green-700)}
+.s-loop .main{flex:1;min-width:0;overflow:auto;padding:18px 20px 24px;display:flex;flex-direction:column;gap:14px}
+.s-loop .ph{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.s-loop .ph h3{margin:0;font-family:var(--font-display);font-weight:500;font-size:24px;letter-spacing:-.02em}
+.s-loop .ph p{margin:2px 0 0;font-size:12px;color:var(--fg3)}
+.s-loop .sels{display:flex;gap:8px}
+.s-loop .sel{font-size:12px;border:1px solid var(--border-2);background:var(--paper);border-radius:8px;padding:5px 10px;color:var(--fg1)}
+.s-loop .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.s-loop .rc,.s-loop .card{background:var(--paper);border:1px solid var(--bd);border-radius:16px;box-shadow:0 1px 2px rgba(28,42,34,.06)}
+.s-loop .rc{padding:14px 14px 12px;display:flex;flex-direction:column;gap:6px}
+.s-loop .sl{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--fg2)}
+.s-loop .dot{width:8px;height:8px;border-radius:2px;display:inline-block}
+.s-loop .sv{font-family:var(--font-display);font-weight:500;font-size:26px;line-height:1;letter-spacing:-.02em}
+.s-loop .sd{display:flex;gap:6px;flex-wrap:wrap;font-size:11px;color:var(--fg3)}
+.s-loop .dl{font-family:var(--font-mono);font-weight:500}.s-loop .dl.u{color:var(--acc-correct-ink)}.s-loop .dl.d{color:var(--acc-wrong-ink)}.s-loop .dl.f{color:var(--fg3)}
+.s-loop .b-none{background:var(--chart-empty)}.s-loop .b-correct{background:var(--acc-correct)}.s-loop .b-mostly{background:var(--acc-mostly)}.s-loop .b-partly{background:var(--acc-partly)}.s-loop .b-wrong{background:var(--acc-wrong)}
+.s-loop .card{padding:16px 16px 14px;display:flex;flex-direction:column;gap:12px}
+.s-loop .card header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.s-loop .card h4{margin:0;font-family:var(--font-display);font-weight:500;font-size:16px;letter-spacing:-.01em}
+.s-loop .card header p{margin:2px 0 0;font-size:12px;color:var(--fg3)}
+.s-loop .tabs{display:flex;background:var(--bg-sunken);border-radius:8px;padding:2px;font-size:12px}
+.s-loop .tabs b,.s-loop .tabs span{padding:4px 10px;border-radius:6px;font-weight:500;color:var(--fg2)}
+.s-loop .tabs b{background:var(--paper);color:var(--fg1);box-shadow:0 1px 2px rgba(28,42,34,.1)}
+.s-loop .hmw{overflow:visible;padding-top:2px}
+.s-loop table.hm{border-collapse:separate;border-spacing:0;margin:0 auto}
+.s-loop table.hm th,.s-loop table.hm td{padding:0;background:transparent;border:0;border-radius:0;font-size:inherit}
+.s-loop .hd{width:40px;height:62px;vertical-align:bottom;border-bottom:2px solid #8C968E;position:relative}
+.s-loop .hd span{position:absolute;left:50%;bottom:6px;transform-origin:0 100%;transform:rotate(-45deg);white-space:nowrap;font-size:11px;color:var(--fg2);font-weight:400;font-variant-numeric:tabular-nums;font-family:var(--font-sans);text-transform:none;letter-spacing:0}
+.s-loop .lbh{width:250px;text-align:left!important;vertical-align:bottom;border-bottom:2px solid #8C968E;padding:0 10px 8px!important;font-size:10.5px!important;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--fg1);font-family:var(--font-sans)}
+.s-loop .lb{height:30px;padding:0 10px!important;border-bottom:1px solid #E5E2D8!important}
+.s-loop .lbi{display:flex;align-items:center;gap:6px}
+.s-loop .lbi .chev{color:var(--fg2);transform:rotate(90deg);flex:none}
+.s-loop tr.grp .nm{font-size:13px;font-weight:500;color:var(--fg1)}
+.s-loop tr.chd .nm{font-family:var(--font-mono);font-size:11.5px;color:var(--fg2);padding-left:20px;margin-top:-4px}
+.s-loop tr.chd .sub{font-size:10px;color:var(--fg3);padding-left:20px;max-width:230px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.1}
+.s-loop tr.grp .sub{font-family:var(--font-mono);font-size:10px;color:var(--fg3);line-height:1.1}
+.s-loop tr.tot .nm{font-weight:700;font-size:13px}
+.s-loop tr.tot .lb{border-bottom:0!important;border-top:2px solid #8C968E}
+.s-loop td.hc{position:relative}
+.s-loop .cl{width:39px;height:29px;margin:0 1px 1px 0;position:relative;cursor:pointer}
+.s-loop .cl:hover{box-shadow:inset 0 0 0 2px var(--fg-1)}
+.s-loop .tt{display:none;position:absolute;z-index:9;left:50%;bottom:calc(100% + 6px);transform:translateX(-50%);background:var(--green-800);color:var(--green-50);border-radius:8px;padding:8px 10px;min-width:160px;white-space:nowrap;box-shadow:0 8px 20px rgba(28,42,34,.25);font-size:12px;line-height:1.5;pointer-events:none}
+.s-loop .cl:hover .tt{display:block}
+.s-loop .th1{font-weight:500}.s-loop .th2{font-family:var(--font-mono);font-size:11px;opacity:.7}
+.s-loop .tl{display:flex;justify-content:space-between;gap:16px}.s-loop .tl:first-of-type{margin-top:4px}
+.s-loop .tl b{font-family:var(--font-mono);font-weight:500}.s-loop .tl.o{opacity:.8}
+.s-loop .tb{opacity:.7;margin-top:2px}
+.s-loop table.ft{width:100%;border-collapse:collapse}
+.s-loop table.ft th{text-align:left;font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--fg2);padding:0 8px 8px;border-bottom:1px solid var(--bd);font-family:var(--font-sans)}
+.s-loop table.ft td{padding:10px 8px;border-bottom:1px solid #E5E2D8;font-size:12.5px;background:transparent;border-top:0;border-left:0;border-right:0;border-radius:0;vertical-align:middle}
+.s-loop table.ft tr:last-child td{border-bottom:0}
+.s-loop .et{font-weight:500;font-size:12.5px}.s-loop .ei{font-family:var(--font-mono);font-size:11px;color:var(--fg3)}
+.s-loop .scc{display:inline-flex;align-items:center;gap:8px}
+.s-loop .tr{position:relative;width:56px;height:6px;border-radius:3px;background:var(--chart-empty);display:inline-block}
+.s-loop .fl{position:absolute;left:0;top:0;bottom:0;border-radius:3px}
+.s-loop .tick{position:absolute;top:-3px;bottom:-3px;width:1.5px;background:var(--fg-1);opacity:.55}
+.s-loop .mono{font-family:var(--font-mono);font-weight:500;font-size:12px;min-width:42px;text-align:right}.s-loop .mono.bad{color:var(--acc-wrong-ink)}.s-loop .mono.dim{color:var(--fg3)}
+.s-loop .bdg{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:500;padding:2px 8px;border-radius:999px}
+.s-loop .bdg i{width:6px;height:6px;border-radius:99px;background:currentColor;display:block}
+.s-loop .t-partly{background:var(--acc-partly-tint);color:var(--acc-partly-ink)}.s-loop .t-wrong{background:var(--acc-wrong-tint);color:var(--acc-wrong-ink)}
+.s-loop em.fd,.s-loop em.sd2{font-style:normal}.s-loop .sd2{display:none}
+.s-loop input.cx{position:absolute;opacity:0;pointer-events:none}
+.s-loop .lb{position:relative}.s-loop .cxl{position:absolute;inset:0;cursor:pointer;z-index:2}
+.s-loop table.hm tr.grp:has(.cx:checked) .lbi .chev{transform:rotate(0)}
+.s-loop table.hm:has(#lp-c1:checked) tr.k1,.s-loop table.hm:has(#lp-c2:checked) tr.k2,.s-loop table.hm:has(#lp-c3:checked) tr.k3{display:none}
+.s-loop .lbi .chev{transition:transform .15s}
+/* slack */
+.s-loop .sbar{background:#350D36;border-bottom:0}
+.s-loop .sbar i{background:#6B4A6C}
+.s-loop .srch{margin:0 auto;transform:translateX(-24px);width:46%;display:flex;align-items:center;gap:8px;height:24px;padding:0 12px;border-radius:6px;background:#5A3A5B;color:#E5D9E5;font-size:12px}
+.s-loop .sl2{flex:1;min-height:0;display:flex;background:#fff;font-family:Lato,var(--font-sans)}
+.s-loop .sls{flex:none;width:200px;background:#3F0E40;color:#CFC3CF;padding:12px 0;font-size:14px}
+.s-loop .ws{padding:4px 16px 12px;margin-bottom:6px;border-bottom:1px solid #5D2C5D;color:#fff;font-weight:900;font-size:16px}.s-loop .ws span{font-size:11px;opacity:.8}
+.s-loop .sh{padding:6px 16px;font-size:13px;color:#CFC3CF;opacity:.85}
+.s-loop .ch{padding:3px 16px;display:flex;gap:8px;align-items:center}.s-loop .ch b{opacity:.7;font-weight:400}
+.s-loop .ch.on{background:#1164A3;color:#fff;font-weight:700}.s-loop .ch.on b{opacity:1}
+.s-loop .ap{width:14px;height:14px;border-radius:4px;background:var(--green-700);display:inline-block}
+.s-loop .slm{flex:1;min-width:0;display:flex;flex-direction:column}
+.s-loop .slhd{flex:none;padding:10px 20px;border-bottom:1px solid #E0E0E0;display:flex;align-items:baseline;gap:12px;font-size:13px;color:#616061}.s-loop .slhd b{font-size:16px;font-weight:900;color:#1D1C1D}
+.s-loop .slbody{flex:1;min-height:0;overflow:hidden;padding:12px 0}
+.s-loop .dv{position:relative;text-align:center;margin:0 20px 12px;border-top:1px solid #DDD;height:0}.s-loop .dv span{position:relative;top:-11px;background:#fff;border:1px solid #DDD;border-radius:999px;padding:3px 12px;font-size:12px;font-weight:700;color:#1D1C1D}
+.s-loop .msg{display:flex;gap:10px;padding:8px 20px}
+.s-loop .msg:hover{background:#F8F8F8}
+.s-loop .av2{flex:none;width:36px;height:36px;border-radius:6px;background:var(--green-700);display:flex;align-items:center;justify-content:center}.s-loop .av2 img{width:28px;height:auto}
+.s-loop .mc{min-width:0;font-size:15px;line-height:1.45;color:#1D1C1D}
+.s-loop .who2 b{font-weight:900}.s-loop .who2 i{font-style:normal;font-size:10px;font-weight:700;background:#E8E8E8;color:#616061;border-radius:3px;padding:1px 4px;margin-left:6px;vertical-align:1px}.s-loop .who2 u{text-decoration:none;font-size:12px;color:#616061;margin-left:8px}
+.s-loop .mc h4{margin:6px 0 2px;font-size:18px;font-weight:900;font-family:inherit}
+.s-loop .mc .ctx{font-size:12px;color:#616061}
+.s-loop .mc hr{border:0;border-top:1px solid #DDD;margin:10px 0}
+.s-loop .mc code{font-family:var(--font-mono);font-size:12px;color:#E01E5A;background:#F8F8F8;border:1px solid #E8E8E8;border-radius:3px;padding:0 3px}
+.s-loop .mc a{color:#1264A3;text-decoration:none}.s-loop .mc a:hover{text-decoration:underline}
+.s-loop .mc .f{margin:8px 0}
+.s-loop .rx{display:flex;gap:6px;margin-top:8px}.s-loop .rx span{font-size:12px;background:#E8F5FA;border:1px solid #1D9BD1;color:#1264A3;border-radius:999px;padding:1px 8px}
+.s-loop .rp{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:12px}.s-loop .rp i{font-style:normal;width:22px;height:22px;border-radius:4px;background:#E01E5A;color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center}.s-loop .rp u{text-decoration:none;color:#616061}
+.s-loop .cmp{flex:none;padding:0 20px 16px}
+.s-loop .cmpb{border:1px solid #868686;border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:14px;color:#868686;font-size:14px}
+.s-loop .tb2{display:flex;gap:14px;align-items:center;color:#616061;font-size:13px}.s-loop .tb2 b{font-weight:700}.s-loop .tb2 svg{margin-left:auto}
+.s-loop a.more{display:block;width:max-content;margin-top:2px;font-size:14px;font-weight:500;color:var(--green-500);text-decoration:none}
+.s-loop a.more:hover{color:var(--green-700);text-decoration:underline;text-underline-offset:3px}
+.s-loop .morep{display:none}
+.s-loop .morep a{display:none;font-size:14px;font-weight:500;color:var(--green-500);text-decoration:none;text-align:center}
+#lp-s1:checked ~ .layout .mp1,#lp-s2:checked ~ .layout .mp2,#lp-s3:checked ~ .layout .mp3,#lp-s4:checked ~ .layout .mp4{display:block}
+/* the return arrow (.retw) sticks out 40px left of the steps; keep it off the window edge */
+@media (min-width:901px) and (max-width:1380px){.s-loop .layout{padding-left:24px}}
+@media (max-width:900px){.s-loop .morep{display:block;margin-top:-4px}}
+/* The report's sidebar stays collapsed to icons at every width. */
+.s-loop .sb{width:40px;padding:10px 4px;align-items:center;gap:2px}.s-loop .sblogo{padding:0;margin-bottom:10px;border:0;justify-content:center}.s-loop .sblogo img{height:22px}.s-loop .sblogo span{display:none}.s-loop .sbi{font-size:0;width:32px;height:32px;padding:0;justify-content:center}
+@media (min-width:901px) and (max-width:1180px){.s-loop .layout{grid-template-columns:260px minmax(0,1fr);gap:28px}}
+/* Compact windows: keyed to the window's own width, not the screen's. */
+.s-loop .win{container-type:inline-size}
+@container (max-width:700px){
+ .s-loop .main{padding:14px 14px 18px;gap:12px}
+ .s-loop .ph{flex-direction:column;gap:8px}.s-loop .ph h3{font-size:21px}
+ .s-loop .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.s-loop .rc{padding:10px 12px 10px}.s-loop .sv{font-size:22px}
+ .s-loop .card{padding:12px 12px}.s-loop .card header{flex-direction:column;gap:8px}
+ .s-loop .lbh{width:150px}.s-loop .hd{width:32px}.s-loop .cl{width:31px}.s-loop tr.chd .sub{max-width:140px}
+ .s-loop table.ft th:nth-child(2),.s-loop table.ft td:nth-child(2),.s-loop table.ft th:nth-child(5),.s-loop table.ft td:nth-child(5){display:none}
+ .s-loop table.ft .tr{display:none}.s-loop table.ft .mono{min-width:0}
+ .s-loop .files{display:none}
+ .s-loop .term{font-size:11px;padding:14px 16px}
+ .s-loop .term .ln{white-space:pre-wrap;padding-left:2ch;text-indent:-2ch}.s-loop .term .ty{text-indent:0}
+ .s-loop .sls{width:40px;padding:10px 0;font-size:0}.s-loop .ws,.s-loop .sh{display:none}.s-loop .ch{justify-content:center;padding:7px 0}.s-loop .ch b{font-size:16px}
+ .s-loop .slhd span{display:none}.s-loop .srch{width:60%;transform:none}
+}
+@media (max-width:900px){
+ .s-loop{padding:64px 16px}.s-loop h2{font-size:32px;margin-bottom:32px}
+ .s-loop .layout{grid-template-columns:1fr;gap:20px}
+ .s-loop .steps{flex-direction:row;gap:6px;padding:0 0 24px}
+ .s-loop .step{min-height:0}
+ .s-loop .step:not(:last-of-type)::before{left:calc(50% + 24px);right:calc(-50% + 30px);top:27px;bottom:auto;width:auto;height:2px}
+ .s-loop .step:not(:last-of-type)::after{left:auto;right:calc(-50% + 22px);top:22px;bottom:auto;border-top:6px solid transparent;border-bottom:6px solid transparent;border-right:0;border-left:8px solid #8E9A89}
+ .s-loop .retw{display:none}
+ .s-loop .ret{display:block;left:12.5%;right:12.5%;top:auto;bottom:0;width:auto;height:22px;border:2px solid #8E9A89;border-top:0;border-radius:0 0 22px 22px}
+ .s-loop .ret::before{display:none}
+ .s-loop .ret::after{right:auto;left:-8px;top:-10px;border-left:7px solid transparent;border-right:7px solid transparent;border-top:0;border-bottom:8px solid #8E9A89}
+ .s-loop .step{flex:1;flex-direction:column;align-items:center;text-align:center;padding:10px 4px;gap:6px}
+ .s-loop .step .n{width:36px;height:36px;font-size:15px}.s-loop .step .t{font-size:16px}.s-loop .step .d{display:none!important}
+ .s-loop .files{display:none}.s-loop .win{height:auto;min-height:420px}
+ .s-loop .sb{width:40px;padding:10px 4px;align-items:center;gap:2px}.s-loop .sblogo{padding:0;margin-bottom:10px;border:0;justify-content:center}.s-loop .sblogo img{height:22px}.s-loop .sblogo span{display:none}.s-loop .sbi{font-size:0;width:32px;height:32px;padding:0;justify-content:center}
+ .s-loop .main{padding:12px 10px 16px;gap:12px}
+ .s-loop .ph{flex-direction:column;gap:8px}.s-loop .ph h3{font-size:20px}
+ .s-loop .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.s-loop .rc{padding:10px 10px 8px}.s-loop .sv{font-size:22px}
+ .s-loop .card{padding:12px 10px}.s-loop .card header{flex-direction:column;gap:8px}
+ .s-loop .hmw{overflow-x:auto;padding-top:0}
+ .s-loop .lbh{width:120px;padding:0 4px 8px!important;font-size:9px!important}.s-loop .lb{max-width:120px;height:36px;padding:0 4px!important}.s-loop .lbi{max-width:120px}
+ .s-loop .hd{width:22px;height:46px}.s-loop .cl{width:21px;height:35px}.s-loop table.hm{padding-right:16px}
+ .s-loop .fd{display:none}.s-loop .sd2{display:inline}
+ .s-loop tr.grp .sub{display:none}.s-loop tr.chd .nm{display:none}
+ .s-loop tr.chd .sub{display:block;max-width:none;white-space:normal;overflow:visible;padding-left:8px;font-size:10.5px;line-height:1.2;color:var(--fg1)}
+ .s-loop tr.grp .nm{font-size:12px}
+ .s-loop .tabs{width:100%;box-sizing:border-box}.s-loop .tabs b,.s-loop .tabs span{flex:1;text-align:center;padding:4px 4px}
+ .s-loop tr.k1,.s-loop tr.k2,.s-loop tr.k3{display:none}
+ .s-loop table.hm .lbi .chev{transform:rotate(0)}
+ .s-loop table.hm tr.grp:has(.cx:checked) .lbi .chev{transform:rotate(90deg)}
+ .s-loop table.hm:has(#lp-c1:checked) tr.k1,.s-loop table.hm:has(#lp-c2:checked) tr.k2,.s-loop table.hm:has(#lp-c3:checked) tr.k3{display:table-row}
+ .s-loop table.hm .lb{height:34px}
+ .s-loop .tt{display:none!important}
+ .s-loop table.ft{display:table;width:100%}
+ .s-loop table.ft th:nth-child(2),.s-loop table.ft td:nth-child(2),.s-loop table.ft th:nth-child(5),.s-loop table.ft td:nth-child(5){display:none}
+ .s-loop table.ft th:nth-child(3),.s-loop table.ft th:nth-child(4),.s-loop table.ft td:nth-child(3),.s-loop table.ft td:nth-child(4){width:50px;white-space:nowrap;padding-left:2px;padding-right:2px;font-size:9px}.s-loop table.ft td:nth-child(3),.s-loop table.ft td:nth-child(4){font-size:12px}.s-loop .et{min-width:0}.s-loop .ei{word-break:break-all}.s-loop table.ft .tr{display:none}.s-loop table.ft td{padding:10px 6px}.s-loop table.ft .mono{min-width:0}
+ .s-loop .sls{width:40px;padding:10px 0;font-size:0}.s-loop .ws,.s-loop .sh{display:none}.s-loop .ch{justify-content:center;padding:7px 0}.s-loop .ch b{font-size:16px}.s-loop .slhd{padding:10px 12px}.s-loop .slhd span{display:none}
+ .s-loop .srch{width:70%;transform:none;white-space:nowrap;overflow:hidden}
+ .s-loop .slbody{overflow:hidden}.s-loop .dv{margin:0 12px 12px}
+ .s-loop .msg{padding:8px 12px;gap:8px}.s-loop .mc{flex:1;min-width:0;font-size:14px}.s-loop .mc h4{font-size:16px}
+ .s-loop .mc code{word-break:break-all}
+ .s-loop .rp u{display:none}.s-loop .cmp{padding:0 12px 12px}
+}
+</style>

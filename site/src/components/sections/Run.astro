@@ -1,0 +1,82 @@
+---
+---
+<section class="s-run" id="run" data-play>
+ <div class="wrap">
+  <input class="r" type="radio" name="rn-f" id="rn-f1" checked aria-label="run"><input class="r" type="radio" name="rn-f" id="rn-f2" aria-label="report"><input class="r" type="radio" name="rn-f" id="rn-f3" aria-label="serve"><input class="r" type="radio" name="rn-o" id="rn-o1" checked aria-label="Everything"><input class="r" type="radio" name="rn-o" id="rn-o2" aria-label="A category"><input class="r" type="radio" name="rn-o" id="rn-o3" aria-label="A tag"><input class="r" type="radio" name="rn-o" id="rn-o4" aria-label="One eval">
+  <div class="grid">
+   <div class="win"><div class="bar"><i></i><i></i><i></i><span>Terminal</span></div><div class="term tm1"><div class="ln" style="--d:0s"><span class="p">~/my-analytics-project $</span> <span class="ty" style="--d:0.4s;--n:16">honest-agent run</span></div><div class="ln" style="--d:1.52s">Target: sales-agent (honest_agent_config.yml)</div><div class="ln" style="--d:1.82s">Starting eval run 7d2e41a0-3c55-4f0b-9a61-2b8e5d90c417 (4 evals)...</div><div class="ln" style="--d:2.12s">Evaluating agent: sales-agent</div><div class="ln" style="--d:2.42s">Model: claude-sonnet-4-5 · grading model: claude-sonnet-4-5</div><div class="ln" style="--d:3.02s">  - revenue_q4: &#x27;What was our revenue in Q4 2026, net of discounts and before tax?&#x27;</div><div class="ln" style="--d:3.82s">  - order_total_2026: &#x27;What was the total price of all the orders placed in 2026?&#x27;</div><div class="ln" style="--d:4.62s">  - top_segment: &#x27;Which market segment has the most customers?&#x27;</div><div class="ln" style="--d:5.42s">  - top_nations_last_year: &#x27;Which 5 nations placed the most orders last year?&#x27;</div><div class="ln" style="--d:6.22s">Wrote 4 result(s) to ./honest_agent_results/results.duckdb</div><div class="ln" style="--d:6.62s"><span class="no">2/4 eval(s) below threshold this run:</span></div><div class="ln" style="--d:6.82s"><span class="no">  - revenue_q4: accuracy 0.00 &lt; 0.8, provenance 0.50 &lt; 0.7</span></div><div class="ln" style="--d:7.02s"><span class="no">  - order_total_2026: provenance 0.50 &lt; 0.7</span></div><div class="ln" style="--d:7.32s">Run 7d2e41a0-3c55-4f0b-9a61-2b8e5d90c417 complete. Next: `honest-agent report` / `honest-agent notify`.<span class="cur"></span></div></div><div class="term tm2"><div class="ln" style="--d:0s"><span class="p">~/my-analytics-project $</span> <span class="ty" style="--d:0.4s;--n:40">honest-agent run --select category:sales</span></div><div class="ln" style="--d:2.60s">Target: sales-agent (honest_agent_config.yml)</div><div class="ln" style="--d:2.90s">Starting eval run b81f06c2-94d7-4e3a-8f25-61c0a7e3d952 (2 evals)...</div><div class="ln" style="--d:3.20s">Evaluating agent: sales-agent</div><div class="ln" style="--d:3.50s">Model: claude-sonnet-4-5 · grading model: claude-sonnet-4-5</div><div class="ln" style="--d:4.10s">  - revenue_q4: &#x27;What was our revenue in Q4 2026, net of discounts and before tax?&#x27;</div><div class="ln" style="--d:4.90s">  - order_total_2026: &#x27;What was the total price of all the orders placed in 2026?&#x27;</div><div class="ln" style="--d:5.70s">Wrote 2 result(s) to ./honest_agent_results/results.duckdb</div><div class="ln" style="--d:6.10s"><span class="no">2/2 eval(s) below threshold this run:</span></div><div class="ln" style="--d:6.30s"><span class="no">  - revenue_q4: accuracy 0.00 &lt; 0.8, provenance 0.50 &lt; 0.7</span></div><div class="ln" style="--d:6.50s"><span class="no">  - order_total_2026: provenance 0.50 &lt; 0.7</span></div><div class="ln" style="--d:6.80s">Run b81f06c2-94d7-4e3a-8f25-61c0a7e3d952 complete. Next: `honest-agent report` / `honest-agent notify`.<span class="cur"></span></div></div><div class="term tm3"><div class="ln" style="--d:0s"><span class="p">~/my-analytics-project $</span> <span class="ty" style="--d:0.4s;--n:38">honest-agent run --select tag:critical</span></div><div class="ln" style="--d:2.52s">Target: sales-agent (honest_agent_config.yml)</div><div class="ln" style="--d:2.81s">Starting eval run 2c9a7e15-6b04-4d8f-b3e1-9f50d2a6c8b7 (2 evals)...</div><div class="ln" style="--d:3.11s">Evaluating agent: sales-agent</div><div class="ln" style="--d:3.41s">Model: claude-sonnet-4-5 · grading model: claude-sonnet-4-5</div><div class="ln" style="--d:4.01s">  - revenue_q4: &#x27;What was our revenue in Q4 2026, net of discounts and before tax?&#x27;</div><div class="ln" style="--d:4.81s">  - top_segment: &#x27;Which market segment has the most customers?&#x27;</div><div class="ln" style="--d:5.61s">Wrote 2 result(s) to ./honest_agent_results/results.duckdb</div><div class="ln" style="--d:6.01s"><span class="no">1/2 eval(s) below threshold this run:</span></div><div class="ln" style="--d:6.21s"><span class="no">  - revenue_q4: accuracy 0.00 &lt; 0.8, provenance 0.50 &lt; 0.7</span></div><div class="ln" style="--d:6.51s">Run 2c9a7e15-6b04-4d8f-b3e1-9f50d2a6c8b7 complete. Next: `honest-agent report` / `honest-agent notify`.<span class="cur"></span></div></div><div class="term tm4"><div class="ln" style="--d:0s"><span class="p">~/my-analytics-project $</span> <span class="ty" style="--d:0.4s;--n:36">honest-agent run --select revenue_q4</span></div><div class="ln" style="--d:2.51s">Target: sales-agent (honest_agent_config.yml)</div><div class="ln" style="--d:2.81s">Starting eval run e45b3d98-1a7c-4c26-8e0f-73d1b9a2f604 (1 eval)...</div><div class="ln" style="--d:3.11s">Evaluating agent: sales-agent</div><div class="ln" style="--d:3.41s">Model: claude-sonnet-4-5 · grading model: claude-sonnet-4-5</div><div class="ln" style="--d:4.01s">  - revenue_q4: &#x27;What was our revenue in Q4 2026, net of discounts and before tax?&#x27;</div><div class="ln" style="--d:4.81s">Wrote 1 result(s) to ./honest_agent_results/results.duckdb</div><div class="ln" style="--d:5.21s"><span class="no">1/1 eval(s) below threshold this run:</span></div><div class="ln" style="--d:5.41s"><span class="no">  - revenue_q4: accuracy 0.00 &lt; 0.8, provenance 0.50 &lt; 0.7</span></div><div class="ln" style="--d:5.71s">Run e45b3d98-1a7c-4c26-8e0f-73d1b9a2f604 complete. Next: `honest-agent report` / `honest-agent notify`.<span class="cur"></span></div></div><div class="term tmr"><div class="ln" style="--d:0s"><span class="p">~/my-analytics-project $</span> <span class="ty" style="--d:0.4s;--n:19">honest-agent report</span></div><div class="ln" style="--d:1.65s">Wrote honest_agent_report/. View it with `honest-agent serve --out honest_agent_report`.</div><div class="ln" style="--d:1.95s"><span class="p">~/my-analytics-project $</span><span class="cur"></span></div></div><div class="term tms"><div class="ln" style="--d:0s"><span class="p">~/my-analytics-project $</span> <span class="ty" style="--d:0.4s;--n:18">honest-agent serve</span></div><div class="ln" style="--d:1.6s">Serving honest_agent_report/ at http://127.0.0.1:8000/ (Ctrl+C to stop)</div><div class="ln" style="--d:2.3s">127.0.0.1 - - [12/Oct/2026 12:40:02] &quot;GET / HTTP/1.1&quot; 200 -</div><div class="ln" style="--d:2.5s">127.0.0.1 - - [12/Oct/2026 12:40:02] &quot;GET /assets/index-9rCiGK-N.js HTTP/1.1&quot; 200 -</div><div class="ln" style="--d:2.65s">127.0.0.1 - - [12/Oct/2026 12:40:02] &quot;GET /assets/index-DEJ_0_VZ.css HTTP/1.1&quot; 200 -</div><div class="ln" style="--d:2.9s">127.0.0.1 - - [12/Oct/2026 12:40:03] &quot;GET /data/report.json HTTP/1.1&quot; 200 -</div><div class="ln" style="--d:3.05s">127.0.0.1 - - [12/Oct/2026 12:40:03] &quot;GET /logo-mark.svg HTTP/1.1&quot; 200 -</div><div class="ln" style="--d:3.3s"><span class="cur" style="margin-left:0"></span></div></div></div>
+   <div class="side">
+    <div class="eyebrow"><span class="n">2</span>Run</div>
+    <h2>Run your evals in three simple commands</h2>
+    <p class="intro">Run your evals, build the report, and open it in your browser.</p>
+    <div class="sl">The full flow</div>
+    <div class="steps"><label class="stp sp1" for="rn-f1">run</label><span class="arr">→</span><label class="stp sp2" for="rn-f2">report</label><span class="arr">→</span><label class="stp sp3" for="rn-f3">serve</label></div>
+    <div class="panes"><div class="pane pn1"><p class="px">Run all your evals, or pick a category, a tag or a single eval.</p><div class="ops"><label class="op op1" for="rn-o1"><span class="ot">Everything</span><code class="oc">honest-agent run</code></label><label class="op op2" for="rn-o2"><span class="ot">A category</span><code class="oc">honest-agent run --select category:sales</code></label><label class="op op3" for="rn-o3"><span class="ot">A tag</span><code class="oc">honest-agent run --select tag:critical</code></label><label class="op op4" for="rn-o4"><span class="ot">One eval</span><code class="oc">honest-agent run --select revenue_q4</code></label></div></div>
+    <div class="pane pn2"><p>Builds the report from your recent runs into a folder, <code>honest_agent_report</code> by default.</p></div>
+    <div class="pane pn3"><p>Opens the report in your browser, or host it for your team.</p></div></div>
+    <a class="more" href="/docs/running-evals/">Read the docs on running evals →</a>
+   </div>
+  </div>
+ </div>
+</section>
+
+<style>
+.s-run{box-sizing:border-box;background:#EEF0E8;color:var(--fg-1);font-family:var(--font-sans);font-size:15px;line-height:1.5;padding:72px 32px 96px}
+.s-run .wrap{max-width:1240px;margin:0 auto}
+.s-run input.r{position:absolute;opacity:0;pointer-events:none}
+.s-run .grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:48px;align-items:start}
+.s-run .more{display:inline-block;margin-top:16px;font-weight:500;color:var(--green-500);text-decoration:none}
+.s-run .more:hover{color:var(--green-700);text-decoration:underline;text-underline-offset:3px}
+@media (min-width:901px){.s-run .win{margin-top:56px}}
+.s-run .eyebrow{display:flex;align-items:center;gap:14px;font-family:var(--font-mono);font-size:18px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-3)}
+.s-run .eyebrow .n{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:999px;background:var(--green-500);border:1.5px solid var(--green-300);box-sizing:border-box;color:var(--green-900);font-family:var(--font-display);font-weight:700;font-size:19px;letter-spacing:0}
+.s-run h2{margin:14px 0 10px;font-family:var(--font-display);font-weight:500;font-size:40px;line-height:1.08;letter-spacing:-.02em;text-wrap:balance}
+.s-run .intro{margin:0 0 14px;font-size:17px;line-height:1.55;color:var(--fg-2)}
+.s-run .ops{display:flex;flex-direction:column;gap:8px}
+.s-run .op{position:relative;display:grid;grid-template-columns:120px minmax(0,1fr);gap:2px 14px;align-items:center;padding:11px 16px;border:1px solid var(--border-1);border-radius:12px;background:transparent;cursor:pointer;transition:background .15s,border-color .15s;overflow:hidden}
+.s-run .op:hover{background:#F5F6F0}
+.s-run .ot{font-family:var(--font-display);font-weight:500;font-size:17px;color:var(--fg-2)}
+.s-run .od{font-size:13.5px;color:var(--fg-3)}
+.s-run .oc{grid-column:2;grid-row:1;font-family:var(--font-mono);font-size:12.5px;color:var(--green-700)}
+.s-run .sl{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-3);margin-bottom:10px}
+.s-run .steps{display:flex;align-items:center;gap:22px;margin-bottom:16px}
+.s-run .stp{display:inline-block;font-family:var(--font-mono);font-size:14px;font-weight:500;color:var(--fg-2);background:transparent;border:1px solid var(--border-1);border-radius:999px;padding:6px 16px;white-space:nowrap;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+.s-run .stp:hover{background:#F5F6F0}
+.s-run .arr{color:var(--green-300);flex:none}
+/* the three panes share one grid cell, so the docs link below never moves when you switch */
+.s-run .panes{display:grid}
+.s-run .pane{grid-area:1/1;min-width:0;visibility:hidden}
+.s-run .pane p.px{margin:0 0 12px}
+.s-run .pane p{margin:0;font-size:15px;line-height:1.55;color:var(--fg-2);max-width:440px}
+.s-run .pane p code{font-family:var(--font-mono);font-size:13px;color:var(--green-700)}
+#rn-f1:checked ~ .grid .pn1,#rn-f2:checked ~ .grid .pn2,#rn-f3:checked ~ .grid .pn3{visibility:visible}
+#rn-f1:checked ~ .grid .sp1,#rn-f2:checked ~ .grid .sp2,#rn-f3:checked ~ .grid .sp3{background:var(--paper);border-color:var(--green-300);color:var(--fg-1)}
+#rn-f2:checked ~ .grid .tmr,#rn-f3:checked ~ .grid .tms{display:block}
+.s-run .win{background:var(--green-950);border:1px solid #26352C;border-radius:14px;box-shadow:0 4px 8px rgba(22,33,27,.14),0 18px 36px rgba(22,33,27,.24),0 40px 80px -10px rgba(22,33,27,.40);overflow:hidden;height:470px;display:flex;flex-direction:column}
+.s-run .bar{flex:none;display:flex;align-items:center;gap:8px;padding:0 14px;height:40px;background:#0F1712;border-bottom:1px solid #26352C}
+.s-run .bar i{width:11px;height:11px;border-radius:99px;background:#3A4A40;display:block}
+.s-run .bar span{margin-left:10px;font-size:12.5px;color:#86927F;font-family:var(--font-mono)}
+.s-run .term{display:none;flex:1;padding:18px 22px;font-family:var(--font-mono);font-size:12.5px;line-height:1.7;color:#E6EBE3;overflow:hidden}
+.s-run .term .p{color:var(--green-300)}.s-run .term .ok{color:#6FCFC2}.s-run .term .no{color:#F09A82}
+.s-run .term .ln{white-space:pre-wrap;padding-left:2ch;text-indent:-2ch;min-height:1.7em;opacity:0;animation:rn-lnIn .01s linear var(--d) forwards}
+.s-run .term .ty{text-indent:0;display:inline-block;vertical-align:bottom;overflow:hidden;white-space:nowrap;width:0;animation:rn-tyIn calc(var(--n) * .045s) steps(var(--n)) var(--d) forwards}
+.s-run .term .cur{display:inline-block;width:.6em;height:1.15em;vertical-align:-.2em;margin-left:4px;background:var(--green-300);animation:rn-curB 1s steps(1) infinite}
+@keyframes rn-lnIn{to{opacity:1}}
+@keyframes rn-tyIn{to{width:calc(var(--n) * 1ch + 4px)}}
+@keyframes rn-curB{50%{opacity:0}}
+#rn-f1:checked ~ #rn-o1:checked ~ .grid .tm1{display:block}#rn-o1:checked ~ .grid .op1{background:var(--paper);border-color:var(--green-300)}#rn-o1:checked ~ .grid .op1 .ot{color:var(--fg-1)}
+#rn-f1:checked ~ #rn-o2:checked ~ .grid .tm2{display:block}#rn-o2:checked ~ .grid .op2{background:var(--paper);border-color:var(--green-300)}#rn-o2:checked ~ .grid .op2 .ot{color:var(--fg-1)}
+#rn-f1:checked ~ #rn-o3:checked ~ .grid .tm3{display:block}#rn-o3:checked ~ .grid .op3{background:var(--paper);border-color:var(--green-300)}#rn-o3:checked ~ .grid .op3 .ot{color:var(--fg-1)}
+#rn-f1:checked ~ #rn-o4:checked ~ .grid .tm4{display:block}#rn-o4:checked ~ .grid .op4{background:var(--paper);border-color:var(--green-300)}#rn-o4:checked ~ .grid .op4 .ot{color:var(--fg-1)}
+@media (max-width:900px){
+ .s-run{padding:48px 16px 64px}
+ .s-run .grid{grid-template-columns:minmax(0,1fr);gap:28px}
+ .s-run .side{order:-1}
+ .s-run h2{font-size:30px}.s-run .intro{font-size:16px}
+ .s-run .op{grid-template-columns:minmax(0,1fr)}.s-run .oc{grid-column:1}.s-run .od{display:none}
+
+ .s-run .pane{min-height:0}
+ .s-run .win{height:auto;min-height:420px}.s-run .term{font-size:10.5px;padding:14px}
+}
+@media (prefers-reduced-motion:reduce){.s-run .term .ln{animation:none;opacity:1}.s-run .term .ty{animation:none;width:auto}.s-run .term .cur{animation:none}}
+</style>

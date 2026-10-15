@@ -1,0 +1,118 @@
+---
+import { Logo } from '@ds';
+---
+<header class="s-hero">
+  <nav class="nav">
+    <a class="home" href="/" aria-label="The Honest Agent"><Logo markSrc="/assets/robot.png" size={40} /></a>
+    <div class="links">
+      <a href="/docs/">Docs</a>
+      <a href="https://github.com/jlcoto/the_honest_agent">GitHub</a>
+    </div>
+  </nav>
+
+  <div class="body">
+    <div class="copy">
+      <span class="eyebrow">Evals for agentic analytics</span>
+      <h1>Is your AI analytics agent telling you the truth?</h1>
+      <p class="sub">Catch your agent's mistakes before your team acts on them.</p>
+      <div class="btns">
+        <a class="btn b1" href="/docs/getting-started/">Get started</a>
+        <a class="btn b2" href="/report/">See a report</a>
+      </div>
+    </div>
+
+    <div class="video">
+      <!-- Silent, so it autoplays muted, once: it's a story that ends on the report, so it
+           stops on that frame and offers a replay. A pause button shows while it plays.
+           With "reduce motion" on, it stays on the poster with controls instead (see the
+           script below). -->
+      <video
+        class="vid"
+        src="https://media.thehonestagent.dev/hero.mp4"
+        poster="/assets/hero-poster.jpg"
+        muted
+        playsinline
+        preload="metadata"
+        aria-label="A short demo: an analytics agent gives a wrong revenue number for an investor update. honest-agent runs evals with known answers, catches the mistake, and the report shows why, before it reaches investors."
+      ></video>
+      <button type="button" class="vbtn pause" hidden aria-label="Pause the video">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+      </button>
+      <button type="button" class="vbtn replay" hidden>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+        Replay
+      </button>
+    </div>
+  </div>
+</header>
+
+<style>
+.s-hero{min-height:1140px;box-sizing:border-box;background:linear-gradient(180deg,#FFFFFF 0,#E6EDE1 700px,var(--green-50) 1400px);color:var(--fg-1);font-family:var(--font-sans);font-size:15px;line-height:1.5}
+.s-hero .nav{max-width:1240px;margin:0 auto;padding:20px 32px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px}
+.s-hero .home{display:inline-flex;text-decoration:none;color:var(--fg-1)}
+.s-hero .links{display:flex;flex-wrap:wrap;align-items:center;gap:8px 24px}
+.s-hero .links a{color:var(--fg-2);text-decoration:none;font-weight:500}
+.s-hero .links a:hover{color:var(--fg-1)}
+.s-hero .body{max-width:1240px;margin:0 auto;padding:40px 32px 80px;display:flex;flex-direction:column;align-items:center;gap:48px}
+.s-hero .copy{width:100%;max-width:760px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:20px}
+.s-hero .eyebrow{font-family:var(--font-mono);font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-3)}
+.s-hero h1{margin:0;font-family:var(--font-display);font-weight:500;font-size:56px;line-height:1.04;letter-spacing:-.02em;text-wrap:balance}
+.s-hero .sub{margin:0;font-family:var(--font-display);font-weight:500;font-size:28px;line-height:1.2;letter-spacing:-.01em;color:var(--green-700);text-wrap:balance}
+.s-hero .btns{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.s-hero .btn{display:inline-flex;align-items:center;min-height:44px;padding:0 20px;box-sizing:border-box;border-radius:8px;text-decoration:none;font-weight:500;transition:background .15s,border-color .15s}
+.s-hero .b1{background:var(--green-700);color:var(--green-50)}
+.s-hero .b1:hover{background:var(--green-800)}
+.s-hero .b2{background:var(--paper);border:1px solid var(--border-2);color:var(--fg-1)}
+.s-hero .b2:hover{background:var(--bg-sunken)}
+.s-hero .video{width:100%;max-width:960px;position:relative}
+.s-hero .vbtn{position:absolute;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;cursor:pointer;color:#F3F2EC;background:rgba(22,33,27,.72);backdrop-filter:blur(4px);font:500 14px/1 var(--font-sans);transition:background .15s}
+.s-hero .vbtn:hover{background:rgba(22,33,27,.9)}
+.s-hero .vbtn:focus-visible{outline:2px solid var(--green-300);outline-offset:2px}
+.s-hero .vbtn[hidden]{display:none}
+.s-hero .pause{right:14px;bottom:14px;width:36px;height:36px;border-radius:999px;opacity:.75}
+.s-hero .pause:hover,.s-hero .pause:focus-visible{opacity:1}
+.s-hero .replay{right:14px;bottom:14px;padding:10px 16px;border-radius:999px;box-shadow:0 4px 12px rgba(22,33,27,.2)}
+.s-hero .vid{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:16px;background:var(--paper);box-shadow:0 1px 2px rgba(28,42,34,.06),0 12px 32px rgba(28,42,34,.10)}
+@media (max-width:900px){
+ .s-hero{min-height:0}
+ .s-hero .nav{padding:16px}
+ .s-hero .body{padding:32px 16px 64px;gap:36px}
+ .s-hero h1{font-size:38px}
+ .s-hero .sub{font-size:21px}
+}
+</style>
+
+<script>
+  const video = document.querySelector<HTMLVideoElement>('.s-hero .vid');
+  const pause = document.querySelector<HTMLButtonElement>('.s-hero .pause');
+  const replay = document.querySelector<HTMLButtonElement>('.s-hero .replay');
+  if (video && pause && replay) {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      video.controls = true;
+    } else {
+      // The pause button doubles as play once paused; Replay takes its corner when the story
+      // ends, which leaves the video on its last frame (the closing card stays readable).
+      const icons = {
+        pause: pause.innerHTML,
+        play: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5Z"/></svg>',
+      };
+      const sync = () => {
+        const ended = video.ended;
+        replay.hidden = !ended;
+        pause.hidden = ended;
+        pause.innerHTML = video.paused ? icons.play : icons.pause;
+        pause.setAttribute('aria-label', video.paused ? 'Play the video' : 'Pause the video');
+      };
+      for (const event of ['play', 'pause', 'ended']) video.addEventListener(event, sync);
+      pause.addEventListener('click', () => (video.paused ? video.play() : video.pause()));
+      replay.addEventListener('click', () => {
+        video.currentTime = 0;
+        video.play();
+      });
+      // A browser that blocks autoplay still gets a way to start it.
+      video.play().then(sync, () => {
+        video.controls = true;
+      });
+    }
+  }
+</script>

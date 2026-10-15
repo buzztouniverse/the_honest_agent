@@ -14,3 +14,12 @@ there (guidelines, the `ui_kits/dashboard` screens, uploads). Never run the
 full `/design-sync` conversion against it: it can overwrite or delete those
 files. Sync with targeted file writes only — see `ui/src/ds/README.md` for
 the rules and the sync steps.
+
+## Site
+
+`site/` is the landing page and the docs (Astro + Starlight; see
+`site/README.md`). It uses `ui/src/ds/` only through its `@ds` alias, so a
+design system change affects the site too. Keep `site/` self-contained (it may
+move to its own repo): no relative links or imports outside it except `@ds`,
+and docs link to code with full GitHub URLs. Check docs claims against the CLI
+code and `--help`, not only the README.
