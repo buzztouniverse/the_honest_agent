@@ -13,6 +13,7 @@ import {
 } from '../data/derive'
 import type { GradingCall, ReportData, ResultRow, SourceRef, StepDetails, ToolCallRow } from '../data/types'
 import { Badge, Button, Card, Icon, ScoreStat } from '../ds'
+import { useNarrow } from '../useNarrow'
 
 const mono: CSSProperties = { fontFamily: 'var(--font-mono)' }
 const codeBlock: CSSProperties = {
@@ -172,8 +173,10 @@ interface LedgerRow {
 
 /** Label/value rows in one bordered table: the label column on a sunken ground. */
 function Ledger({ rows }: { rows: LedgerRow[] }) {
+  // On a phone each label sits above its value, so values like 307,992,639.49 get the full width.
+  const narrow = useNarrow()
   return (
-    <div style={{ ...table, gridTemplateColumns: 'minmax(120px, max-content) 1fr' }}>
+    <div style={{ ...table, gridTemplateColumns: narrow ? '1fr' : 'minmax(120px, max-content) 1fr' }}>
       {rows.map((row, i) => {
         const divider = i ? '1px solid var(--border-1)' : 'none'
         return (
@@ -182,7 +185,9 @@ function Ledger({ rows }: { rows: LedgerRow[] }) {
               {row.label}
               {row.hint ? <span style={{ font: '400 12px/1.3 var(--font-sans)', color: 'var(--fg-3)' }}>{row.hint}</span> : null}
             </div>
-            <div style={{ ...(row.text ? ledgerText : ledgerValue), borderTop: divider, color: row.color ?? 'var(--fg-1)' }}>
+            <div
+              style={{ ...(row.text ? ledgerText : ledgerValue), borderTop: narrow ? 'none' : divider, color: row.color ?? 'var(--fg-1)' }}
+            >
               {row.value}
             </div>
           </Fragment>
@@ -336,21 +341,25 @@ interface ProvRow {
 /** Expected | Agent queried, one row per level, styled like the Accuracy card's table. */
 function ProvTable({ rows }: { rows: ProvRow[] }) {
   const head: CSSProperties = { ...ledgerKey, font: '500 12px/1.3 var(--font-sans)', color: 'var(--fg-3)', padding: '8px 14px' }
+  // Three columns don't fit a phone-width card without breaking names: there it scrolls sideways.
+  const narrow = useNarrow()
   return (
-    <div style={{ ...table, gridTemplateColumns: 'minmax(120px, max-content) 1fr 1fr' }}>
-      <div style={head} />
-      <div style={head}>Expected</div>
-      <div style={head}>Agent queried</div>
-      {rows.map((row) => {
-        const divider = '1px solid var(--border-1)'
-        return (
-          <Fragment key={row.label}>
-            <div style={{ ...ledgerKey, borderTop: divider }}>{row.label}</div>
-            <div style={{ ...provValue, borderTop: divider }}>{row.expected}</div>
-            <div style={{ ...provValue, borderTop: divider }}>{row.queried}</div>
-          </Fragment>
-        )
-      })}
+    <div style={{ overflowX: 'auto', minWidth: 0 }}>
+      <div style={{ ...table, gridTemplateColumns: 'minmax(120px, max-content) 1fr 1fr', minWidth: narrow ? 340 : undefined }}>
+        <div style={head} />
+        <div style={head}>Expected</div>
+        <div style={head}>Agent queried</div>
+        {rows.map((row) => {
+          const divider = '1px solid var(--border-1)'
+          return (
+            <Fragment key={row.label}>
+              <div style={{ ...ledgerKey, borderTop: divider }}>{row.label}</div>
+              <div style={{ ...provValue, borderTop: divider }}>{row.expected}</div>
+              <div style={{ ...provValue, borderTop: divider }}>{row.queried}</div>
+            </Fragment>
+          )
+        })}
+      </div>
     </div>
   )
 }
@@ -851,6 +860,7 @@ const thought = (blocks: Block[]) => blocks.find((b) => b.type === 'thinking')
  * arguments and raw output, and the step's tokens and time; then the final answer, or the
  * step limit. */
 function TraceCard({ r, raw, details, sqlCalls }: { r: ResultRow; raw: string | undefined; details: StepDetails | null; sqlCalls: ToolCallRow[] }) {
+  const narrow = useNarrow()
   const [open, setOpen] = useState<Set<number>>(new Set())
   useEffect(() => {
     const onOpen = (e: Event) => {
@@ -941,7 +951,7 @@ function TraceCard({ r, raw, details, sqlCalls }: { r: ResultRow; raw: string | 
                 {isOpen ? (
                   <span />
                 ) : (
-                  <span style={{ ...traceMono(12, 'var(--fg-3)'), whiteSpace: 'nowrap', textAlign: 'right' }}>
+                  <span style={{ ...traceMono(12, 'var(--fg-3)'), whiteSpace: narrow ? 'normal' : 'nowrap', textAlign: 'right' }}>
                     {[...tools].map(([name, t], i) => (
                       <Fragment key={name}>
                         {i ? ', ' : ''}
@@ -1162,7 +1172,7 @@ export function ResultDetail({ data, resultId }: { data: ReportData; resultId: s
         </p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(200px, 100%), 1fr))', gap: 16 }}>
         <Card>
           <ScoreStat label="Accuracy" value={r.accuracy_score} caption={`min score ${pct(r.accuracy_min_score)}`} />
         </Card>

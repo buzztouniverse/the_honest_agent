@@ -1,0 +1,29 @@
+/* Phone width only (same breakpoint as useNarrow.ts). The design system's components
+   are copied unchanged, so their few phone adjustments live here:
+   - a card's header lets its actions (e.g. the Combined / Accuracy / Provenance tabs)
+     wrap under the title, and keeps them within the card;
+   - segmented tabs take a little less padding, so three fit a phone-width card, and
+     wrap onto a second line on the smallest phones;
+   - a heatmap starts at the left edge: its left padding (room for slanted labels on
+     the right only) and centring would push the cells out of a phone-width card.
+   The design system sets these inline, hence !important. */
+@media (max-width: 640px) {
+  section > header {
+    flex-wrap: wrap;
+  }
+  section > header > div:last-child {
+    flex-wrap: wrap;
+    max-width: 100%;
+  }
+  [role='tablist'] {
+    flex-wrap: wrap;
+    max-width: 100%;
+  }
+  [role='tablist'] > [role='tab'] {
+    padding: 0 8px !important;
+  }
+  table[style*='border-collapse: separate'][style*='padding-left'] {
+    padding-left: 0 !important;
+    margin: 0 !important;
+  }
+}

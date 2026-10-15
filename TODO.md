@@ -24,17 +24,22 @@ README fixes done 2026-10-08 (example eval, `--target`, sharing via
    commands, pointing to `docs/hosting.md`. Never asks for tokens in chat,
    never suggests public hosting, confirms before creating resources.
 
-## Before the release: the example report on the site
+## After the release (v0.1.0, released 2026-10-15)
 
-Done 2026-10-15. The demo report is at `/report/` (`site/scripts/build-report.mjs` copies the CLI's
-report UI and `site/report-demo/report.json` into `public/report/`, with a "Demo report"
-banner and a link back to the landing page); "See a report" and "Explore a real report"
-point there; the footer shows the install command before `init --example`. Decided: the
-demo keeps TPC-H's original years (1995-1997), and `init --example` is unchanged (no
-+27-year shift). Its data comes from real runs of `init --example`, never real data.
-
-After the release, maybe: plot each run instead of each day in "Scores over time" when
-the data covers a day or two, so a new project's first day isn't one dot per model.
+- **The report on phones:** done (readable from 360px up). Left: on the smallest phones
+  (320px) a long "grading model …" chip runs ~13px past the card (the design system's
+  Badge never wraps), and "Scores over time" shrinks as one picture on phones, so its
+  labels get tiny; it would need its own phone layout.
+- **`www.thehonestagent.dev`:** serves the site but doesn't redirect to the bare domain;
+  add a Cloudflare redirect rule so there's one address.
+- **"Scores over time" on a first day:** it plots one point per model per day, so a new
+  project shows one dot per model. Maybe plot each run when the data covers a day or two.
+- **Multi-turn evals:** each eval is one fresh question today; a scripted conversation
+  with a known answer at the end would test follow-ups.
+- **MCP servers with browser-only sign-in (OAuth):** not supported; only a URL with a
+  bearer token, or a local command.
+- **The demo report** (`site/report-demo/report.json`): refresh it now and then from runs
+  of `init --example`, never real data, checked for private details.
 
 ## First tester release (v0.1.0): versions and migrations
 

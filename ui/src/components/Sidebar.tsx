@@ -2,6 +2,7 @@ import { useEffect, useState, type CSSProperties } from 'react'
 import { formatRunTime } from '../data/derive'
 import { Icon, Logo, Switch } from '../ds'
 import { href, type Route } from '../router'
+import { useNarrow } from '../useNarrow'
 
 const ITEMS = [
   { route: { name: 'overview' } as Route, label: 'Overview', icon: 'layout-dashboard' },
@@ -46,14 +47,17 @@ export function Sidebar({
   generatedAt: string | null
 }) {
   const [hov, setHov] = useState(false)
-  const [mini, setMini] = useState(initialMini)
+  const [miniPref, setMini] = useState(initialMini)
+  // Phones always get the compact sidebar (no toggle): the full one would take half the screen.
+  const narrow = useNarrow()
+  const mini = narrow || miniPref
   useEffect(() => {
     try {
-      localStorage.setItem(MINI_KEY, mini ? '1' : '0')
+      localStorage.setItem(MINI_KEY, miniPref ? '1' : '0')
     } catch {
       // Storage unavailable; the toggle still works for this visit.
     }
-  }, [mini])
+  }, [miniPref])
 
   // A result page belongs to neither section (it opens from the overview or the comparison), so nothing is active there.
   const active = route.name
@@ -92,48 +96,50 @@ export function Sidebar({
             padding: mini ? 0 : '16px 12px',
             borderRadius: 'var(--radius-md)',
             border: mini ? '1.5px solid transparent' : '1.5px solid var(--green-300)',
-            opacity: mini && hov ? 0 : 1,
+            opacity: mini && hov && !narrow ? 0 : 1,
             transition: 'opacity var(--dur-fast) var(--ease-out)',
           }}
         >
           <Logo markSrc={LOGO_SRC} size={mini ? 28 : 24} textSize={14} wordmark={!mini} />
         </a>
-        <button
-          type="button"
-          onClick={() => setMini(!mini)}
-          title={mini ? 'Expand sidebar' : 'Collapse sidebar'}
-          aria-label={mini ? 'Expand sidebar' : 'Collapse sidebar'}
-          aria-expanded={!mini}
-          onFocus={() => setHov(true)}
-          onMouseOver={(e) => {
-            e.currentTarget.style.color = 'var(--fg-1)'
-            e.currentTarget.style.background = 'var(--bg-sunken)'
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.color = 'var(--fg-2)'
-            e.currentTarget.style.background = 'var(--bg-surface)'
-          }}
-          style={{
-            position: 'absolute',
-            top: '50%',
-            ...(mini
-              ? { left: '50%', transform: 'translate(-50%,-50%)', width: 36, height: 36 }
-              : { right: 5, transform: 'translateY(-50%)', width: 24, height: 24 }),
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            border: 0,
-            borderRadius: 'var(--radius-sm)',
-            background: 'var(--bg-surface)',
-            color: 'var(--fg-2)',
-            cursor: 'pointer',
-            opacity: hov ? 1 : 0,
-            pointerEvents: hov ? 'auto' : 'none',
-            transition: 'opacity var(--dur-fast) var(--ease-out)',
-          }}
-        >
-          <Icon name={mini ? 'panel-left-open' : 'panel-left-close'} size={16} />
-        </button>
+        {!narrow && (
+          <button
+            type="button"
+            onClick={() => setMini(!mini)}
+            title={mini ? 'Expand sidebar' : 'Collapse sidebar'}
+            aria-label={mini ? 'Expand sidebar' : 'Collapse sidebar'}
+            aria-expanded={!mini}
+            onFocus={() => setHov(true)}
+            onMouseOver={(e) => {
+              e.currentTarget.style.color = 'var(--fg-1)'
+              e.currentTarget.style.background = 'var(--bg-sunken)'
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.color = 'var(--fg-2)'
+              e.currentTarget.style.background = 'var(--bg-surface)'
+            }}
+            style={{
+              position: 'absolute',
+              top: '50%',
+              ...(mini
+                ? { left: '50%', transform: 'translate(-50%,-50%)', width: 36, height: 36 }
+                : { right: 5, transform: 'translateY(-50%)', width: 24, height: 24 }),
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              border: 0,
+              borderRadius: 'var(--radius-sm)',
+              background: 'var(--bg-surface)',
+              color: 'var(--fg-2)',
+              cursor: 'pointer',
+              opacity: hov ? 1 : 0,
+              pointerEvents: hov ? 'auto' : 'none',
+              transition: 'opacity var(--dur-fast) var(--ease-out)',
+            }}
+          >
+            <Icon name={mini ? 'panel-left-open' : 'panel-left-close'} size={16} />
+          </button>
+        )}
       </div>
       <nav style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         {ITEMS.map((it) => {

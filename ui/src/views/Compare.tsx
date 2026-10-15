@@ -5,6 +5,7 @@ import { agentOf, agentsOf, evalHeatRow, evalTitles, evalsOf, formatRunTime, mea
 import type { ReportData, ResultRow } from '../data/types'
 import { AccuracyBar, Badge, Card, DataTable, DateRangePicker, Heatmap, Icon, ScoreCell, Select, Tabs, Tooltip } from '../ds'
 import { navigate } from '../router'
+import { useNarrow } from '../useNarrow'
 
 const METRICS = [
   { id: 'overall', label: 'Combined' },
@@ -75,6 +76,7 @@ export function Compare({
   agent: string
   setAgent: (agent: string) => void
 }) {
+  const narrow = useNarrow()
   const [metric, setMetric] = useState<'overall' | 'accuracy' | 'provenance'>('overall')
   const [trendMetric, setTrendMetric] = useState<'overall' | 'accuracy' | 'provenance'>('overall')
   const agents = useMemo(() => agentsOf(data.results), [data])
@@ -293,7 +295,7 @@ export function Compare({
               showToggle={false}
               showSummary={false}
               rowHeader="Eval"
-              rowLabelWidth={360}
+              rowLabelWidth={narrow ? 150 : 360}
               groupBy="category"
               defaultExpanded={[...new Set(evals.map((q) => q.category))]}
               rows={heatRows}
@@ -310,7 +312,7 @@ export function Compare({
             title="Scores over time"
             subtitle="One row per model · each point is the model's last run that day"
             actions={
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 12 }}>
+              <span style={{ display: 'inline-flex', flexWrap: 'wrap', alignItems: 'center', gap: 12 }}>
                 <Tabs items={METRICS} value={trendMetric} onChange={(id) => setTrendMetric(id as typeof trendMetric)} />
                 <Tooltip
                   side="bottom"
