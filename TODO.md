@@ -24,6 +24,18 @@ README fixes done 2026-10-08 (example eval, `--target`, sharing via
    commands, pointing to `docs/hosting.md`. Never asks for tokens in chat,
    never suggests public hosting, confirms before creating resources.
 
+## Before the release: the example report on the site
+
+Done 2026-10-15. The demo report is at `/report/` (`site/scripts/build-report.mjs` copies the CLI's
+report UI and `site/report-demo/report.json` into `public/report/`, with a "Demo report"
+banner and a link back to the landing page); "See a report" and "Explore a real report"
+point there; the footer shows the install command before `init --example`. Decided: the
+demo keeps TPC-H's original years (1995-1997), and `init --example` is unchanged (no
++27-year shift). Its data comes from real runs of `init --example`, never real data.
+
+After the release, maybe: plot each run instead of each day in "Scores over time" when
+the data covers a day or two, so a new project's first day isn't one dot per model.
+
 ## First tester release (v0.1.0): versions and migrations
 
 Discussed 2026-10-07. The repo is already public and `cli/pyproject.toml` says
@@ -129,7 +141,7 @@ filter are gone (grader/agent model defaults were already removed).
 Left on purpose, low value for now (small, rarely-changing code):
 
 - **Stale comments:** Claude-only wording in provider-neutral code
-  (`agent_runner.py` docstrings, `--max-tool-turns` help, `storage.py` token
+  (`agent_runner.py` docstrings, `storage.py` token
   comment, `mcp_agent_runner.py` "MCP backend selected"); references to
   removed things (the eval YAML `tools:` key in `sql_capture.py`, the dbt
   `schema.yml` in `eval_loader.py`, the old `exact` method in `grading.py`);

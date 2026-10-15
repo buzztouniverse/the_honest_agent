@@ -1,0 +1,6 @@
+# One-off helpers that take and place the landing page's report screenshots: the
+# project's rules, except those that fight their long embedded HTML/JS snippets.
+extend = "../../../cli/pyproject.toml"
+
+[lint]
+extend-ignore = ["E501", "E731", "E741", "UP031"]

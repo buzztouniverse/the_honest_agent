@@ -1,0 +1,65 @@
+---
+// The team setup at a glance, for the "Running it for a team" overview. Same look as
+// HowItWorks: plain SVG coloured with the design system tokens.
+const box = (x: number, y: number, w: number, h: number) => ({ x, y, width: w, height: h, rx: 10 });
+---
+<figure class="team">
+  <svg viewBox="0 0 700 260" role="img" aria-labelledby="team-title team-desc">
+    <title id="team-title">honest-agent for a team</title>
+    <desc id="team-desc">
+      A scheduled job runs the evals. It reads and writes the results in private storage,
+      publishes the report to a host behind a sign-in, and sends a Slack alert. Your team
+      opens the report and gets the alert; only the job touches the results.
+    </desc>
+    <defs>
+      <marker id="team-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0 0 L10 5 L0 10 z" class="tip" />
+      </marker>
+    </defs>
+
+    <rect {...box(0, 85, 180, 90)} class="node main" />
+    <text x="90" y="120" class="t main">Scheduled job</text>
+    <text x="90" y="144" class="s main">runs the evals</text>
+    <text x="90" y="162" class="s main">e.g. GitHub Actions</text>
+
+    <rect {...box(270, 0, 220, 70)} class="node private" />
+    <text x="380" y="30" class="t">Results</text>
+    <text x="380" y="52" class="s">private: MotherDuck or S3</text>
+
+    <rect {...box(270, 95, 220, 70)} class="node" />
+    <text x="380" y="125" class="t">Report</text>
+    <text x="380" y="147" class="s">behind a sign-in</text>
+
+    <rect {...box(270, 190, 220, 70)} class="node" />
+    <text x="380" y="220" class="t">Slack alert</text>
+    <text x="380" y="242" class="s">when an eval fails</text>
+
+    <rect {...box(580, 130, 120, 70)} class="node" />
+    <text x="640" y="171" class="t">Your team</text>
+
+    <path d="M180 108 C 225 108, 225 35, 268 35" class="arrow both" />
+    <text x="228" y="52" class="l end">reads, writes</text>
+    <line x1="180" y1="130" x2="268" y2="130" class="arrow" />
+    <path d="M180 152 C 225 152, 225 225, 268 225" class="arrow" />
+
+    <path d="M490 130 C 535 130, 535 150, 578 150" class="arrow" />
+    <path d="M490 225 C 535 225, 535 180, 578 180" class="arrow" />
+  </svg>
+</figure>
+
+<style>
+  .team { margin: 1.5rem 0; }
+  svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .node { fill: var(--bg-surface); stroke: var(--border-2); stroke-width: 1.25; }
+  .node.main { fill: var(--accent); stroke: var(--accent); }
+  .node.private { fill: var(--bg-sunken); stroke-dasharray: 5 4; }
+  text { text-anchor: middle; font-family: var(--font-sans); fill: var(--fg-1); }
+  .t { font-family: var(--font-display); font-size: 18px; font-weight: 500; }
+  .s { font-size: 14px; fill: var(--fg-2); }
+  .main { fill: var(--accent-fg); }
+  .l { font-size: 12.5px; fill: var(--fg-3); }
+  .l.end { text-anchor: end; }
+  .arrow { stroke: var(--fg-3); stroke-width: 1.5; fill: none; marker-end: url(#team-arrow); }
+  .arrow.both { marker-start: url(#team-arrow); }
+  .tip { fill: var(--fg-3); }
+</style>

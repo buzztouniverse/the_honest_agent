@@ -11,6 +11,11 @@ icons (`components/core/icons.js`, used by `Icon`) on 2026-10-08; the dark `--ch
 "No run" cells show) on 2026-10-14. The project's `readme.md` holds the full guidelines
 (palette roles, accuracy buckets, type, voice); follow it when building views.
 
+**Used by the site too.** `site/` (the landing page and docs) imports this folder
+through its `@ds` alias, so a change here changes the report and the site; the
+site's CI rebuilds it on any change under `ui/src/ds/`. There's no second copy
+to keep in step.
+
 - `styles.css` + `tokens/`: tokens as CSS variables, imported once in `main.tsx`.
 - `components/`: the components, copied **unchanged**, each `.jsx` with its
   `.d.ts`. Don't edit them here. Change the design in Claude Design and copy
