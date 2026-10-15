@@ -78,5 +78,7 @@
  .s-run .pane{min-height:0}
  .s-run .win{height:auto;min-height:420px}.s-run .term{font-size:10.5px;padding:14px}
 }
+/* The smallest phones (e.g. 320px): run → report → serve still fits on one line. */
+@media (max-width:380px){.s-run .steps{gap:12px}.s-run .stp{padding:6px 12px}}
 @media (prefers-reduced-motion:reduce){.s-run .term .ln{animation:none;opacity:1}.s-run .term .ty{animation:none;width:auto}.s-run .term .cur{animation:none}}
 </style>

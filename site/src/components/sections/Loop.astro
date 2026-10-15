@@ -157,8 +157,8 @@
 .s-loop .term .p{color:var(--green-300)}.s-loop .term .ok{color:#6FCFC2}.s-loop .term .no{color:#F09A82}.s-loop .term .m{color:#86927F}
 .s-loop .bar.dk{background:#0F1712;border-bottom:1px solid #26352C}.s-loop .bar.dk i{background:#3A4A40}.s-loop .bar.dk span{color:#86927F}
 .s-loop .term{white-space:normal}
-.s-loop .term .ln{white-space:pre;min-height:1.65em;opacity:0;animation:lp-lnIn .01s linear var(--d) forwards}
-.s-loop .term .ty{display:inline-block;vertical-align:bottom;overflow:hidden;white-space:nowrap;width:0;animation:lp-tyIn calc(var(--n) * .06s) steps(var(--n)) var(--d) forwards}
+.s-loop .term .ln{white-space:pre-wrap;padding-left:2ch;text-indent:-2ch;min-height:1.65em;opacity:0;animation:lp-lnIn .01s linear var(--d) forwards}
+.s-loop .term .ty{text-indent:0;display:inline-block;vertical-align:bottom;overflow:hidden;white-space:nowrap;width:0;animation:lp-tyIn calc(var(--n) * .06s) steps(var(--n)) var(--d) forwards}
 .s-loop .term .cur{display:inline-block;width:.6em;height:1.15em;vertical-align:-.2em;margin-left:2px;background:var(--green-300);animation:lp-curB 1s steps(1) infinite}
 @keyframes lp-lnIn{to{opacity:1}}
 @keyframes lp-tyIn{to{width:calc(var(--n) * 1ch)}}
@@ -291,7 +291,6 @@
  .s-loop table.ft .tr{display:none}.s-loop table.ft .mono{min-width:0}
  .s-loop .files{display:none}
  .s-loop .term{font-size:11px;padding:14px 16px}
- .s-loop .term .ln{white-space:pre-wrap;padding-left:2ch;text-indent:-2ch}.s-loop .term .ty{text-indent:0}
  .s-loop .sls{width:40px;padding:10px 0;font-size:0}.s-loop .ws,.s-loop .sh{display:none}.s-loop .ch{justify-content:center;padding:7px 0}.s-loop .ch b{font-size:16px}
  .s-loop .slhd span{display:none}.s-loop .srch{width:60%;transform:none}
 }
