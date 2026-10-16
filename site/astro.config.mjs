@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import starlight from '@astrojs/starlight';
+import starlightLlmsTxt from 'starlight-llms-txt';
 
 // The design system lives in the report's source (ui/src/ds), outside this folder.
 // It comes in only through the @ds alias, so moving the site elsewhere means changing it here.
@@ -17,6 +18,17 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'honest-agent',
+      // /llms.txt, /llms-full.txt and /llms-small.txt: the docs as Markdown, for coding agents and LLMs.
+      plugins: [
+        starlightLlmsTxt({
+          projectName: 'The Honest Agent (honest-agent)',
+          description:
+            "honest-agent tests an AI analytics agent the way you'd test code: with questions you already know the answers to. " +
+            "Every eval checks two things about the agent's answer: accuracy (is the answer right?) and provenance " +
+            "(did the agent's SQL read the tables your team trusts for that question?).",
+          optionalLinks: [{ label: 'GitHub', url: 'https://github.com/jlcoto/the_honest_agent' }],
+        }),
+      ],
       logo: { src: './public/assets/robot.png', alt: 'The Honest Agent robot' },
       favicon: '/favicon.svg',
       // Only the tokens: the design system's base.css restyles html, body and links, which is
