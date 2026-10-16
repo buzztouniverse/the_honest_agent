@@ -6,6 +6,35 @@ interface Props {
   description: string;
 }
 const { title, description } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const github = 'https://github.com/jlcoto/the_honest_agent';
+
+// Structured data for search engines and AI assistants: what the product is, and who made it.
+const author = {
+  '@type': 'Person',
+  name: 'José Coto',
+  sameAs: ['https://www.linkedin.com/in/jose-coto', 'https://thedatalead.substack.com/'],
+};
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'SoftwareApplication',
+      name: 'The Honest Agent',
+      alternateName: 'honest-agent',
+      description,
+      url: canonical,
+      applicationCategory: 'DeveloperApplication',
+      operatingSystem: 'macOS, Linux, Windows',
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+      license: 'https://opensource.org/licenses/MIT',
+      codeRepository: github,
+      sameAs: [github],
+      author,
+    },
+    { '@type': 'WebSite', name: 'The Honest Agent', url: new URL('/', Astro.site).href },
+  ],
+};
 ---
 <!doctype html>
 <html lang="en">
@@ -14,6 +43,16 @@ const { title, description } = Astro.props;
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="The Honest Agent" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="en" />
+    <meta name="twitter:card" content="summary" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <!-- Lato is only for the Slack windows; the brand fonts are bundled in the design system's tokens/fonts. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
