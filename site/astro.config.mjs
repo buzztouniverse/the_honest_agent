@@ -45,6 +45,7 @@ export default defineConfig({
       editLink: { baseUrl: 'https://github.com/jlcoto/the_honest_agent/edit/main/site/' },
       sidebar: [
         { label: 'Overview', link: '/docs/' },
+        { label: 'What are evals for agentic analytics?', link: '/docs/evals-for-agentic-analytics/' },
         { label: 'Getting started', link: '/docs/getting-started/' },
         { label: 'Connect your agent', link: '/docs/connect/' },
         { label: 'Writing evals', link: '/docs/writing-evals/' },
