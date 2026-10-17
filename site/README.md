@@ -48,6 +48,10 @@ npx wrangler r2 object put honest-agent-media/hero-v2.mp4 --file media/hero-v2.m
   allowed and managed robots.txt off in the dashboard.
 - `Base.astro` sets the landing page's canonical URL, Open Graph tags and JSON-LD
   (`SoftwareApplication`, `WebSite`). Starlight does the canonical and Open Graph tags for the docs.
+- `public/assets/og.png` (1200×630) is the share image for link cards and search result
+  thumbnails, on the landing page and the docs. Its source is the "Share image A" artboard in
+  the Claude Design project "First Screen Mockups"; keep the mascot and headline in the middle,
+  because small thumbnails crop it to a square.
 - `starlight-llms-txt` (in `astro.config.mjs`) writes `/llms.txt`, `/llms-full.txt` and
   `/llms-small.txt` from the docs.
 
