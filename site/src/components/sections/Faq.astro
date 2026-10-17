@@ -1,0 +1,91 @@
+---
+// Each answer is HTML: the page shows it, and the FAQPage JSON-LD gets it as plain text.
+const faqs = [
+  {
+    q: 'What does honest-agent test?',
+    a: `An AI analytics agent: the model your agent runs on, with the tools from your agent's own MCP server. It asks <a href="/docs/evals-for-agentic-analytics/">questions you know the answers to</a>, and checks two things about each answer: is it right (accuracy), and did it come from the sources your team trusts (provenance).`,
+  },
+  {
+    q: 'Does it work with my MCP server?',
+    a: `Yes, if the server is reachable by URL or started with a local command: Snowflake's managed MCP server, MotherDuck, or your own. To check provenance, the server's tools need to take SQL.`,
+  },
+  {
+    q: 'Which models can I test?',
+    a: 'Claude and OpenAI (GPT) models, with your own API key. To compare models, run the same evals with each one and compare their accuracy and provenance.',
+  },
+  {
+    q: 'What does the report show?',
+    a: "The report is a small website built from your results. It shows each eval's scores over time, the evals below their thresholds, and a page for every answer: what the agent said, what you expected, the SQL it ran, the sources it read, and why it passed or failed.",
+  },
+  {
+    q: 'Can I run it in my pipelines and share the report?',
+    a: 'Yes. Run the evals on a schedule or in CI, for example GitHub Actions, and keep the results in MotherDuck or in cloud storage. The report is a static website: host it for your team behind a sign-in, for example on Cloudflare Pages or AWS. A Slack alert tells the team when an eval falls below its threshold.',
+  },
+  {
+    q: 'Can it change my data?',
+    a: "honest-agent refuses SQL that would change your data before it reaches your MCP server: only reads get through. But the agent can use every tool the server offers, and honest-agent can only check SQL. If the server has other tools that change things, such as one that deletes a customer, honest-agent can't block them. Read-only credentials can, so give the server those.",
+  },
+  {
+    q: 'Is it free?',
+    a: 'Yes. honest-agent is open source (MIT) and runs on your machine or in your CI. You only pay your model provider for the calls each run makes.',
+  },
+  {
+    q: 'How is it different from the evals built into my warehouse or BI tool?',
+    a: "Those run inside one vendor's product. honest-agent runs from the command line against any MCP server, keeps the results in your own DuckDB file or MotherDuck database, and checks the sources behind every answer.",
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a.replace(/<[^>]+>/g, '') },
+  })),
+};
+---
+<section class="s-faq" id="faq">
+ <div class="wrap">
+  <div class="head"><h2>Frequently asked questions</h2><div class="bot"><img src="/assets/mascot-thinking.svg" alt="" width="70" height="80"></div></div>
+  <div class="list">
+   {faqs.map(({ q, a }) => (
+    <details>
+     <summary>{q}<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+     <p class="a" set:html={a} />
+    </details>
+   ))}
+  </div>
+ </div>
+ <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</section>
+
+<style>
+.s-faq{box-sizing:border-box;background:#EEF0E8;color:var(--fg-1);font-family:var(--font-sans);font-size:15px;line-height:1.5;padding:72px 32px 88px}
+.s-faq .wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:40px}
+.s-faq .head{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap}
+.s-faq .bot{flex:none;width:96px;height:96px;border-radius:999px;background:var(--paper);border:1.5px solid var(--green-300);box-sizing:border-box;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
+.s-faq .bot img{width:70px;height:auto;display:block;margin-bottom:-6px}
+.s-faq h2{margin:0;text-align:center;font-family:var(--font-display);font-weight:500;font-size:40px;line-height:1.08;letter-spacing:-.02em;text-wrap:balance}
+.s-faq .list{border-top:1px solid var(--border-1)}
+.s-faq details{border-bottom:1px solid var(--border-1)}
+.s-faq summary{list-style:none;display:flex;align-items:flex-start;gap:14px;padding:20px 4px;cursor:pointer;font-family:var(--font-display);font-weight:500;font-size:19px;line-height:1.35;color:var(--fg-1);border-radius:8px}
+.s-faq summary::-webkit-details-marker{display:none}
+.s-faq summary:hover{color:var(--green-700)}
+.s-faq summary:focus-visible{outline:2px solid var(--green-700);outline-offset:2px}
+.s-faq .ic{order:-1;flex:none;width:20px;height:20px;margin-top:3px;color:var(--green-500);transform:rotate(-90deg);transition:transform .2s ease}
+.s-faq details[open] .ic{transform:rotate(0deg)}
+.s-faq .a{margin:0;padding:0 4px 22px 38px;font-size:16px;line-height:1.6;color:var(--fg-2);max-width:65ch}
+.s-faq .a :global(a){color:var(--green-700);font-weight:500;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--green-300)}
+.s-faq .a :global(a:hover){text-decoration-color:var(--green-700)}
+@media (max-width:900px){
+ .s-faq{padding:48px 16px 56px}
+ .s-faq .wrap{gap:24px}
+ .s-faq h2{font-size:30px}
+ .s-faq .bot{width:72px;height:72px}
+ .s-faq .bot img{width:52px;margin-bottom:-4px}
+ .s-faq summary{font-size:17px;padding:16px 2px;gap:12px}
+ .s-faq .a{padding:0 2px 18px 34px;font-size:15.5px}
+}
+@media (prefers-reduced-motion:reduce){.s-faq .ic{transition:none}}
+</style>
