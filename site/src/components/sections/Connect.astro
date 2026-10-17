@@ -14,7 +14,7 @@
     <label class="con k4" for="cn-c4"><span class="cn">Local server</span><span class="ck"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 4 4-4 4M12 16h7"/></svg>mcp_command</span></label>
    </div>
    <svg class="lines" viewBox="0 0 190 304" aria-hidden="true"><path class="ln p1" d="M0 32 C104.5 32 85.5 152 233 152"/><path class="ln p2" d="M0 112 C104.5 112 85.5 152 233 152"/><path class="ln p3" d="M0 192 C104.5 192 85.5 152 233 152"/><path class="ln p4" d="M0 272 C104.5 272 85.5 152 233 152"/></svg>
-   <div class="hub"><div class="hc"><img src="/assets/robot.png" alt="honest-agent"></div><div class="hl">honest-agent</div><div class="model"><div class="ml">Any model</div><div class="mv">Anthropic or OpenAI</div></div></div>
+   <div class="hub"><div class="hc"><img src="/assets/mascot-waving.svg" alt="honest-agent" width="88" height="77"></div><div class="hl">honest-agent</div><div class="model"><div class="ml">Any model</div><div class="mv">Anthropic or OpenAI</div></div></div>
    <div class="cfg"><div class="cbar"><i></i><i></i><i></i><span>honest_agent_config.yml</span></div>
     <div class="yaml x1"><span class="yl c">default_target: <b>motherduck</b></span><span class="yl">targets:</span><span class="yl">  motherduck:</span><span class="yl yh">    mcp_url: https://api.motherduck.com/mcp</span><span class="yl yh">    bearer_token_env: MOTHERDUCK_TOKEN</span><span class="yl">    model: claude-sonnet-4-5</span></div><div class="yaml x2"><span class="yl c">default_target: <b>snowflake</b></span><span class="yl">targets:</span><span class="yl">  snowflake:</span><span class="yl yh">    mcp_url: https://&lt;account&gt;.snowflakecomputing.com/api/v2/databases/&lt;db&gt;/schemas/&lt;schema&gt;/mcp-servers/&lt;server&gt;</span><span class="yl yh">    bearer_token_env: SNOWFLAKE_MCP_TOKEN</span><span class="yl">    model: claude-sonnet-4-5</span></div><div class="yaml x3"><span class="yl c">default_target: <b>sales-agent</b></span><span class="yl">targets:</span><span class="yl">  sales-agent:</span><span class="yl yh">    mcp_url: https://mcp.yourcompany.com/mcp</span><span class="yl yh">    bearer_token_env: MCP_TOKEN</span><span class="yl">    model: claude-sonnet-4-5</span></div><div class="yaml x4"><span class="yl c">default_target: <b>demo</b></span><span class="yl">targets:</span><span class="yl">  demo:</span><span class="yl yh">    mcp_command: uv run python -m honest_agent.demo_server warehouse.duckdb</span><span class="yl">    default_database: warehouse</span><span class="yl">    default_schema: main</span><span class="yl">    model: claude-sonnet-4-5</span></div>
     <div class="run x1"><span class="p">$</span> honest-agent run --target motherduck</div><div class="run x2"><span class="p">$</span> honest-agent run --target snowflake</div><div class="run x3"><span class="p">$</span> honest-agent run --target sales-agent</div><div class="run x4"><span class="p">$</span> honest-agent run --target demo</div>
@@ -42,7 +42,7 @@
 .s-connect .ln{fill:none;stroke:#CDD2C6;stroke-width:1.5;transition:stroke .2s}
 .s-connect .hub{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:90px}
 .s-connect .hc{width:124px;height:124px;border-radius:999px;background:var(--paper);border:1.5px solid var(--green-300);display:flex;align-items:center;justify-content:center}
-.s-connect .hc img{width:78px;height:auto;transform:translate(1px,-7px)}
+.s-connect .hc img{width:88px;height:auto;display:block;-webkit-mask-image:linear-gradient(#000 62%,transparent 92%);mask-image:linear-gradient(#000 62%,transparent 92%)}
 .s-connect .hl{font-family:var(--font-mono);font-size:13px;color:var(--green-700);font-weight:500}
 .s-connect .out{width:40px;height:2px;background:var(--green-500);margin-top:-34px}
 .s-connect .model{margin-top:6px;border:1px solid var(--green-300);background:var(--paper);border-radius:12px;padding:10px 16px;text-align:center}
@@ -67,7 +67,7 @@
 @media (max-width:1100px){
  .s-connect .panel{grid-template-columns:minmax(0,1fr);row-gap:24px}
  .s-connect .lines,.s-connect .out{display:none}
- .s-connect .hub{flex-direction:column;align-items:center;margin-top:0;justify-self:center;text-align:center}.s-connect .hc{width:96px;height:96px}.s-connect .hc img{width:60px;transform:translate(1px,-5px)}
+ .s-connect .hub{flex-direction:column;align-items:center;margin-top:0;justify-self:center;text-align:center}.s-connect .hc{width:96px;height:96px}.s-connect .hc img{width:68px}
  .s-connect .model{margin-top:0}.s-connect .cfg{margin-left:0}
 }
 @media (max-width:900px){.s-connect{padding:48px 16px 64px}.s-connect h2{font-size:30px}.s-connect .intro code{font-family:var(--font-mono);font-size:15px;color:var(--green-700)}

@@ -23,3 +23,11 @@ design system change affects the site too. Keep `site/` self-contained (it may
 move to its own repo): no relative links or imports outside it except `@ds`,
 and docs link to code with full GitHub URLs. Check docs claims against the CLI
 code and `--help`, not only the README.
+
+## Check every screen size
+
+After any change to the landing page or the generated report, look at it on
+desktop (1440px), tablet (768px) and phone (390px and 320px) before calling
+it done: take screenshots, check the layout, text wrapping and horizontal
+scroll, and open interactive parts (tabs, collapsible sections, hovers) at
+each size.
