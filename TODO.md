@@ -40,6 +40,15 @@ README fixes done 2026-10-08 (example eval, `--target`, sharing via
   bearer token, or a local command.
 - **The demo report** (`site/report-demo/report.json`): refresh it now and then from runs
   of `init --example`, never real data, checked for private details.
+- **Run evals in parallel, like dbt's threads:** `run` asks one eval at a time
+  (`runner.py`). Add a `threads` setting per target in the config, with a `--threads`
+  flag that overrides it, like dbt's profile `threads:` and `--threads`. To check:
+  the model provider's rate limits, whether the MCP server copes with parallel sessions,
+  and keeping the results file and database writes on one thread.
+- **Progress like dbt's `[2/16]`:** `run` prints the total at the start, then one line
+  per eval with no position or outcome. Show each eval's position, as in
+  `[2/16] revenue_q4 ... PASS (accuracy 1.00, provenance 1.00)`, with the time it took.
+  With threads, print each line as the eval finishes, like dbt does.
 
 ## First tester release (v0.1.0): versions and migrations
 
