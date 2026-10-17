@@ -40,7 +40,14 @@ export default defineConfig({
         '@ds/tokens/spacing.css',
         './src/styles/docs.css',
       ],
-      head: [{ tag: 'script', content: lightByDefault }],
+      head: [
+        { tag: 'script', content: lightByDefault },
+        // The landing page's share image, for links to the docs too.
+        { tag: 'meta', attrs: { property: 'og:image', content: 'https://thehonestagent.dev/assets/og.png' } },
+        { tag: 'meta', attrs: { property: 'og:image:width', content: '1200' } },
+        { tag: 'meta', attrs: { property: 'og:image:height', content: '630' } },
+        { tag: 'meta', attrs: { name: 'twitter:image', content: 'https://thehonestagent.dev/assets/og.png' } },
+      ],
       social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/jlcoto/the_honest_agent' }],
       editLink: { baseUrl: 'https://github.com/jlcoto/the_honest_agent/edit/main/site/' },
       sidebar: [
