@@ -167,6 +167,13 @@ Left on purpose, low value for now (small, rarely-changing code):
   in `Overview.tsx` and `derive.ts` instead of `bucketOf`/`pct` from
   `ui/src/ds/components/data/scale.js`; `METRICS` and the empty-state card
   in `Overview.tsx` / `Compare.tsx`.
+- **`notify` asks for variables it doesn't use** (found 2026-10-18): it only
+  needs the target's name (or `agent_name`) to find the latest run, but it
+  calls `config.target()` (`cli.py`), which fills in every `env_var()` in the
+  target, `mcp_url` included. Without the server's URL variable it stops with
+  "isn't set", though it never contacts the server. Works when the variable
+  is set; the CI page passes it to every step, so nothing is blocked. Fix:
+  read the target's name and `agent_name` without rendering the rest.
 
 ## Semantic-layer provenance checking
 
