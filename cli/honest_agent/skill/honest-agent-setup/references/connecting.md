@@ -27,8 +27,11 @@ server below.
   config file's folder. It gets only a minimal environment plus the variables listed
   in the target's `mcp_env`, so a server that needs a token from `.env` must list its
   name there.
-- **Snowflake managed MCP server** (`mcp_url` + `bearer_token_env`): the user creates
-  an MCP server object and a programmatic access token (PAT) for a read-only role.
+- **Snowflake managed MCP server** (`mcp_url` + `bearer_token_env`): use the server the
+  team's agent already uses (its URL is the one in their Claude connector). honest-agent
+  can't use OAuth, so it needs its own service user with a programmatic access token
+  (PAT), for a read-only role that reads the same tables as the team's role and has
+  `usage` on the MCP server. Creating a server is only for teams that don't have one.
   If the PAT is refused: Snowflake requires a network policy on the user before it
   issues a usable PAT; the user sets it up with Snowflake's docs. If they put the token
   in `MCP_BEARER_TOKEN`: it is never sent to a target's server; it goes in the variable
@@ -37,10 +40,11 @@ server below.
   https://docs.snowflake.com/en/sql-reference/sql/create-mcp-server and
   https://docs.snowflake.com/en/user-guide/programmatic-access-tokens and
   https://docs.snowflake.com/en/user-guide/network-policies.
+  Step by step: https://thehonestagent.dev/docs/connect/snowflake/.
 - **MotherDuck** (its hosted server is `https://api.motherduck.com/mcp`; `init`
   pre-fills it in `.env` as `<TARGET>_MCP_URL`): a MotherDuck token, ideally a
   read-only (read scaling) one:
   https://motherduck.com/docs/key-tasks/authenticating-and-connecting-to-motherduck/read-scaling/.
-  See the MotherDuck section of https://thehonestagent.dev/docs/connect/.
+  Step by step: https://thehonestagent.dev/docs/connect/motherduck/.
 - **Any other server:** its own docs say how to reach it and authenticate. Fill in
   `mcp_url` (and `bearer_token_env` if it needs a bearer token) or `mcp_command`.

@@ -54,7 +54,14 @@ export default defineConfig({
         { label: 'Overview', link: '/docs/' },
         { label: 'What are evals for agentic analytics?', link: '/docs/evals-for-agentic-analytics/' },
         { label: 'Getting started', link: '/docs/getting-started/' },
-        { label: 'Connect your agent', link: '/docs/connect/' },
+        {
+          label: 'Connect your agent',
+          items: [
+            { label: 'Overview', link: '/docs/connect/' },
+            { label: 'Snowflake', link: '/docs/connect/snowflake/' },
+            { label: 'MotherDuck', link: '/docs/connect/motherduck/' },
+          ],
+        },
         { label: 'Writing evals', link: '/docs/writing-evals/' },
         { label: 'Running evals', link: '/docs/running-evals/' },
         { label: 'Storing results', link: '/docs/storing-results/' },
