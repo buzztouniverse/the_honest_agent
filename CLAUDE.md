@@ -31,3 +31,12 @@ desktop (1440px), tablet (768px) and phone (390px and 320px) before calling
 it done: take screenshots, check the layout, text wrapping and horizontal
 scroll, and open interactive parts (tabs, collapsible sections, hovers) at
 each size.
+
+## Maintainer notes (Jose)
+
+Jose keeps private project notes in his knowledge base: locally at
+`~/knowledge/projects/the-honest-agent/`, or the private repo
+`jlcoto/knowledge` in cloud sessions. If you can reach it, read the notes
+there before bigger changes. At the end of a session, suggest `/wrap-up`
+to save decisions and learnings there. Contributors without access can
+ignore this section.
