@@ -119,6 +119,9 @@ needs a real terminal; without one, read the value from `.env`:
 | `CLOUDFLARE_API_TOKEN` | the deploy token from step 2 |
 | `SLACK_WEBHOOK_URL` | the Slack webhook |
 
+**Snowflake target?** Its network policy must also let GitHub's runners in, or `run` can't
+connect. See [Running in GitHub Actions](/docs/connect/snowflake/#running-in-github-actions).
+
 ## 4. Add the workflow
 
 Save this as `.github/workflows/honest-agent.yml`, and fill in everything marked `<...>`.

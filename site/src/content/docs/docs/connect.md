@@ -51,48 +51,14 @@ SALES_AGENT_MCP_TOKEN=...
 Set `mcp_url` to the server's address and, if it needs a bearer token, `bearer_token_env`
 to the variable that holds it. honest-agent sends the token only to that target's server.
 
-### Snowflake
+### Snowflake and MotherDuck
 
-Snowflake's managed MCP server is an object you create in your account with
-[`create mcp server`](https://docs.snowflake.com/en/sql-reference/sql/create-mcp-server).
-honest-agent authenticates with a
-[programmatic access token](https://docs.snowflake.com/en/user-guide/programmatic-access-tokens)
-(PAT), sent as a bearer token.
+These have their own step-by-step guides, from creating the token to a first eval:
 
-Set it up with Snowflake's docs, the way your account's security rules allow; honest-agent
-only needs the server's URL and the token. In short, you'll need:
-
-1. A role that can only read the tables the agent needs, and a service user with that
-   role.
-2. A [network policy](https://docs.snowflake.com/en/user-guide/network-policies) on the
-   user: Snowflake requires one before it issues a PAT for a service user. Allow only the
-   addresses honest-agent runs from.
-3. A PAT for the user, restricted to that role. Put it in `.env` under the variable your
-   target's `bearer_token_env` names.
-4. The MCP server object, with a SQL tool
-   ([`create mcp server`](https://docs.snowflake.com/en/sql-reference/sql/create-mcp-server)),
-   and `usage` on it granted to the role.
-5. Its URL in `.env`, in this shape:
-   `https://<account>.snowflakecomputing.com/api/v2/databases/<db>/schemas/<schema>/mcp-servers/<server>`
-
-:::note
-Check which database and schema your server's queries start in before you set
-`default_database` or `default_schema` for this target: ask a client connected to the same
-server to run `select current_database(), current_schema()`, or look in
-`honest-agent logs` after a first run for a query with a bare table name. Set them only if
-the server really starts there.
-:::
-
-### MotherDuck
-
-MotherDuck hosts an MCP server at `https://api.motherduck.com/mcp`; `init` fills in that
-URL for you. It needs a MotherDuck token.
-[A read-only (read scaling) token](https://motherduck.com/docs/key-tasks/authenticating-and-connecting-to-motherduck/read-scaling/)
-is safest: besides queries, the server offers tools that write and delete.
-
-The server describes many tools to the model, and the agent explores databases and
-tables before it queries, so each eval uses more tokens than with a small server. `init`
-sets `max_tool_steps: 10` for MotherDuck targets for that reason.
+- [Connect to Snowflake](/docs/connect/snowflake/): a managed MCP server, with a
+  programmatic access token for a read-only role.
+- [Connect to MotherDuck](/docs/connect/motherduck/): MotherDuck's hosted server, with a
+  read scaling token.
 
 ### Any other server
 
