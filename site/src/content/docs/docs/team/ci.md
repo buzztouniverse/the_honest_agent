@@ -23,8 +23,9 @@ Tested on 2026-10-08, started by hand (`workflow_dispatch`): four runs with the 
 Cloudflare, one with the report on AWS. Each run added to the history without
 duplicates, the report deployed, and Slack posted only when an eval fell below its
 threshold. *Not tested yet:* a schedule, the steps that keep going after `run` exits
-with 1 (added on 2026-10-12), and the download step that starts a new history when there
-is no results file yet (added on 2026-10-13). Results in MotherDuck aren't covered by this recipe.
+with 1 (added on 2026-10-12), the download step that starts a new history when there
+is no results file yet (added on 2026-10-13), and the target's URL variable (added on
+2026-10-18). Results in MotherDuck aren't covered by this recipe.
 :::
 
 :::caution[Use a private repository]
@@ -106,6 +107,7 @@ address (the `*` subdomain in [step 4](/docs/team/report-cloudflare/#4-create-th
 | `RESULTS_S3` | `s3://<bucket>/results/results.duckdb.gz` |
 | `HONEST_AGENT_REPORT_URL` | `https://<project>.pages.dev/` |
 | `CLOUDFLARE_ACCOUNT_ID` | your Cloudflare account ID (in `.wrangler/cache/wrangler-account.json` after a deploy from your machine) |
+| your target's URL variable | the server's URL, as in `.env`: the variable your target's `mcp_url` reads with `env_var()`, e.g. `SNOWFLAKE_MCP_URL`. `init` always writes the URL this way. |
 
 **Secrets:** `gh secret set NAME -R <owner>/<repo>` prompts for the value without
 showing it. Never use `--body` for a secret: it stays in your shell history. The prompt
@@ -125,9 +127,10 @@ connect. See [Running in GitHub Actions](/docs/connect/snowflake/#running-in-git
 ## 4. Add the workflow
 
 Save this as `.github/workflows/honest-agent.yml`, and fill in everything marked `<...>`.
-Replace the `<TARGET_TOKEN_ENV>` line with your target's token variable, and set the
-schedule: `cron` uses UTC, and scheduled runs start from your default branch. Each run
-calls the model for every eval, so pick a schedule that fits your budget.
+Replace `<TARGET_URL_ENV>` and `<TARGET_TOKEN_ENV>` with your target's URL and token
+variables, and set the schedule: `cron` uses UTC, and scheduled runs start from your
+default branch. Each run calls the model for every eval, so pick a schedule that fits your
+budget.
 
 ```yaml
 name: honest-agent
@@ -156,6 +159,7 @@ jobs:
     env:
       RESULTS_S3: ${{ vars.RESULTS_S3 }}
       HONEST_AGENT_TARGET: <target>               # a target in honest_agent_config.yml
+      <TARGET_URL_ENV>: ${{ vars.<TARGET_URL_ENV> }}   # run and notify both read it
       CLOUDFLARE_PAGES_PROJECT: <pages-project>
     steps:
       - uses: actions/checkout@v4
@@ -315,6 +319,7 @@ No Cloudflare secrets are needed.
     env:
       RESULTS_S3: ${{ vars.RESULTS_S3 }}
       HONEST_AGENT_TARGET: <target>
+      <TARGET_URL_ENV>: ${{ vars.<TARGET_URL_ENV> }}
       REPORT_S3_BUCKET: ${{ vars.REPORT_S3_BUCKET }}
       REPORT_S3_REGION: ${{ vars.REPORT_S3_REGION }}
       CLOUDFRONT_DISTRIBUTION_ID: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
