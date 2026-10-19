@@ -1,3 +1,5 @@
+<p align="center"><a href="https://thehonestagent.dev"><img src="design/readme-banner.png" alt="The Honest Agent: open-source evals for agentic analytics" width="640"></a></p>
+
 # The Honest Agent (`honest-agent`)
 
 > **Alpha (v0.1.0): expect breaking changes between versions.** Results files,
