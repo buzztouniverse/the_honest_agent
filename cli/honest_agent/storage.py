@@ -28,7 +28,7 @@ Three derived tables, kept deliberately separate:
   `type` column exists for a future `"semantic"` call kind (structured
   semantic-layer calls like `{"metric": "revenue", "grain": "daily"}` that
   never produce a SQL string at all -- see sql_capture.py's module
-  docstring and TODO.md's "Semantic-layer provenance checking"), but no code
+  docstring), but no code
   path writes anything besides `"sql"` yet -- that's deliberately not built
   until a real semantic-layer tool is actually in scope, not an oversight.
   `payload` is JSON for both, so the column doesn't need reshaping once that

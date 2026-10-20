@@ -36,6 +36,16 @@ uv add "honest-agent @ git+https://github.com/jlcoto/the_honest_agent.git@v0.1.0
 To upgrade later, run the same `uv add` with a newer tag from
 [Releases](https://github.com/jlcoto/the_honest_agent/releases).
 
+To have one `honest-agent` command for every project instead, install it as a tool:
+
+```bash
+uv tool install "honest-agent @ git+https://github.com/jlcoto/the_honest_agent.git@v0.1.0#subdirectory=cli"
+```
+
+Then run `honest-agent` without `uv run` in any folder with a `honest_agent_config.yml`.
+To upgrade, run the same command with the new tag and `--force`. The tradeoff: every
+project uses the same version, instead of the one its `uv.lock` pins.
+
 :::note[Alpha]
 honest-agent is in alpha: expect breaking changes between versions. Each release's notes
 in the [changelog](https://github.com/jlcoto/the_honest_agent/blob/main/CHANGELOG.md) say

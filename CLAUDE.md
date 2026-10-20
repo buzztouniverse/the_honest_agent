@@ -37,6 +37,7 @@ each size.
 Jose keeps private project notes in his knowledge base: locally at
 `~/knowledge/projects/the-honest-agent/`, or the private repo
 `jlcoto/knowledge` in cloud sessions. If you can reach it, read the notes
-there before bigger changes. At the end of a session, suggest `/wrap-up`
+there before bigger changes. The project's to-do list (`todo.md`) and
+longer-term ideas (`future-ideas.md`) live there too, not in this repo. At the end of a session, suggest `/wrap-up`
 to save decisions and learnings there. Contributors without access can
 ignore this section.
