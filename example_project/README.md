@@ -49,6 +49,9 @@ uv run honest-agent serve
 | `evals_snowflake/` | The demo questions against a copy in Snowflake, plus evals for a semantic view |
 | `warehouse/seed.py` | Builds `warehouse.duckdb` from DuckDB's TPC-H generator |
 
+The questions the three evals folders share keep the same ids, so you can compare the
+agent across the three warehouses by `eval_id` in the results database.
+
 ## Docs
 
 - [Writing evals](https://thehonestagent.dev/docs/writing-evals/): the eval file, grading methods, provenance
