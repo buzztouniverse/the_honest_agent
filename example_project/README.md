@@ -1,7 +1,13 @@
 # example_project
 
-A project that uses the `honest-agent` CLI the way a team would, for developing and
-trying it from this repository. It installs `honest-agent` from `../cli` as an
+> **Trying honest-agent?** Use `honest-agent init --example` instead. It creates a demo
+> project in a folder of your own, with six evals that show each grading method, some of
+> them failing on purpose: see [Getting started](https://thehonestagent.dev/docs/getting-started/).
+> This folder is for developing honest-agent. It runs a smaller set of evals on the same
+> TPC-H data, plus MotherDuck and Snowflake targets.
+
+A project that uses the `honest-agent` CLI the way a team would, for developing it
+from this repository. It installs `honest-agent` from `../cli` as an
 editable dependency (`[tool.uv.sources]` in `pyproject.toml`), so CLI changes show up
 here without reinstalling.
 
@@ -9,9 +15,6 @@ Its evals ask real questions of a TPC-H warehouse (`orders`, `lineitem`, `custom
 ...) that `warehouse/seed.py` builds with DuckDB's own generator. By default they run
 through the demo MCP server that ships with honest-agent, so provenance is checked
 against real SQL and real data.
-
-To try honest-agent in your own folder instead, use `honest-agent init --example`:
-see [Getting started](https://thehonestagent.dev/docs/getting-started/).
 
 > **The demo MCP server is for trying honest-agent, not for real data.** It runs any
 > read-only SQL against the whole DuckDB file it's given, with no authentication and no
