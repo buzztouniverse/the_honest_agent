@@ -1,6 +1,6 @@
 // The only place the app gets data from. Views import from here, never fetch
 // directly, so swapping the source (a `serve` query API, DuckDB-WASM) later
-// only touches this module -- see TODO.md "Report frontend: querying and sharing".
+// only touches this module.
 
 import type { ReportData } from './types'
 

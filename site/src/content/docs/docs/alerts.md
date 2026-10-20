@@ -37,6 +37,18 @@ picks another one. It prints whether it posted:
 Posted Slack alert for 2 failing eval(s) for agent sales-agent.
 ```
 
+### One channel per environment
+
+To alert a dev channel apart from production, give each its own webhook, and pass it with
+`--webhook-url` (or a separate `SLACK_WEBHOOK_URL` in that job):
+
+```bash
+uv run honest-agent notify --target snowflake_dev --webhook-url "$DEV_SLACK_WEBHOOK_URL"
+```
+
+Give the dev target its own `agent_name` too. Two targets with the same `agent_name`
+record their runs, and send their alerts, as the same agent.
+
 ## What the alert says
 
 ```

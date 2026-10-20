@@ -210,8 +210,7 @@ def check_provenance(
 
     Caveat: this only sees SQL captured by sql_capture.py. An agent that
     reaches a semantic layer through structured, non-SQL tool arguments
-    (e.g. {"metric": "revenue"}) isn't detected -- see TODO.md's
-    "Semantic-layer provenance checking".
+    (e.g. {"metric": "revenue"}) isn't detected.
     """
     expected = [_expected(entry, expected_database, expected_schema) for entry in expected_sources or []]
     # An eval about the metadata itself ("how many tables are there?") expects a catalog.

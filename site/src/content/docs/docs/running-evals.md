@@ -52,7 +52,8 @@ it again. Start with one eval, check its tokens in the report, then run the rest
 
 `honest-agent debug` checks the config, the variables, the evals, the MCP server and the
 results store, without calling a model or running a query. Run it after changing your
-setup, before a run that costs money.
+setup, before a run that costs money. If it reports a problem, see
+[Troubleshooting](/docs/troubleshooting/).
 
 ## Select which evals run
 

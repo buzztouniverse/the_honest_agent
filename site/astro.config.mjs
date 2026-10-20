@@ -67,6 +67,7 @@ export default defineConfig({
         { label: 'Storing results', link: '/docs/storing-results/' },
         { label: 'The report', link: '/docs/report/' },
         { label: 'Setting up alerts', link: '/docs/alerts/' },
+        { label: 'Troubleshooting', link: '/docs/troubleshooting/' },
         {
           label: 'Running it for a team',
           items: [

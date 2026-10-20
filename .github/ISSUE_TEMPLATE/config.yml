@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Documentation
+    url: https://thehonestagent.dev/docs/
+    about: Setup guides, troubleshooting and the CLI and config reference.
+  - name: Report a vulnerability
+    url: https://github.com/jlcoto/the_honest_agent/security/advisories/new
+    about: Please report security issues privately, not in a public issue.
