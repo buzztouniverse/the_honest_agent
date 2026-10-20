@@ -58,9 +58,6 @@ evals:
   `Revenue in Q4 2026` becomes `revenue_in_q4_2026`. Set `id` yourself, so rewording the
   title later doesn't change the id and split the eval's history. The id is also how you
   run one eval: `honest-agent run --select revenue_q4`.
-- **Same question, same id.** When two targets ask the same question, give the eval the
-  same id in each target's evals folder: the report then lines up their results. Within
-  one folder, ids must be unique.
 
 `honest-agent ls` checks that your files load, and lists every eval with its id,
 category and tags.

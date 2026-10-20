@@ -24,7 +24,7 @@ targets:
 | Setting | What it does |
 |---|---|
 | `default_target` | The target `run`, `debug`, `ls` and `notify` use without `--target`. |
-| `results_path` | Where results are stored: a local DuckDB file (default `./honest_agent_results/results.duckdb`) or a MotherDuck database as `md:<name>`. Every target shares it, so the report can compare agents. |
+| `results_path` | Where results are stored: a local DuckDB file (default `./honest_agent_results/results.duckdb`) or a MotherDuck database as `md:<name>`. Every target shares it, so one report covers every agent. |
 | `targets` | One entry per agent you evaluate, by name. Each holds the target settings below. |
 
 ## Top level or per target
