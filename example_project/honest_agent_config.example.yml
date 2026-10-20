@@ -8,7 +8,8 @@
 #
 # A flag or environment variable still overrides any setting here, for one-off runs.
 
-# Or md:<name> to keep results in MotherDuck, opened with HONEST_AGENT_RESULTS_TOKEN (see README.md).
+# Or md:<name> to keep results in MotherDuck, opened with HONEST_AGENT_RESULTS_TOKEN
+# (see https://thehonestagent.dev/docs/storing-results/).
 results_path: ./honest_agent_results/results.duckdb
 
 default_target: demo
@@ -31,7 +32,7 @@ targets:
     # too few here.
     max_tool_steps: 10
 
-  # A Snowflake-managed MCP server (see README.md). Replace the placeholders with yours.
+  # A Snowflake-managed MCP server (see https://thehonestagent.dev/docs/connect/snowflake/). Replace the placeholders with yours.
   snowflake:
     mcp_url: https://<account_identifier>.snowflakecomputing.com/api/v2/databases/agent_quiz_demo/schemas/public/mcp-servers/agent_quiz_mcp
     bearer_token_env: SNOWFLAKE_MCP_TOKEN

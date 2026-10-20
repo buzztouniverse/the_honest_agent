@@ -58,6 +58,9 @@ evals:
   `Revenue in Q4 2026` becomes `revenue_in_q4_2026`. Set `id` yourself, so rewording the
   title later doesn't change the id and split the eval's history. The id is also how you
   run one eval: `honest-agent run --select revenue_q4`.
+- **Same question, same id.** When two targets ask the same question, give the eval the
+  same id in each target's evals folder: the report then lines up their results. Within
+  one folder, ids must be unique.
 
 `honest-agent ls` checks that your files load, and lists every eval with its id,
 category and tags.
@@ -249,6 +252,8 @@ have come from; accuracy tells you whether it's right.
   including a quick `select * from orders limit 5` while exploring.
 - `show`, `describe`, catalog queries (like `information_schema`) and queries that failed
   don't count.
+- SQL a tool only wrote, like the query Snowflake's Cortex Analyst returns, counts once
+  the agent runs it.
 - **Short table names.** If an expected source names its database or schema, like
   `warehouse.main.orders`, honest-agent needs to know where each table the agent read
   lives. When the agent writes just `from orders`, it takes the location from a `use`

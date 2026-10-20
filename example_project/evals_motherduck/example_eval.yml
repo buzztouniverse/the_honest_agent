@@ -2,12 +2,11 @@ version: 1
 
 # Same two evals as ../evals/example_eval.yml, but pointed at MotherDuck's
 # hosted MCP server instead of our bundled demo server. Data is a byte-identical copy of ../warehouse.duckdb,
-# loaded into a MotherDuck database (see ../README.md for how it got
-# there). Same eval IDs on purpose, so results from both targets land
+# loaded into a MotherDuck database. Same eval IDs on purpose, so results from both targets land
 # side by side in the same results.duckdb, comparable by eval_id.
 #
 # Run with `honest-agent run --target motherduck` (see ../honest_agent_config.yml
-# and README.md's "Connecting to a real MotherDuck account").
+# and https://thehonestagent.dev/docs/connect/motherduck/).
 #
 # Evals are grouped by category; each group's settings apply to its tests
 # unless a test sets its own. These evals keep explicit ids so their result
