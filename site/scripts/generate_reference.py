@@ -30,7 +30,9 @@ SETTINGS = {
     "results_path": (
         "top",
         f"Where results are stored: a local DuckDB file (default `{DEFAULT_RESULTS_PATH}`) or a MotherDuck "
-        "database as `md:<name>`. Every target shares it, so the report can compare agents.",
+        "database as `md:<name>`. To keep the file in cloud storage such as S3, copy it in and out around each "
+        "run ([Storing results](/docs/storing-results/#in-cloud-storage)). Every target shares it, so one report "
+        "covers every agent.",
     ),
     "model": ("both", "The model that plays the agent. Default: chosen from the API key you have."),
     "grading_model": (

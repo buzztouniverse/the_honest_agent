@@ -25,7 +25,7 @@ targets:
 
 - `honest-agent run` evaluates the `default_target`. `--target <name>` picks another one.
 - Results record which agent they came from: the target's name, or its `agent_name` if
-  you set one. The report filters and compares agents by that name.
+  you set one. The report lists agents by that name; you pick one at the top of the Overview.
 - honest-agent finds the config file in the folder you run it from, or the nearest
   parent folder. Relative paths in it are relative to the file's folder.
 
@@ -119,10 +119,10 @@ targets:
 | `agent_name` | The name results are recorded under. Default: the target's name. |
 | `evals_dir` | The folder with this target's evals. Default: `evals`. |
 | `default_database`, `default_schema` | Where the server runs a bare table name like `orders`, so provenance can tell where the table lives. Set them only if the server's connection really starts there: a wrong value puts tables in the wrong place without warning. |
-| `ignore_tools` | Tools whose `sql`, `query` or `statement` argument isn't SQL (a search term, say), so provenance doesn't read it as SQL. |
+| `ignore_tools` | Tools whose `sql`, `query` or `statement` argument isn't SQL (a search term, say), so provenance doesn't read it as SQL. MotherDuck's `search_catalog` is ignored already. |
 
 `results_path`, where results are stored, is set at the top level only: every target's
-results share one store, so the report can compare agents side by side.
+results share one store, so one report covers every agent.
 
 ### When a setting is set in more than one place
 

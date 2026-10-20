@@ -2,8 +2,7 @@ version: 1
 
 # Path B of testing the TPC-H semantic view (see semantic_view_eval.yml for Path A):
 # here the agent has a dedicated MCP tool (query_semantic_view, CORTEX_ANALYST_MESSAGE)
-# pointed directly at agent_quiz_demo.public.tpch_semantic_view -- see README.md's
-# Snowflake section. Its input is a plain-language `message`, not SQL, and the
+# pointed directly at agent_quiz_demo.public.tpch_semantic_view. Its input is a plain-language `message`, not SQL, and the
 # generated SQL comes back inside the *response* (a `statement` field) -- which
 # sql_capture.py now checks in addition to the request, so expected_sources still
 # works the same way it does for query_warehouse.

@@ -249,6 +249,9 @@ have come from; accuracy tells you whether it's right.
   including a quick `select * from orders limit 5` while exploring.
 - `show`, `describe`, catalog queries (like `information_schema`) and queries that failed
   don't count.
+- Some tools answer with SQL instead of data: Snowflake's Cortex Analyst writes a query and
+  returns it without running it. That query counts only if the agent then runs it, for
+  example through `query_warehouse`.
 - **Short table names.** If an expected source names its database or schema, like
   `warehouse.main.orders`, honest-agent needs to know where each table the agent read
   lives. When the agent writes just `from orders`, it takes the location from a `use`
