@@ -4,7 +4,7 @@ honest-agent is in alpha: a minor version (0.1 -> 0.2) can break things, and
 its notes start with what changed and what to do. A patch version (0.1.0 ->
 0.1.1) only fixes bugs.
 
-## Unreleased
+## v0.2.0 (alpha) — 2026-10-21
 
 - **The agent gets the MCP server's instructions.** Servers can send instructions when a
   client connects (MotherDuck's describe DuckDB's SQL and how to explore the catalog), and
